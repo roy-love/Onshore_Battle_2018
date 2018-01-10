@@ -2,8 +2,8 @@ import random
 import sys
 import traceback
 
-#from IRobot import IRobot
+from .IRobot import IRobot
 
-class Mage():
+class Healer(IRobot):
 	def __init__(self, gameController):
 		self.gameController = gameController
