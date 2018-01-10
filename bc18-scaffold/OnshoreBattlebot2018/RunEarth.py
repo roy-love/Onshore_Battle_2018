@@ -7,7 +7,7 @@ from Controllers import *
 from Entities import *
 
 class RunEarth:
-
+	
 	# Initialize controllers
 	# Initialize all class variables
 	# Only include code that should be initialized once at the beginning of the match
