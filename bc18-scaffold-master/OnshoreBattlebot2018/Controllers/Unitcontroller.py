@@ -1,4 +1,3 @@
-import battlecode as bc
 import random
 import sys
 import traceback
@@ -9,5 +8,5 @@ import traceback
 # Responsible for putting robots back into the queue if a healer resets their cooldowns
 class UnitController:
 	def __init__(self, gameController, strategyController):
-      self.gameController = gameController
-	  self.strategyController = strategyController
+		self.gameController = gameController
+		self.strategyController = strategyController

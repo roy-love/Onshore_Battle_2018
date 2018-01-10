@@ -1,4 +1,3 @@
-import battlecode as bc
 import random
 import sys
 import traceback
@@ -10,6 +9,6 @@ import traceback
 # Workers access this class to determine what to build next
 class BuildController:
 	def __init__(self, gameController, mapController, strategyController):
-      self.gameController = gameController
-	  self.mapController = mapController
-	  self.strategyController = strategyController
+		self.gameController = gameController
+		self.mapController = mapController
+		self.strategyController = strategyController

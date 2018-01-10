@@ -12,18 +12,18 @@ class RunMars:
 	# Initialize all class variables
 	# Only include code that should be initialized once at the beginning of the match
 	def __init__(self, gameController):
-      self.gameController = gameController
-	  self.mapController = Controllers.MapController.MapController()
-	  self.strategyController = Controllers.StrategyController.StrategyController(mapController)
-	  self.researchTreeController = Controllers.ResearchTreeController.ResearchTreeController(strategyController)
-	  self.buildController = Controllers.BuildController.BuildController(mapController, strategyController)
-	  self.unitController = Controllers.UnitController.UnitController(strategyController)
-	  self.targettingController = Controllers.TargettingController.TargettingController(mapController, strategyController)
-	  self.pathfindingController = Controllers.PathfindingController.PathfindingController(mapController)
-	  self.enemyTrackingController = Controllers.EnemyTrackingController.EnemyTrackingController()
+		self.gameController = gameController
+		self.mapController = MapController(gameController)
+		self.strategyController = StrategyController(gameController, self.mapController)
+		self.researchTreeController = ResearchTreeController(gameController, self.strategyController)
+		self.buildController = BuildController(gameController, self.mapController, self.strategyController)
+		self.unitController = UnitController(gameController, self.strategyController)
+		self.targettingController = TargettingController(gameController, self.mapController, self.strategyController)
+		self.pathfindingController = PathfindingController(gameController, self.mapController)
+		self.enemyTrackingController = EnemyTrackingController(gameController)
 	  
-	  self.round = gameController.round()
+		self.round = gameController.round()
 	 
 	# Runs once per turn for this planet only
 	def Run(self):
-		#Do Mars turn things here
+		print("Do mars turn things here")

@@ -1,4 +1,3 @@
-import battlecode as bc
 import random
 import sys
 import traceback
@@ -12,5 +11,5 @@ import traceback
 # Start by simply returning {"Default"} until we get the basics finished.
 class StrategyController:
 	def __init__(self, gameController, mapController):
-      self.gameController = gameController
-	  self.mapController = mapController
+		self.gameController = gameController
+		self.mapController = mapController

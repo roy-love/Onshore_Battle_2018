@@ -1,4 +1,3 @@
-import battlecode as bc
 import random
 import sys
 import traceback
@@ -8,5 +7,5 @@ import traceback
 # Provides read and write access for other controllers to easily utilize
 # May be responsible for keeping track of comets
 class MapController:
-	def __init__(self, gameController):
-      self.gameController = gameController
+      def __init__(self, gameController):
+            self.gameController = gameController

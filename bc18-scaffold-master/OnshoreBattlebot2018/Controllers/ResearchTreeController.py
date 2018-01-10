@@ -1,4 +1,3 @@
-import battlecode as bc
 import random
 import sys
 import traceback
@@ -10,5 +9,5 @@ import traceback
 # Items can only be removed from the queue all at once, cancelling any progress
 class ResearchTreeController:
 	def __init__(self, gameController, strategyController):
-      self.gameController = gameController
-	  self.strategyController = strategyController
+		self.gameController = gameController
+		self.strategyController = strategyController

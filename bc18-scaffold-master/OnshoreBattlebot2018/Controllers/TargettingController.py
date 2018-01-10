@@ -1,4 +1,3 @@
-import battlecode as bc
 import random
 import sys
 import traceback
@@ -9,6 +8,6 @@ import traceback
 # To start, focus on simply returning the closest or most valuable target
 class TargettingController:
 	def __init__(self, gameController, mapController, strategyController):
-      self.gameController = gameController
-	  self.mapController = mapController
-	  self.strategyController = strategyController
+		self.gameController = gameController
+		self.mapController = mapController
+		self.strategyController = strategyController
