@@ -26,4 +26,4 @@ class RunEarth:
 	 
 	# Runs once per turn for this planet only
 	def Run(self):
-		print("Do earth turn things here")
+		print('Do earth turn things here')
