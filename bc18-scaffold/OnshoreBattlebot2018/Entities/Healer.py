@@ -2,7 +2,8 @@ import random
 import sys
 import traceback
 
-from .IRobot import IRobot
+#from IRobot import IRobot
+
 
 class Healer(IRobot):
 	# change init definition to include any controllers needed in the instructor as we need them
