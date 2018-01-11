@@ -12,11 +12,16 @@ class ResearchTreeController:
 		self.gameController = gameController
 		self.strategyController = strategyController
 
-	def AddResearchToQueue(self, unitType):
-		self.gameController.queue_research(	self.gameController, unitType)
+	def AddResearchToQueue(self, branch):
+		branchName = self.GetResearchBranchTurns(branch)
+		researchInfo = self.gameController.research_info(self.gameController)
+		level = researchInfo.get_level(researchInfo, branch)
+		print("Added [{}] research level [{}].".format(branchName,))
+		self.gameController.queue_research(	self.gameController, branch)
 
 	def ClearResearchQueue(self):
-	    self.gameController.reset_research(	self.gameController)
+		print("Research queue cleared.")
+		self.gameController.reset_research(	self.gameController)
 	
 	def IsCurrentResearchNearCompletion(self):
 	# Returns a bool if the current number of rounds left for the current
@@ -94,4 +99,18 @@ class ResearchTreeController:
 	    else:
 		    return 0
 
-
+	def GetBranchName(self,branch):
+	    if branch == 0:
+		    return "Worker"
+	    elif branch == 1:
+		    return "Knight"
+	    elif branch == 2:
+		    return "Ranger"
+	    elif branch == 3:
+		    return "Mage"
+	    elif branch == 4:
+		    return "Healer"
+	    elif branch == 6:
+		    return "Rocket"
+	    else:
+		    return "Not a research Branch"
