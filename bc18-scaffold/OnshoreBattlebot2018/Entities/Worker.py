@@ -10,19 +10,16 @@ class Worker(IRobot):
 	def __init__(self, gameController, robotId):
 		super(Worker, self).__init__(gameController, robotId)
 
-	def run(self):
-		pass
-
-	def tryBlueprint(self, structureType, direction):
+	def tryBlueprint(self, unitType, direction):
 		if self.unit.worker_has_acted():
 			print("Worker [{}] has already acted this turn".format(self.unit.id))
 			return False
 
-		if not self.gameController.can_blueprint(self.unit.id):
-			print("Worker [{}] cannot blueprint [{}] in direction [{}]".format(self.unit.id, structureType, direction))
+		if not self.gameController.can_blueprint(self.unit.id, unitType, direction):
+			print("Worker [{}] cannot blueprint [{}] in direction [{}]".format(self.unit.id, unitType, direction))
 			return False
 
-		self.gameController.blueprint(self.unit.id, structureType, direction)
+		self.gameController.blueprint(self.unit.id, unitType, direction)
 		return True
 
 	def tryBuild(self, blueprintId):
