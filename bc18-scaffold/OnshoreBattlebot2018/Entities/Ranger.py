@@ -15,24 +15,24 @@ class Ranger(IRobot):
 		
 	def tryAttack(self, targetRobotId):
 		#TODO check heat is low enough
-		if not self.gameController.can_attack(self.unit.robotId, targetRobotId):
-			print("Ranger [{}] cannot attack the target [{}]".format(self.unit.robotId, targetRobotId))
+		if not self.gameController.can_attack(self.unit.id, targetRobotId):
+			print("Ranger [{}] cannot attack the target [{}]".format(self.unit.id, targetRobotId))
 			return False
 		
-		self.gameController.attack(self.unit.robotId, targetRobotId)
+		self.gameController.attack(self.unit.id, targetRobotId)
 		return True
 	
 
 	def trySnipe(self, targetLocation):
 		#TODO check has research
 
-		if not self.gameController.is_begin_snipe_ready(self.unit.robotId):
-			print("Snipe is not ready for ranger [{}]".format(self.unit.robotId))
+		if not self.gameController.is_begin_snipe_ready(self.unit.id):
+			print("Snipe is not ready for ranger [{}]".format(self.unit.id))
 			return False
 
-		if not self.gameController.can_begin_snipe(self.unit.robotId, targetLocation):
-			print("Ranger [{}] cannot snipe target location".format(self.unit.robotId))
+		if not self.gameController.can_begin_snipe(self.unit.id, targetLocation):
+			print("Ranger [{}] cannot snipe target location".format(self.unit.id))
 			return False
 
-		self.gameController.begin_snipe(self.unit.robotId, targetLocation)
+		self.gameController.begin_snipe(self.unit.id, targetLocation)
 		return True

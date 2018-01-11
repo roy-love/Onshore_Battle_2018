@@ -23,17 +23,17 @@ class IRobot:
 
 			
 	def tryMove(self, direction) :
-		if not self.gameController.is_move_ready(self.unit.robotId):
-			print("Move for Robot [{}] is not ready".format(self.unit.robotId))
+		if not self.gameController.is_move_ready(self.unit.id):
+			print("Move for Robot [{}] is not ready".format(self.unit.id))
 			return False
-		if not self.gameController.can_move(self.unit.robotId, direction):
-			print("Robot [{}] cannot move in direction {}".format(self.unit.robotId, direction))
+		if not self.gameController.can_move(self.unit.id, direction):
+			print("Robot [{}] cannot move in direction {}".format(self.unit.id, direction))
 			return False
 		
-		self.gameController.move_robot(self.unit.robotId, direction)
+		self.gameController.move_robot(self.unit.id, direction)
 		return True
 	
 	
 	def selfDestruct(self):
-		"Robot [{}] self destructing".format(self.unit.robotId)
-		self.gameController.disintegrate_unit(self.unit.robotId)
+		"Robot [{}] self destructing".format(self.unit.id)
+		self.gameController.disintegrate_unit(self.unit.id)

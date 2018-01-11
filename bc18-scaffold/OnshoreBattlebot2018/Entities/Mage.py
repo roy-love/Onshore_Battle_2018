@@ -13,24 +13,24 @@ class Mage(IRobot):
 
 	def tryAttack(self, targetRobotId):
 		#TODO check heat is low enough
-		if not self.gameController.can_attack(self.unit.robotId, targetRobotId):
-			print("Mage [{}] cannot attack the target [{}]".format(self.unit.robotId, targetRobotId))
+		if not self.gameController.can_attack(self.unit.id, targetRobotId):
+			print("Mage [{}] cannot attack the target [{}]".format(self.unit.id, targetRobotId))
 			return False
 		
-		self.gameController.attack(self.unit.robotId, targetRobotId)
+		self.gameController.attack(self.unit.id, targetRobotId)
 		return True
 
 	def tryBlink(self, destination):
 		#TODO check has research
 
 		#Check cooldown of Blink ability
-		if not self.gameController.is_blink_ready(self.unit.robotId):
-			print("Blink is not ready for Mage [{}]".format(self.unit.robotId))
+		if not self.gameController.is_blink_ready(self.unit.id):
+			print("Blink is not ready for Mage [{}]".format(self.unit.id))
 			return False
 
-		if not self.gameController.can_blink(self.unit.robotId, destination):
+		if not self.gameController.can_blink(self.unit.id, destination):
 			print("Mage [{}] cannot blink to the target location")
-			return false
+			return False
 
-		self.gameController.blink(self.unit.robotId, destination)
+		self.gameController.blink(self.unit.id, destination)
 		return True
