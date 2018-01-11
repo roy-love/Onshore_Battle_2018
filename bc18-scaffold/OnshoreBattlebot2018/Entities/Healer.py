@@ -8,12 +8,12 @@ from .IRobot import IRobot
 class Healer(IRobot):
 	# change init definition to include any controllers needed in the instructor as we need them
 	# For example:  it will eventually need to access the Targeting and Pathfinding controllers
-	def __init__(self, gameController, robotId):
+	def __init__(self, gameController, robotId):]
 		super(Healer, self).__init__(gameController, robotId)
 
 	def run(self):
 		pass
-
+  
 	def tryHeal(self, targetUnitId):
 		#TODO check heat is low enough
 		if not self.gameController.can_heal(self.unit.id, targetUnitId):
