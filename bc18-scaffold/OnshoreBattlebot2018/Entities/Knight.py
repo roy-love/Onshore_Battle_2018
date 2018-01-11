@@ -15,24 +15,24 @@ class Knight(IRobot):
 
 	def tryAttack(self, targetRobotId):
 		#TODO check heat is low enough
-		if not self.gameController.can_attack(self.unit.robotId, targetRobotId):
-			print("Knight [{}] cannot attack the target [{}]".format(self.unit.robotId, targetRobotId))
+		if not self.gameController.can_attack(self.unit.id, targetRobotId):
+			print("Knight [{}] cannot attack the target [{}]".format(self.unit.id, targetRobotId))
 			return False
 		
-		self.gameController.attack(self.unit.robotId, targetRobotId)
+		self.gameController.attack(self.unit.id, targetRobotId)
 		return True
 	
 
 	def tryJavelin(self, targetRobotId):
 		#TODO check has research
 
-		if not self.gameController.is_javelin_ready(self.unit.robotId):
-			print("Javelin is not ready for knight [{}]".format(self.unit.robotId))
+		if not self.gameController.is_javelin_ready(self.unit.id):
+			print("Javelin is not ready for knight [{}]".format(self.unit.id))
 			return False
 
-		if not self.gameController.can_javelin(self.unit.robotId, targetRobotId):
-			print("Knight [{}] cannot javelin target [{}]".format(self.unit.robotId, targetRobotId))
+		if not self.gameController.can_javelin(self.unit.id, targetRobotId):
+			print("Knight [{}] cannot javelin target [{}]".format(self.unit.id, targetRobotId))
 			return False
 
-		self.gameController.javelin(self.unit.robotId, targetRobotId)
+		self.gameController.javelin(self.unit.id, targetRobotId)
 		return True
