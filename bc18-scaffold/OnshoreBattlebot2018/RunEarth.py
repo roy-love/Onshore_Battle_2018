@@ -7,7 +7,7 @@ from Controllers import *
 from Entities import *
 
 class RunEarth:
-	
+
 	# Initialize controllers
 	# Initialize all class variables
 	# Only include code that should be initialized once at the beginning of the match
@@ -26,4 +26,3 @@ class RunEarth:
 	 
 	# Runs once per turn for this planet only
 	def Run(self):
-		print('Do earth turn things here')
