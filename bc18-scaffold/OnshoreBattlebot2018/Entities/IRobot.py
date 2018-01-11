@@ -1,3 +1,4 @@
+import battlecode as bc
 import random
 import sys
 import traceback
@@ -12,7 +13,7 @@ class IRobot:
 		# Change method to accept whatever options are needed from other controllers to make its decisions
 		print("Do robot things")
 		
-		direction = random.randint(0,8)
+		direction = bc.Direction(random.randint(0,8))
 		print("Moving randomly in direction {}".format(direction))
 		self.tryMove(direction)
 

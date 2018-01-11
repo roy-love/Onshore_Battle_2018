@@ -22,7 +22,13 @@ class RunEarth:
 		self.pathfindingController = PathfindingController(gameController, self.mapController)
 		self.enemyTrackingController = EnemyTrackingController(gameController)
 	  
-		self.round = gameController.round()
 	 
 	# Runs once per turn for this planet only
 	def Run(self):
+		self.round = self.gameController.round()
+		if self.round == 1:
+			print("Running first turn test")
+			print("Creating worker class from default worker")
+			firstWorker = Worker(self.gameController, self.gameController.my_units()[0].id)
+			print("Calling Run() on firstWorker, which exists on parent class")
+			firstWorker.run()
