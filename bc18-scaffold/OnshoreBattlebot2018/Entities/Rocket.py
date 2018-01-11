@@ -3,5 +3,5 @@ import sys
 import traceback
 
 class Rocket:
-	def __init__(self, gameController):
-		self.gameController = gameController
+	def __init__(self, gameController, unitController, unit):
+		super().__init__(gameController, unitController, unit)

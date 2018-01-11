@@ -11,3 +11,15 @@ class PathfindingController:
 	def __init__(self, gameController, mapController):
 		self.gameController = gameController
 		self.mapController = mapController
+
+	def FindPathTo(self, currentLocation, destination):
+		print("starting pathfinding")
+		path = []
+		while currentLocation != destination:
+			direction = currentLocation.direction_to(destination)
+			print("next direction is {}".format(direction))
+			path.append(direction)
+			print("direction count is {}".format(len(path)))
+			currentLocation = currentLocation.add(direction)
+		print("returning path")
+		return path

@@ -1,4 +1,3 @@
-import battlecode as bc
 import random
 import sys
 import traceback
@@ -14,21 +13,36 @@ class RunEarth:
 	def __init__(self, gameController):
 		self.gameController = gameController
 		self.mapController = MapController(gameController)
-		self.strategyController = StrategyController(gameController, self.mapController)
+		self.enemyTrackingController = EnemyTrackingController(gameController)
+		self.strategyController = StrategyController(gameController, self.mapController, self.enemyTrackingController)
 		self.researchTreeController = ResearchTreeController(gameController, self.strategyController)
 		self.buildController = BuildController(gameController, self.mapController, self.strategyController)
-		self.unitController = UnitController(gameController, self.strategyController)
-		self.targettingController = TargettingController(gameController, self.mapController, self.strategyController)
 		self.pathfindingController = PathfindingController(gameController, self.mapController)
-		self.enemyTrackingController = EnemyTrackingController(gameController)
+		self.unitController = UnitController(gameController, self.strategyController, self.pathfindingController)
+		self.targettingController = TargettingController(gameController, self.mapController, self.strategyController)
 	  
 	 
 	# Runs once per turn for this planet only
 	def Run(self):
 		self.round = self.gameController.round()
 		if self.round == 1:
-			print("Running first turn test")
-			print("Creating worker class from default worker")
-			firstWorker = Worker(self.gameController, self.gameController.my_units()[0].id)
-			print("Calling Run() on firstWorker, which exists on parent class")
-			firstWorker.run()
+			print("First round on Earth.  Initializing map")
+			self.mapController.InitializeEarthMap()
+
+			print("Selecting default strategy")
+			self.strategyController.SetDefaultStrategy()
+		else:
+			print("Round {}".format(self.round))
+			print("Setting strategy for the turn")
+			self.strategyController.UpdateStrategy()
+		
+		print("Update research queue")
+		self.researchTreeController.UpdateQueue()
+		
+		print("Updating units.  Synching between game units and player entities.")
+		self.unitController.UpdateUnits()
+
+		print("Updating missions")
+		self.unitController.UpdateMissions() 
+		print("Running all units")
+		self.unitController.RunUnits()

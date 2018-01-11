@@ -9,3 +9,8 @@ import traceback
 class MapController:
       def __init__(self, gameController):
             self.gameController = gameController
+
+      # TODO have this function read the earth map from the api
+      # store it into a location that's easy to read, sort, or search
+      def InitializeEarthMap(self):
+            print("Initialize map here")
