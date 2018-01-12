@@ -4,10 +4,12 @@ import sys
 import traceback
 
 class IRobot:
-	def __init__(self, gameController, robotId):
+	def __init__(self, gameController, unitController, pathfindingController, unit):
 		self.gameController = gameController
-		self.unit = self.gameController.unit(robotId)
-
+		self.unitController = unitController
+		self.pathfindingController = pathfindingController
+		self.unit = unit
+		
 	def run(self):
 		# Actions that the default robot should perform each turn
 		# Change method to accept whatever options are needed from other controllers to make its decisions

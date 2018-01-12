@@ -2,6 +2,9 @@ import random
 import sys
 import traceback
 
+import battlecode as bc
+from .StrategyController import *
+
 # Keeps track of the current tech tree progress
 # Uses the strategy selected to determine the build order
 # TODO Determine which planet is in charge of the research tree and how to pass to Mars with the 50 turn delay
@@ -12,17 +15,22 @@ class ResearchTreeController:
 		self.gameController = gameController
 		self.strategyController = strategyController
 
+	def UpdateQueue(self):
+		if self.strategyController.macroStrategy == MacroStrategies.Default:
+			if not self.gameController.research_info().has_next_in_queue():
+				self.AddResearchToQueue(bc.UnitType.Worker)
+
 	def AddResearchToQueue(self, branch):
-		branchName = self.GetResearchBranchTurns(branch)
-		researchInfo = self.gameController.research_info(self.gameController)
-		level = researchInfo.get_level(researchInfo, branch)
-		print("Added [{}] research level [{}].".format(branchName,))
-		self.gameController.queue_research(	self.gameController, branch)
+		branchName = self.GetBranchName(branch)
+		researchInfo = self.gameController.research_info()
+		level = researchInfo.get_level(branch)
+		print("Added [{}] research level [{}].".format(branchName,level))
+		self.gameController.queue_research(branch)
 
 	def ClearResearchQueue(self):
 		print("Research queue cleared.")
-		self.gameController.reset_research(	self.gameController)
-	
+		self.gameController.reset_research()
+
 	def IsCurrentResearchNearCompletion(self):
 	# Returns a bool if the current number of rounds left for the current
 	# research is less than or equal to a percentage.
@@ -30,7 +38,7 @@ class ResearchTreeController:
 	    
 	    researchInfo = self.gameController.research_info(self.gameController)
 	    branch = researchInfo.queue.__getItem__(0)
-	    level = researchInfo.get_level(researchInfo, branch)
+	    level = researchInfo.get_level(branch)
 	    currentLevelTotalTurns = self.GetResearchBranchTurns(branch,level)
 	    if researchInfo.rounds_left(researchInfo) / currentLevelTotalTurns <= .25:
 		    return True

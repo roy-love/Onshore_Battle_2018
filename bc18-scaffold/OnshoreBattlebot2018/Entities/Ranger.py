@@ -7,8 +7,8 @@ from .IRobot import IRobot
 class Ranger(IRobot):
 	# change init definition to include any controllers needed in the instructor as we need them
 	# For example:  it will eventually need to access the Targeting and Pathfinding controllers
-	def __init__(self, gameController, robotId):
-		super(Ranger, self).__init__(gameController, robotId)
+	def __init__(self, gameController, unitController, pathfindingController, unit):
+		super().__init__(gameController, unitController, pathfindingController, unit)
 
 	def run(self):
 		pass
