@@ -23,10 +23,10 @@ while True:
         if gameController.planet() == Planets.Earth:
             print('Running Earth Turn')
             runEarth.Run()
-        else:	
+        else:
             print('Running Mars Turn')
 			#runMars.Run()
-		
+
     except Exception as e:
         print('Error:', e)
         traceback.print_exc()

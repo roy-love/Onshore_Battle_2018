@@ -73,7 +73,7 @@ def run_game(return_args):
     if not lock.acquire(blocking=False):
         return "Fail"
 
-    t1 = threading.Thread(target=start_game,args=(return_args,))
+    t1 = threading.Thread(target=start_game, args=(return_args, ))
     t1.start()
     return "success"
 
@@ -85,7 +85,7 @@ def get_maps():
         map_dir = '/battlecode/battlecode-maps'
 
     maps = [o for o in os.listdir(map_dir)
-                        if 'bc18map' in o]
+            if 'bc18map' in o]
 
     maps.append('testmap.bc18map')
     return maps

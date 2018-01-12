@@ -161,7 +161,7 @@ def get_map(map_name):
     except Exception as e:
         try:
             with open('/player/' + map_name) as f:
-               contents = f.read()
+                contents = f.read()
             print("Loading map " + map_name)
             return bc.GameMap.from_json(contents)
         except Exception as e:

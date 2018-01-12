@@ -99,4 +99,3 @@ def reap(process, timeout=3):
         process.kill()
     except:
         print("Killing failed; assuming process exited early.")
-

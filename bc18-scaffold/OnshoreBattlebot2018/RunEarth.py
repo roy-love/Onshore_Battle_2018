@@ -7,42 +7,41 @@ from Entities import *
 
 class RunEarth:
 
-	# Initialize controllers
-	# Initialize all class variables
-	# Only include code that should be initialized once at the beginning of the match
-	def __init__(self, gameController):
-		self.gameController = gameController
-		self.mapController = MapController(gameController)
-		self.enemyTrackingController = EnemyTrackingController(gameController)
-		self.strategyController = StrategyController(gameController, self.mapController, self.enemyTrackingController)
-		self.researchTreeController = ResearchTreeController(gameController, self.strategyController)
-		self.buildController = BuildController(gameController, self.mapController, self.strategyController)
-		self.pathfindingController = PathfindingController(gameController, self.mapController)
-		self.unitController = UnitController(gameController, self.strategyController, self.pathfindingController)
-		self.targettingController = TargettingController(gameController, self.mapController, self.strategyController)
-	  
-	 
-	# Runs once per turn for this planet only
-	def Run(self):
-		self.round = self.gameController.round()
-		if self.round == 1:
-			print("First round on Earth.  Initializing map")
-			self.mapController.InitializeEarthMap()
+    # Initialize controllers
+    # Initialize all class variables
+    # Only include code that should be initialized once at the beginning of the match
+    def __init__(self, gameController):
+        self.game_controller = gameController
+        self.map_controller = MapController(gameController)
+        self.enemy_tracking_controller = EnemyTrackingController(gameController)
+        self.strategy_controller = StrategyController(gameController, self.map_controller, self.enemy_tracking_controller)
+        self.research_tree_controller = ResearchTreeController(gameController, self.strategy_controller)
+        self.build_controller = BuildController(gameController, self.map_controller, self.strategy_controller)
+        self.pathfinding_controller = PathfindingController(gameController, self.map_controller)
+        self.unit_controller = UnitController(gameController, self.strategy_controller, self.pathfinding_controller)
+        self.targetting_controller = TargettingController(gameController, self.map_controller, self.strategy_controller)
 
-			print("Selecting default strategy")
-			self.strategyController.SetDefaultStrategy()
-		else:
-			print("Round {}".format(self.round))
-			print("Setting strategy for the turn")
-			self.strategyController.UpdateStrategy()
-		
-		print("Update research queue")
-		self.researchTreeController.UpdateQueue()
-		
-		print("Updating units.  Synching between game units and player entities.")
-		self.unitController.UpdateUnits()
+    # Runs once per turn for this planet only
+    def Run(self):
+        self.round = self.game_controller.round()
+        if self.round == 1:
+            print("First round on Earth.  Initializing map")
+            self.map_controller.InitializeEarthMap()
 
-		print("Updating missions")
-		self.unitController.UpdateMissions() 
-		print("Running all units")
-		self.unitController.RunUnits()
+            print("Selecting default strategy")
+            self.strategy_controller.SetDefaultStrategy()
+        else:
+            print("Round {}".format(self.round))
+            print("Setting strategy for the turn")
+            self.strategy_controller.UpdateStrategy()
+
+        print("Update research queue")
+        self.research_tree_controller.UpdateQueue()
+
+        print("Updating units.  Synching between game units and player entities.")
+        self.unit_controller.UpdateUnits()
+
+        print("Updating missions")
+        self.unit_controller.UpdateMissions()
+        print("Running all units")
+        self.unit_controller.RunUnits()

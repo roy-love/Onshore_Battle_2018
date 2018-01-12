@@ -7,4 +7,4 @@ import traceback
 # Messages must be as small and efficient as possible
 class CommunicationController:
       def __init__(self, gameController):
-            self.gameController = gameController
+            self.game_controller = gameController

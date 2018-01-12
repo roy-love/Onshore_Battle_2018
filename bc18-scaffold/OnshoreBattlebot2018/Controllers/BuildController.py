@@ -8,7 +8,7 @@ import traceback
 # Store in a build queue (thingToBuild, whereToBuild)
 # Workers access this class to determine what to build next
 class BuildController:
-	def __init__(self, gameController, mapController, strategyController):
-		self.gameController = gameController
-		self.mapController = mapController
-		self.strategyController = strategyController
+    def __init__(self, gameController, mapController, strategyController):
+        self.game_controller = gameController
+        self.map_controller = mapController
+        self.strategy_controller = strategyController
