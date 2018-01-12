@@ -3,6 +3,9 @@ import random
 import sys
 import traceback
 
+import os
+print(os.getcwd())
+
 print("pystarting")
 
 # A GameController is the main type that you talk to the game with.
@@ -68,10 +71,10 @@ while True:
             d = random.choice(directions)
 
             # or, try to build a factory:
-            #if gc.karbonite() > bc.UnitType.Factory.blueprint_cost() and gc.can_blueprint(unit.id, bc.UnitType.Factory, d):
-             #   gc.blueprint(unit.id, bc.UnitType.Factory, d)
+            if gc.karbonite() > bc.UnitType.Factory.blueprint_cost() and gc.can_blueprint(unit.id, bc.UnitType.Factory, d):
+                gc.blueprint(unit.id, bc.UnitType.Factory, d)
             # and if that fails, try to move
-            if gc.is_move_ready(unit.id) and gc.can_move(unit.id, d):
+            elif gc.is_move_ready(unit.id) and gc.can_move(unit.id, d):
                 gc.move_robot(unit.id, d)
 
     except Exception as e:
