@@ -6,15 +6,20 @@ import battlecode as bc
 from .StrategyController import *
 
 class Missions(enum):
-    Idle = 0
-    RandomMovement = 1
-    Mining = 2
-    FollowUnit = 3
-    Scout = 4
-    Patrol = 5
-    DestroyTarget = 6
-    DefendTarget = 7
+    Idle = 0 
+    RandomMovement = 1 # Assign location to move to
+    Mining = 2 # Assign location to mine
+    FollowUnit = 3 # Assign Unit to follow
+    Scout = 4 # Assign location to scout
+    Patrol = 5 # Assign two locations to partrol 
+    DestroyTarget = 6 # Assign unit to destroy
+    DefendTarget = 7 # Assign unit to defend
     
+class MissionTypes(enum):
+    Worker = 0
+    Healer = 1
+    Combat = 2
+
 # Controller that handles the creation and managment of missions
 class MissionController:
     def __init__(self, gameController, strategyController):
@@ -26,10 +31,10 @@ class MissionController:
         self.workerMissions = []
 
     # Adds a new mission created by outside source
-    def AddMission(self,unitType,mission):
-        if unitType == bc.UnitType.Worker:
+    def AddMission(self,missionType,missionInfo):
+        if missionType == MissionTypes.Worker.:
             self.workerMissions.append(mission)
-        elif unitType == bc.UnitType.Healer:
+        elif missionType == MissionTypes.Healer:
             self.healerMissions.append(mission)
         else:
             self.combatMissions.append(mission)
