@@ -5,7 +5,7 @@ import traceback
 
 
 class IRobot:
-	def __init__(self, gameController, unitController, pathfindingController, missionController, unit):
+	def __init__(self, gameController, unitController, pathfindingController, missionController, unit,unitType):
 		self.gameController = gameController
 		self.unitController = unitController
 		self.pathfindingController = pathfindingController
@@ -13,6 +13,7 @@ class IRobot:
 
 		#Reference to the BattleCode unit object that the server side code tracks
 		self.unit = unit
+		self.unitType = unitType
 
 		#Current mission dictates the robot's actions for the turn
 		self.mission = None
@@ -22,14 +23,18 @@ class IRobot:
 
 		#List of directions to reach the target location
 		self.path = None
+
+		#Round that the current mission started on.
+		self.missionStartRound = 0
 		
 	#Actions that will be run at the end of every robot's turn
 	def run(self):
 		pass
 
-	def __UpdateMission(self):
+	def UpdateMission(self):
 		if self.mission == None:
 			self.mission = self.missionController.GetMission(self.unit)
+			self.missionStartRound = self.gameController.round
 
 	#TODO Check that the next direction is still possible.  If not, recalculate
 	def UpdatePathToTarget(self):

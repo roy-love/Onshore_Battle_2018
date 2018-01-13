@@ -42,8 +42,6 @@ class RunEarth:
 		
 		print("Updating units.  Synching between game units and player entities.")
 		self.unitController.UpdateUnits()
-
-		print("Updating missions")
-		self.unitController.UpdateMissions() 
+ 
 		print("Running all units")
 		self.unitController.RunUnits()

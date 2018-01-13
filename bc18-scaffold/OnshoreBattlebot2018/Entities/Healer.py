@@ -1,17 +1,17 @@
 import random
 import sys
 import traceback
-
+import battlecode as bc
 from .IRobot import IRobot
 
 class Healer(IRobot):
 	# change init definition to include any controllers needed in the instructor as we need them
 	# For example:  it will eventually need to access the Targeting and Pathfinding controllers
 	def __init__(self, gameController, unitController, pathfindingController, missionController, unit):
-		super().__init__(gameController, unitController, pathfindingController, missionController, unit)
+		super().__init__(gameController, unitController, pathfindingController, missionController, unit,bc.UnitType.Healer)
 
 	def run(self):
-		self.__UpdateMission()
+		super(Healer,self).UpdateMission()
 
 		if self.mission == "Walk Randomly":
 			print("walking randomly")

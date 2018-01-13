@@ -69,7 +69,7 @@ class MissionController:
 
     def __CreateNewWorkerMission__(self):
         #Determine what mission to assign based on the current strategy
-        if self.strategyController.unitStrategy == self.strategyController.UnitStrategies.Default:
+        if self.strategyController.unitStrategy == UnitStrategies.Default:
             chance = random.randint(0,100)
             if chance > 50:    
                 return Missions.RandomMovement
@@ -80,7 +80,7 @@ class MissionController:
     
     def __CreateNewHealerMission__(self):
 
-        if self.strategyController.unitStrategy == self.strategyController.UnitStrategies.Default:
+        if self.strategyController.unitStrategy == UnitStrategies.Default:
             chance = random.randint(0,100)
             if chance > 50:
                 return Missions.FollowUnit
@@ -89,7 +89,7 @@ class MissionController:
     
     def __CreateNewCombatMission__(self):
 
-        if self.strategyController.unitStrategy == self.strategyController.UnitStrategies.Default:
+        if self.strategyController.unitStrategy == UnitStrategies.Default:
             chance = random.randint(0,100)
             if chance > 50:
                 return Missions.Scout
