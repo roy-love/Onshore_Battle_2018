@@ -3,8 +3,10 @@ import sys
 import traceback
 
 import battlecode as bc
+from enum import Enum
 from .StrategyController import *
 
+<<<<<<< HEAD
 class Missions(enum):
     Idle = 0 
     RandomMovement = 1 # Assign location to move to
@@ -14,6 +16,17 @@ class Missions(enum):
     Patrol = 5 # Assign two locations to partrol 
     DestroyTarget = 6 # Assign unit to destroy
     DefendTarget = 7 # Assign unit to defend
+=======
+class Missions(Enum):
+    Idle = 0
+    RandomMovement = 1
+    Mining = 2
+    FollowUnit = 3
+    Scout = 4
+    Patrol = 5
+    DestroyTarget = 6
+    DefendTarget = 7
+>>>>>>> d1ac0093a19a51271d2bdd545f6c6847711f47b6
     
 class MissionTypes(enum):
     Worker = 0
@@ -23,8 +36,8 @@ class MissionTypes(enum):
 # Controller that handles the creation and managment of missions
 class MissionController:
     def __init__(self, gameController, strategyController):
-	    self.gameController = gameController
-	    self.strategyController = strategyController
+        self.gameController = gameController
+        self.strategyController = strategyController
 
         self.combatMissions = []
         self.healerMissions = []
@@ -48,13 +61,13 @@ class MissionController:
             if len(self.workerMissions) > 0:
                 print("Worker mission assigned")
                 return self.workerMissions.pop(0)
-            else
-                return __CreateNewWorkerMission__(self)
+            else:
+                return self.__CreateNewWorkerMission__()
         elif unit.unit_type == bc.UnitType.Healer:
             if len(self.healerMissions) > 0:
                 print("Healer mission assigned")
-                __CreateNewHealerMission__(self)
-            else
+                self.__CreateNewHealerMission__()
+            else:
                 return self.healerMissions.pop(0)
         else:
             if len(self.combatMissions) > 0:
@@ -63,11 +76,11 @@ class MissionController:
 
     def __CreateNewWorkerMission__(self):
         #Determine what mission to assign based on the current strategy
-        if self.strategyController.unitStrategy == self.strategyController.UnitStrategies.Default
+        if self.strategyController.unitStrategy == self.strategyController.UnitStrategies.Default:
             chance = random.randint(0,100)
-		    if chance > 50:    
+            if chance > 50:    
                 return Missions.RandomMovement
-            elif change > 25:
+            elif chance > 25:
                 return Missions.Mining
             else:
                 return Missions.Idle
