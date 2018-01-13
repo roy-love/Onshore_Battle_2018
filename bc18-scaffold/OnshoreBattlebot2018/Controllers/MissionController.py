@@ -44,17 +44,17 @@ class MissionController:
             self.combatMissions.append(missionType)
 
     #Pops the highest priority mission for the given unit off the queue and returns it
-    def GetMission(self,unit):
+    def GetMission(self,unitType):
         # Return a mission based on the type of unit
         # The mission will be based on the current strategy
         
-        if unit.unit_type == bc.UnitType.Worker:
+        if unitType == bc.UnitType.Worker:
             if len(self.workerMissions) > 0:
                 print("Worker mission assigned")
                 return self.workerMissions.pop(0)
             else:
                 return self.__CreateNewWorkerMission__()
-        elif unit.unit_type == bc.UnitType.Healer:
+        elif unitType == bc.UnitType.Healer:
             if len(self.healerMissions) > 0:
                 print("Healer mission assigned")
                 self.__CreateNewHealerMission__()
