@@ -22,11 +22,21 @@ class UnitController:
 	
 	# Removes robots and structures that are not found on the map any longer
 	def __DeleteKilledUnits(self):
-		pass
+		print("Checking for dead robots that should be removed from list")
+		if len(self.robots) == 0:
+			print("Robot list empty.  Nothing to remove")
+			return
+
+		# Robots that still exist are re-added to the robot list
+		# Any not in the list are removed then picked up by garbage collection later
+		print("Current robots registered = {}".format(len(self.robots)))
+		print("Robots alive = {}".format(len(self.gameController.my_units())))
+		self.robots = [robot for robot in self.robots if any(unit.id == robot.unit.id for unit in self.gameController.my_units())]
+		print("Current robots registered after removal = {}".format(len(self.robots)))
 
 	# Creates robots and structures for all units that do not yet have them
 	# Can occur when moving robots between planets or for the default starting worker
-	# TODO need a more efficient way to check unit existence.  This is brute force
+	# if a robot exists, update its unit binding to account for server side changes
 	def __AddUnregisteredUnits(self):
 		friendlyUnits = self.gameController.my_units()
 		if len(friendlyUnits) == 0:
@@ -56,11 +66,24 @@ class UnitController:
 					else:
 						self.__RegisterUnit(unit)
 
-	#TODO expand to use all unit types.
-	# put rockets and factories into structures
 	def __RegisterUnit(self, unit):
-		if unit.unit_type == bc.UnitType.Worker:
+		if unit.unit_type == bc.UnitType.Healer:
+			self.robots.append(Healer(self.gameController, self, self.pathfindingController, self.missionController, unit))
+		elif unit.unit_type == bc.UnitType.Knight:
+			self.robots.append(Knight(self.gameController, self, self.pathfindingController, self.missionController, unit))
+		elif unit.unit_type == bc.UnitType.Mage:
+			self.robots.append(Mage(self.gameController, self, self.pathfindingController, self.missionController, unit))
+		elif unit.unit_type == bc.UnitType.Ranger:
+			self.robots.append(Ranger(self.gameController, self, self.pathfindingController, self.missionController, unit))
+		elif unit.unit_type == bc.UnitType.Worker:
 			self.robots.append(Worker(self.gameController, self, self.pathfindingController, self.missionController, unit))
+		
+		elif unit.unit_type == bc.UnitType.Factory:
+			self.structures.append(Factory(self.gameController, self, unit))
+		elif unit.unit_type == bc.UnitType.Rocket:
+			self.structures.append(Rocket(self.gameController, self, unit))
+		else:
+			print("ERROR - Attempting to register an unknown unit type [{}]".format(unit.unit_type))
 	
 	# Add prioritization of turn order
 	def RunUnits(self):
