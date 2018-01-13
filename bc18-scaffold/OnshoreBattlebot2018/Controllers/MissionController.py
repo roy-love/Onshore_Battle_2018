@@ -72,11 +72,11 @@ class MissionController:
         if self.strategyController.unitStrategy == UnitStrategies.Default:
             chance = random.randint(0,100)
             if chance > 50:    
-                return Missions.RandomMovement
+                return Missions.BuildFactory
             elif chance > 25:
-                return Missions.Mining
+                return Missions.BuildFactory
             else:
-                return Missions.Idle
+                return Missions.BuildFactory
     
     def __CreateNewHealerMission__(self):
 

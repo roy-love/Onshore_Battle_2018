@@ -40,6 +40,17 @@ class Worker(IRobot):
 			#TODO Determine what to do when mining
 			pass
 
+		if self.mission == Missions.BuildFactory:
+			# TODO Upgrade logic with better pathfinding
+			if self.path == None or len(self.path == 0):
+				print("Build location path is null. Making a new one.")
+				self.targetLocation = self.mission.location.clone()
+			self.FollowPath()
+			if self.mission == None:
+				
+				self.tryBlueprint(UnitType.Factory,bc.Direction.Left)
+			
+
 		return super(Worker, self).run()
 
 	def tryBlueprint(self, unitType, direction):
@@ -52,6 +63,7 @@ class Worker(IRobot):
 			return False
 
 		self.gameController.blueprint(self.unit.id, unitType, direction)
+		self.missionController.AddMission(Missions.BuildFactory)
 		return True
 
 	def tryBuild(self, blueprintId):
