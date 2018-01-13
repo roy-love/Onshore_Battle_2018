@@ -20,7 +20,9 @@ class Knight(IRobot):
 		if self.mission == "Walk Randomly":
 			print("walking randomly")
 			#TODO rework this section to include pathfinding as well as path traversal.
-				
+		if self.mission == "DestroyTarget"
+			print("DestroyTarget")
+			#TODO implement move and destroy	
 
 	def __GetMission(self):
 		if self.mission == None:

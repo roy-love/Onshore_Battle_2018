@@ -72,8 +72,8 @@ class UnitController:
 			self.missions.append("Walk Randomly")
 
 	#Allows other robots or controllers to add missions to the list
-	def AddMission(self):
-		pass
+	def AddMission(self,mission):
+		self.missions.append(mission)
 
 	#Pops the highest priority mission for the given unit off the queue and returns it
 	def GetMission(self, unitType):
