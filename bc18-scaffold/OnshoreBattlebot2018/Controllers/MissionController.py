@@ -6,7 +6,7 @@ import battlecode as bc
 from enum import Enum
 from .StrategyController import *
 
-<<<<<<< HEAD
+
 class Missions(enum):
     Idle = 0 
     RandomMovement = 1 # Assign location to move to
@@ -16,17 +16,6 @@ class Missions(enum):
     Patrol = 5 # Assign two locations to partrol 
     DestroyTarget = 6 # Assign unit to destroy
     DefendTarget = 7 # Assign unit to defend
-=======
-class Missions(Enum):
-    Idle = 0
-    RandomMovement = 1
-    Mining = 2
-    FollowUnit = 3
-    Scout = 4
-    Patrol = 5
-    DestroyTarget = 6
-    DefendTarget = 7
->>>>>>> d1ac0093a19a51271d2bdd545f6c6847711f47b6
     
 class MissionTypes(enum):
     Worker = 0
