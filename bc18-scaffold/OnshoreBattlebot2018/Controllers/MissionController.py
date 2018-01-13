@@ -7,7 +7,7 @@ from enum import Enum
 from .StrategyController import *
 
 
-class Missions(enum):
+class Missions(Enum):
     Idle = 0 
     RandomMovement = 1 # Assign location to move to
     Mining = 2 # Assign location to mine
@@ -17,7 +17,7 @@ class Missions(enum):
     DestroyTarget = 6 # Assign unit to destroy
     DefendTarget = 7 # Assign unit to defend
     
-class MissionTypes(enum):
+class MissionTypes(Enum):
     Worker = 0
     Healer = 1
     Combat = 2
@@ -34,12 +34,13 @@ class MissionController:
 
     # Adds a new mission created by outside source
     def AddMission(self,missionType,missionInfo):
-        if missionType == MissionTypes.Worker.:
-            self.workerMissions.append(mission)
+        missionType.missionInfo = missionInfo
+        if missionType == MissionTypes.Worker:
+            self.workerMissions.append(missionType)
         elif missionType == MissionTypes.Healer:
-            self.healerMissions.append(mission)
+            self.healerMissions.append(missionType)
         else:
-            self.combatMissions.append(mission)
+            self.combatMissions.append(missionType)
 
     #Pops the highest priority mission for the given unit off the queue and returns it
     def GetMission(self,unit):

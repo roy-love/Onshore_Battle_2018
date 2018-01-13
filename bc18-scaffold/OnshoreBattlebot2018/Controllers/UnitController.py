@@ -15,7 +15,6 @@ class UnitController:
 
 		self.robots = []
 		self.structures = []
-		self.missions = []
 	
 	def UpdateUnits(self):
 		self.__DeleteKilledUnits()
@@ -62,25 +61,6 @@ class UnitController:
 	def __RegisterUnit(self, unit):
 		if unit.unit_type == bc.UnitType.Worker:
 			self.robots.append(Worker(self.gameController, self, self.pathfindingController, self.missionController, unit))
-			
-	#TODO figure out format of missions
-	# must contain information on what the mission type is (enum)
-	# which entities can pick up said mission
-	# any information relevant to the mission.  Target Unit or location?
-	def UpdateMissions(self):
-		if len(self.missions) == 0:
-			print("Adding 'walk randomly' to the mission queue")
-			self.missions.append("Walk Randomly")
-
-	#Allows other robots or controllers to add missions to the list
-	def AddMission(self,mission):
-		self.missions.append(mission)
-
-	#Pops the highest priority mission for the given unit off the queue and returns it
-	def GetMission(self, unitType):
-		if len(self.missions) > 0:
-			print("Returning first mission to the worker")
-			return self.missions.pop(0)
 	
 	# Add prioritization of turn order
 	def RunUnits(self):

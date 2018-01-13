@@ -18,7 +18,8 @@ class RunEarth:
 		self.researchTreeController = ResearchTreeController(gameController, self.strategyController)
 		self.buildController = BuildController(gameController, self.mapController, self.strategyController)
 		self.pathfindingController = PathfindingController(gameController, self.mapController)
-		self.unitController = UnitController(gameController, self.strategyController, self.pathfindingController)
+		self.missionController = MissionController(gameController,self.strategyController)
+		self.unitController = UnitController(gameController, self.strategyController, self.pathfindingController, self.missionController)
 		self.targettingController = TargettingController(gameController, self.mapController, self.strategyController)
 	  
 	 
