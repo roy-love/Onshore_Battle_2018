@@ -62,6 +62,8 @@ class MissionController:
             if len(self.combatMissions) > 0:
                 print("Combat mission assigned")
                 return self.combatMissions.pop(0)
+            else: 
+                return __CreateNewCombatMission__(self)
 
     def __CreateNewWorkerMission__(self):
         #Determine what mission to assign based on the current strategy
