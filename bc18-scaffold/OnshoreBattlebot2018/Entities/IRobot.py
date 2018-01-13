@@ -34,7 +34,7 @@ class IRobot:
 	def UpdateMission(self):
 		if self.mission == None:
 			self.mission = self.missionController.GetMission(self.unit)
-			self.missionStartRound = self.gameController.round
+			self.missionStartRound = self.gameController.round()
 
 	#TODO Check that the next direction is still possible.  If not, recalculate
 	def UpdatePathToTarget(self):
