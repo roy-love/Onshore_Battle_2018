@@ -307,6 +307,7 @@ public class bcJNI {
   public final static native void GameMap_orbit_set(long jarg1, GameMap jarg1_, long jarg2, OrbitPattern jarg2_);
   public final static native long GameMap_orbit_get(long jarg1, GameMap jarg1_);
   public final static native long bcGameMapTestMap();
+  public final static native long bcGameMapParseTextMap(String jarg1);
   public final static native long bcGameMapFromJson(String jarg1);
   public final static native long maxLevel(int jarg1);
   public final static native long costOf(int jarg1, long jarg2);
@@ -421,5 +422,7 @@ public class bcJNI {
   public final static native boolean GameController_isOver(long jarg1, GameController jarg1_);
   public final static native int GameController_winningTeam(long jarg1, GameController jarg1_);
   public final static native String GameController_managerViewerMessage(long jarg1, GameController jarg1_);
+  public final static native void GameController_printGameAnsi(long jarg1, GameController jarg1_);
+  public final static native long GameController_managerKarbonite(long jarg1, GameController jarg1_, int jarg2);
   public final static native long bcGameControllerNewManager(long jarg1, GameMap jarg1_);
 }

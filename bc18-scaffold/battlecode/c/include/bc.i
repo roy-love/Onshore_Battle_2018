@@ -738,6 +738,9 @@ typedef struct bc_GameMap {} bc_GameMap;
 %newobject bc_GameMap_test_map;
 bc_GameMap* bc_GameMap_test_map();
 
+%newobject bc_GameMap_parse_text_map;
+bc_GameMap* bc_GameMap_parse_text_map(char* map);
+
 %newobject bc_GameMap_from_json;
 bc_GameMap* bc_GameMap_from_json(char* s);
 
@@ -980,6 +983,10 @@ typedef struct bc_GameController {} bc_GameController;
     bc_Team winning_team();
     %newobject bc_GameController_manager_viewer_message;
     char* manager_viewer_message();
+    %newobject bc_GameController_print_game_ansi;
+    void print_game_ansi();
+    %newobject bc_GameController_manager_karbonite;
+    uint32_t manager_karbonite(bc_Team team);
 }
 %newobject bc_GameController_new_manager;
 bc_GameController* bc_GameController_new_manager(bc_GameMap* map);

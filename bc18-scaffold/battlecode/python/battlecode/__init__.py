@@ -3711,6 +3711,23 @@ class GameMap(object):
         result = _result
         return result
 
+    @staticmethod
+    def parse_text_map(map):
+        # type: (str) -> GameMap
+        '''parse a .bc18t map file
+        :type map: str
+        :rtype: GameMap
+        '''
+        assert type(map) is str, "incorrect type of arg map: should be str, is {}".format(type(map))
+
+        result = _lib.bc_GameMap_parse_text_map(_ffi.new("char[]", map.encode()))
+        _check_errors()
+        _result = GameMap.__new__(GameMap)
+        if result != _ffi.NULL:
+            _result._ptr = result
+        result = _result
+        return result
+
     def clone(self):
         # type: () -> GameMap
         '''Deep-copy a GameMap
@@ -5614,6 +5631,30 @@ class GameController(object):
         _result = _ffi.string(result)
         _lib.bc_free_string(result)
         result = _result.decode()
+        return result
+
+    def print_game_ansi(self):
+        # type: () -> None
+        '''
+        :type self: GameController
+        :rtype: None
+        '''
+
+        result = _lib.bc_GameController_print_game_ansi(self._ptr)
+        _check_errors()
+        return result
+
+    def manager_karbonite(self, team):
+        # type: (Team) -> int
+        '''
+        :type self: GameController
+        :type team: Team
+        :rtype: int
+        '''
+        assert type(team) is Team, "incorrect type of arg team: should be Team, is {}".format(type(team))
+
+        result = _lib.bc_GameController_manager_karbonite(self._ptr, team)
+        _check_errors()
         return result
 
 

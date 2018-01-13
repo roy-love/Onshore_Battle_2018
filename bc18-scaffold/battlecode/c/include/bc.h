@@ -733,6 +733,8 @@ void bc_GameMap_orbit_set(bc_GameMap* this, bc_OrbitPattern* orbit);
 void bc_GameMap_validate(bc_GameMap* this);
 /// 
 bc_GameMap* bc_GameMap_test_map();
+/// parse a .bc18t map file
+bc_GameMap* bc_GameMap_parse_text_map(char* map);
 /// Deep-copy a GameMap
 bc_GameMap* bc_GameMap_clone(bc_GameMap* this);
 /// Deserialize a GameMap from a JSON string
@@ -1145,6 +1147,10 @@ uint8_t bc_GameController_is_over(bc_GameController* this);
 bc_Team bc_GameController_winning_team(bc_GameController* this);
 /// 
 char* bc_GameController_manager_viewer_message(bc_GameController* this);
+/// 
+void bc_GameController_print_game_ansi(bc_GameController* this);
+/// 
+uint32_t bc_GameController_manager_karbonite(bc_GameController* this, bc_Team team);
 #ifdef __cplusplus
 }
 #endif
