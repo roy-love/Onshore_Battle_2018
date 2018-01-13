@@ -3,6 +3,7 @@ import random
 import sys
 import traceback
 
+
 class IRobot:
 	def __init__(self, gameController, unitController, pathfindingController, missionController, unit):
 		self.gameController = gameController

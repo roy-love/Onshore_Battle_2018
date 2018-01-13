@@ -16,6 +16,7 @@ class Missions(Enum):
     Patrol = 5 # Assign two locations to partrol 
     DestroyTarget = 6 # Assign unit to destroy
     DefendTarget = 7 # Assign unit to defend
+    BuildFactory = 8 # Assign location to build a factory
     
 class MissionTypes(Enum):
     Worker = 0
@@ -64,7 +65,7 @@ class MissionController:
                 print("Combat mission assigned")
                 return self.combatMissions.pop(0)
             else: 
-                return __CreateNewCombatMission__(self)
+                return self.__CreateNewCombatMission__()
 
     def __CreateNewWorkerMission__(self):
         #Determine what mission to assign based on the current strategy
