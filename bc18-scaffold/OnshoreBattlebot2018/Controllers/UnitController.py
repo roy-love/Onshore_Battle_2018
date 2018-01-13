@@ -7,10 +7,11 @@ from Entities import *
 # Can prioritize robots by importance or any other activation order
 # Responsible for putting robots back into the queue if a healer resets their cooldowns
 class UnitController:
-	def __init__(self, gameController, strategyController, pathfindingController):
+	def __init__(self, gameController, strategyController, pathfindingController, missionController):
 		self.gameController = gameController
 		self.strategyController = strategyController
 		self.pathfindingController = pathfindingController
+		self.missionController = missionController
 
 		self.robots = []
 		self.structures = []
@@ -60,7 +61,7 @@ class UnitController:
 	# put rockets and factories into structures
 	def __RegisterUnit(self, unit):
 		if unit.unit_type == bc.UnitType.Worker:
-			self.robots.append(Worker(self.gameController, self, self.pathfindingController, unit))
+			self.robots.append(Worker(self.gameController, self, self.pathfindingController, self.missionController, unit))
 			
 	#TODO figure out format of missions
 	# must contain information on what the mission type is (enum)

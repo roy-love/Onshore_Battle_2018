@@ -4,25 +4,48 @@ import sys
 import traceback
 
 class IRobot:
-	def __init__(self, gameController, unitController, pathfindingController, unit):
+	def __init__(self, gameController, unitController, pathfindingController, missionController, unit):
 		self.gameController = gameController
 		self.unitController = unitController
 		self.pathfindingController = pathfindingController
-		self.unit = unit
-		
-	def run(self):
-		# Actions that the default robot should perform each turn
-		# Change method to accept whatever options are needed from other controllers to make its decisions
-		print("Do robot things")
-		
-		direction = bc.Direction(random.randint(0,8))
-		print("Moving randomly in direction {}".format(direction))
-		self.tryMove(direction)
+		self.missionController = missionController
 
-		chance = random.randint(0,100)
-		if chance == 0:
-			print("Randomly self destructing    1% chance")
-			self.selfDestruct()
+		#Reference to the BattleCode unit object that the server side code tracks
+		self.unit = unit
+
+		#Current mission dictates the robot's actions for the turn
+		self.mission = None
+
+		#Location that the robot will move to, regardless of what the mission type is
+		self.targetLocation = None
+
+		#List of directions to reach the target location
+		self.path = None
+		
+	#Actions that will be run at the end of every robot's turn
+	def run(self):
+		pass
+
+	def __UpdateMission(self):
+		if self.mission == None:
+			self.mission = self.missionController.GetMission(self.unit)
+
+	#TODO Check that the next direction is still possible.  If not, recalculate
+	def UpdatePathToTarget(self):
+		if self.targetLocation is not None and (self.path is None or len(self.path) == 0):
+			print("Creating new path from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
+			self.path = self.pathfindingController.FindPathTo(self.unit.location.map_location(), self.targetLocation)
+		
+
+	def FollowPath(self):
+			if len(self.path) > 0:
+				direction = self.path[-1]
+				print("Walking in direction {}".format(direction))
+				if self.tryMove(direction):
+					self.path.pop()
+			else:
+				print("destination reached")
+				self.mission = None
 
 			
 	def tryMove(self, direction) :
