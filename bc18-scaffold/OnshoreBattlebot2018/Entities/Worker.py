@@ -22,12 +22,12 @@ class Worker(IRobot):
 		if self.mission.action == Missions.Idle:
 			print("worker idle!")
 			if  self.gameController.round >= self.missionStartRound + 10:
-				self.mission = None
+				self.ResetMission()
 
-		if self.mission.action == Missions.RandomMovement:
+		elif self.mission.action == Missions.RandomMovement:
 			print("walking randomly")
-			if self.targetLocation == None:
-				if self.path == None or len(self.path) == 0:
+			if self.targetLocation is None:
+				if self.path is None or len(self.path) == 0:
 					print("Path is null.  Making a new one")
 					self.targetLocation = self.unit.location.map_location().clone()
 					x = random.randint(-3,3)
@@ -40,14 +40,14 @@ class Worker(IRobot):
 			
 			self.FollowPath()
 			if self.HasReachedDestination():
-				self.mission = None
+				ResetMission()
 		
 
-		if self.mission.action == Missions.Mining:
-			print("Worker with id {} attempting to mine.".format(self.unit.id))
+		elif self.mission.action == Missions.Mining:
+			
 			#TODO Determine what to do when mining
-			if self.targetLocation == None:
-				if self.path == None or len(self.path) == 0:
+			if not self.performSecondAction and self.targetLocation is None:
+				if self.path is None or len(self.path) == 0:
 					print("Path is null.  Making a new one")
 					self.targetLocation = self.mission.info.clone()
 
@@ -56,33 +56,38 @@ class Worker(IRobot):
 			
 			if self.HasReachedDestination():
 				# harvest at the current map location: 0 = Center
-				self.tryHarvest(0)
+				self.tryHarvest(bc.Direction.Center)
+				self.ResetMission()
 			else:
 				self.FollowPath()
 
-		if self.mission.action == Missions.CreateBlueprint:
+		elif self.mission.action == Missions.CreateBlueprint:
 			# TODO Upgrade logic with better pathfinding
-			if self.targetLocation == None:
+			if not self.performSecondAction and self.targetLocation is None:
 				if self.path == None or len(self.path == 0):
 					print("Build location path is null. Making a new one.")
 					self.targetLocation = self.mission.info.clone()
 
 			if self.HasReachedDestination():
 				self.tryBlueprint(UnitType.Factory,bc.Direction.Left)
+				self.ResetMission()
 			else:
 				self.FollowPath()
 
-		if self.mission.action == Missions.BuildFactory:
-			if self.targetLocation == None:
-				if self.path == None or len(self.path == 0):
+		elif self.mission.action == Missions.BuildFactory:
+			if not self.performSecondAction and self.targetLocation is None:
+				if self.path is None or len(self.path == 0):
 					print("Build location path is null. Making a new one.")
 					self.targetLocation = self.mission.info.clone()
 			
 			if self.HasReachedDestination():
 				self.tryBuild(mission.info.blueprintId)
+				self.ResetMission()
 		print("Worker with id {} method run FINISHED.".format(self.unit.id)) 
 		
-
+	def ResetMission(self):
+		self.performSecondAction = False
+		self.mission = None
 
 	def tryBlueprint(self, unitType, direction):
 		if self.unit.worker_has_acted():

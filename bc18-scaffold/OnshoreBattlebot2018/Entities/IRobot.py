@@ -27,6 +27,9 @@ class IRobot:
 		#Round that the current mission started on.
 		self.missionStartRound = 0
 
+		#To allow for Missions that have a secondary action
+		self.performSecondAction = False
+
 		
 	#Actions that will be run at the end of every robot's turn
 	def run(self):
@@ -58,14 +61,18 @@ class IRobot:
 				
 
 	def HasReachedDestination(self):
-		if self.unit.location.map_location.x == self.targetLocation.x and \
-			self.unit.location.map_location.y == self.targetLocation.y:
-			self.targetLocation = None
-			print("Robot with id {} has reached it's destination.".format(self.unit.id))
+		if self.targetLocation is None:
 			return True
 		else:
-			print("Robot with id {} still moving to destination.".format(self.unit.id))
-			return False
+			if self.unit.location.map_location().x == self.targetLocation.x and \
+				self.unit.location.map_location().y == self.targetLocation.y:
+				self.targetLocation = None
+				self.performSecondAction = True
+				print("Robot with id {} has reached it's destination.".format(self.unit.id))
+				return True
+			else:
+				print("Robot with id {} still moving to destination.".format(self.unit.id))
+				return False
 
 			
 	def tryMove(self, direction):
