@@ -36,6 +36,8 @@ class IRobot:
 		if self.mission == None:
 			self.mission = self.missionController.GetMission(self.unitType)
 			self.missionStartRound = self.gameController.round()
+			self.targetLocation = None
+			print("Robot with id {} obtaining new mission {}".format(self.unit.id,self.mission.action))
 
 	#TODO Check that the next direction is still possible.  If not, recalculate
 	def UpdatePathToTarget(self):
@@ -59,8 +61,10 @@ class IRobot:
 		if self.unit.location.map_location.x == self.targetLocation.x and \
 			self.unit.location.map_location.y == self.targetLocation.y:
 			self.targetLocation = None
+			print("Robot with id {} has reached it's destination.".format(self.unit.id))
 			return True
 		else:
+			print("Robot with id {} still moving to destination.".format(self.unit.id))
 			return False
 
 			

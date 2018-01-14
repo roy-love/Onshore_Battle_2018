@@ -16,14 +16,15 @@ class Worker(IRobot):
 
 	#overrides IRobot run method
 	def run(self):
-		super(Worker,self).UpdateMission()
+		print("Worker bot with id {} run() called.".format(self.unit.id))
+		self.UpdateMission()
 		
-		if self.mission == Missions.Idle:
+		if self.mission.action == Missions.Idle:
 			print("worker idle!")
 			if  self.gameController.round >= self.missionStartRound + 10:
 				self.mission = None
 
-		if self.mission == Missions.RandomMovement:
+		if self.mission.action == Missions.RandomMovement:
 			print("walking randomly")
 			if self.targetLocation == None:
 				if self.path == None or len(self.path) == 0:
@@ -42,12 +43,13 @@ class Worker(IRobot):
 				self.mission = None
 		
 
-		if self.mission == Missions.Mining:
+		if self.mission.action == Missions.Mining:
+			print("Worker with id {} attempting to mine.".format(self.unit.id))
 			#TODO Determine what to do when mining
 			if self.targetLocation == None:
 				if self.path == None or len(self.path) == 0:
 					print("Path is null.  Making a new one")
-					self.targetLocation = self.mission.missionInfo
+					self.targetLocation = self.mission.info.clone()
 
 					print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
 					self.UpdatePathToTarget()
@@ -58,7 +60,7 @@ class Worker(IRobot):
 			else:
 				self.FollowPath()
 
-		if self.mission == Missions.CreateBlueprint:
+		if self.mission.action == Missions.CreateBlueprint:
 			# TODO Upgrade logic with better pathfinding
 			if self.targetLocation == None:
 				if self.path == None or len(self.path == 0):
@@ -70,16 +72,16 @@ class Worker(IRobot):
 			else:
 				self.FollowPath()
 
-		if self.mission == Missions.BuildFactory:
+		if self.mission.action == Missions.BuildFactory:
 			if self.targetLocation == None:
 				if self.path == None or len(self.path == 0):
 					print("Build location path is null. Making a new one.")
-					self.targetLocation = self.mission.info.location.clone()
+					self.targetLocation = self.mission.info.clone()
 			
 			if self.HasReachedDestination():
 				self.tryBuild(mission.info.blueprintId)
-
-		return super(Worker, self).run()
+		print("Worker with id {} method run FINISHED.".format(self.unit.id)) 
+		
 
 
 	def tryBlueprint(self, unitType, direction):
