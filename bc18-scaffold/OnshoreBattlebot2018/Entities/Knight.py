@@ -26,7 +26,7 @@ class Knight(IRobot):
 				self.Idle()
 			
 			elif self.mission.action == Missions.RandomMovement:
-				self.RandomMovement()
+				self.OneRandomMovement()
 
 			elif self.mission.action == Missions.DestoryTarget:
 				self.DestroyTarget()

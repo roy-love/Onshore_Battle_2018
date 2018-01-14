@@ -23,7 +23,7 @@ class Worker(IRobot):
 			self.Idle()
 
 		elif self.mission.action == Missions.RandomMovement:
-			self.RandomMovement()
+			self.OneRandomMovement()
 		
 
 		elif self.mission.action == Missions.Mining:
@@ -46,20 +46,22 @@ class Worker(IRobot):
 
 		elif self.mission.action == Missions.CreateBlueprint:
 			# TODO Upgrade logic with better pathfinding
-			if not self.performSecondAction and self.targetLocation is None:
-				if self.path == None or len(self.path) == 0:
+			#if not self.performSecondAction and self.targetLocation is None:
+			#	if self.path == None or len(self.path) == 0:
 					#print("Build location path is null. Making a new one.")
-					self.targetLocation = self.mission.info
+			#		self.targetLocation = self.mission.info
 
 					#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
-					self.UpdatePathToTarget()
+			#		self.UpdatePathToTarget()
 
-			if self.HasReachedDestination():
-				
-				self.tryBlueprint(bc.UnitType.Factory,bc.Direction.North)
+			#if self.HasReachedDestination():
+				self.OneRandomMovement()
+				direction = random.choice(list(bc.Direction))
+				if self.tryBlueprint(bc.UnitType.Factory,direction):
+					print("Worker {} created blueprint for Factory.".format(self.unit.id))
 				self.ResetMission()
-			else:
-				self.FollowPath()
+			#else:
+			#	self.FollowPath()
 
 		elif self.mission.action == Missions.BuildFactory:
 			if not self.performSecondAction and self.targetLocation is None:

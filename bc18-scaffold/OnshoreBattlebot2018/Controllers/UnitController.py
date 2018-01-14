@@ -88,13 +88,17 @@ class UnitController:
 	# Add prioritization of turn order
 	def RunUnits(self):
 
+		robotCount = len(self.robots)
+		structureCount = len(self.structures)
+		gcCount = len(self.gameController.my_units())
+		print("GC.Units {}, UC.Robots+Structures {}".format(gcCount,robotCount+structureCount))
 		print("Running all structures")
-		print("structures count: {}".format(len(self.structures)))
+		print("structures count: {}".format(structureCount))
 		for structure in self.structures:
 			structure.run()
-			
+
 		print("Running all robots")
-		print("robot count: {}".format(len(self.robots)))
+		print("robot count: {}".format(robotCount))
 		for robot in self.robots:
 			robot.run()
 		

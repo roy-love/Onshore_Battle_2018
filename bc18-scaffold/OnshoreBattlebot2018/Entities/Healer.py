@@ -19,7 +19,7 @@ class Healer(IRobot):
 				self.Idle()
 			
 			elif self.mission.action == Missions.RandomMovement:
-				self.RandomMovement()
+				self.OneRandomMovement()
 
 			elif self.mission.action == Missions.HealTarget:
 				if not self.performSecondAction and self.targetLocation is None:

@@ -54,6 +54,7 @@ class IRobot:
 		
 
 	def FollowPath(self):
+		if not self.path is None:
 			if len(self.path) > 0:
 				direction = self.path[-1]
 				print("Walking in direction {}".format(direction))
@@ -66,6 +67,7 @@ class IRobot:
 
 	def HasReachedDestination(self):
 		if self.targetLocation is None:
+			print ("Robot {} targetLocation is None.".format(self.unit.id))
 			return True
 		else:
 			if self.unit.location.map_location().x == self.targetLocation.x and \
@@ -110,6 +112,13 @@ class IRobot:
 		if  self.gameController.round >= self.missionStartRound + 10:
 			self.ResetMission()
 	
+	def OneRandomMovement(self):
+		#print("Robot [{}] moved randomly.".format(self.unit.id))
+		direction = random.choice(list(bc.Direction))
+		if self.gameController.is_move_ready(self.unit.id) and self.gameController.can_move(self.unit.id, direction):
+			self.gameController.move_robot(self.unit.id, direction)
+		self.map_location = None
+
 	def RandomMovement(self):
 		print("bot walking randomly")
 		if self.targetLocation is None:
