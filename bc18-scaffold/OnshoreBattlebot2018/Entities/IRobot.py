@@ -42,6 +42,10 @@ class IRobot:
 			self.targetLocation = None
 			print("Robot with id {} obtaining new mission {}".format(self.unit.id,self.mission.action))
 
+	def ResetMission(self):
+		self.performSecondAction = False
+		self.mission = None
+
 	#TODO Check that the next direction is still possible.  If not, recalculate
 	def UpdatePathToTarget(self):
 		if self.targetLocation is not None and (self.path is None or len(self.path) == 0):

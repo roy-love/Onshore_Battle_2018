@@ -79,7 +79,7 @@ class UnitController:
 			self.robots.append(Worker(self.gameController, self, self.pathfindingController, self.missionController, unit))
 		
 		elif unit.unit_type == bc.UnitType.Factory:
-			self.structures.append(Factory(self.gameController, self, unit))
+			self.structures.append(Factory(self.gameController, self, unit, self.missionController))
 		elif unit.unit_type == bc.UnitType.Rocket:
 			self.structures.append(Rocket(self.gameController, self, unit))
 		else:
