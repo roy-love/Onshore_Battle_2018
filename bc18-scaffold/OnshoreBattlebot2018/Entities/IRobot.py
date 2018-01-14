@@ -26,6 +26,7 @@ class IRobot:
 
 		#Round that the current mission started on.
 		self.missionStartRound = 0
+
 		
 	#Actions that will be run at the end of every robot's turn
 	def run(self):
@@ -33,8 +34,8 @@ class IRobot:
 
 	def UpdateMission(self):
 		if self.mission == None:
-			self.mission = self.missionController.GetMission(self.unit)
-			self.missionStartRound = self.gameController.round
+			self.mission = self.missionController.GetMission(self.unitType)
+			self.missionStartRound = self.gameController.round()
 
 	#TODO Check that the next direction is still possible.  If not, recalculate
 	def UpdatePathToTarget(self):
@@ -51,10 +52,19 @@ class IRobot:
 					self.path.pop()
 			else:
 				print("destination reached")
-				self.mission = None
+				
+				
+
+	def HasReachedDestination(self):
+		if self.unit.location.map_location.x == self.targetLocation.x and \
+			self.unit.location.map_location.y == self.targetLocation.y:
+			self.targetLocation = None
+			return True
+		else:
+			return False
 
 			
-	def tryMove(self, direction) :
+	def tryMove(self, direction):
 		if not self.gameController.is_move_ready(self.unit.id):
 			print("Move for Robot [{}] is not ready".format(self.unit.id))
 			return False
