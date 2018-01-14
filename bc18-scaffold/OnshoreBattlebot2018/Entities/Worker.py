@@ -2,7 +2,7 @@ import random
 import sys
 import traceback
 import battlecode as bc
-from Controllers.MissionController import Missions
+from Controllers.MissionController import *
 from .IRobot import IRobot
 
 
@@ -16,42 +16,69 @@ class Worker(IRobot):
 
 	#overrides IRobot run method
 	def run(self):
-		super(Worker,self).UpdateMission()
+		#print("Worker bot with id {} run() called.".format(self.unit.id))
+		self.UpdateMission()
 		
-		if self.mission == Missions.Idle:
-			print("worker idle!")
-			if  self.gameController.round >= self.missionStartRound + 10:
-				self.mission = None
+		if self.mission.action == Missions.Idle:
+			self.Idle()
 
-		if self.mission == Missions.RandomMovement:
-			print("walking randomly")
-			if self.path == None or len(self.path) == 0:
-				print("Path is null.  Making a new one")
-				self.targetLocation = self.unit.location.map_location().clone()
-				self.targetLocation.x += 3
-				self.targetLocation.y += 2
-
-				print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
-				self.UpdatePathToTarget()
-			self.FollowPath()
+		elif self.mission.action == Missions.RandomMovement:
+			self.OneRandomMovement()
 		
 
-		if self.mission == Missions.Mining:
-			#TODO Determine what to do when mining
-			pass
-
-		if self.mission == Missions.BuildFactory:
-			# TODO Upgrade logic with better pathfinding
-			if self.path == None or len(self.path == 0):
-				print("Build location path is null. Making a new one.")
-				self.targetLocation = self.mission.location.clone()
-			self.FollowPath()
-			if self.mission == None:
-				
-				self.tryBlueprint(UnitType.Factory,bc.Direction.Left)
+		elif self.mission.action == Missions.Mining:
 			
+			#TODO Determine what to do when mining
+			if not self.performSecondAction and self.targetLocation is None:
+				if self.path is None or len(self.path) == 0:
+					#print("Path is null.  Making a new one")
+					self.targetLocation = self.mission.info
 
-		return super(Worker, self).run()
+					#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
+					self.UpdatePathToTarget()
+			
+			if self.HasReachedDestination():
+				# harvest at the current map location: 0 = Center
+				self.tryHarvest(bc.Direction.Center)
+				self.ResetMission()
+			else:
+				self.FollowPath()
+
+		elif self.mission.action == Missions.CreateBlueprint:
+			# TODO Upgrade logic with better pathfinding
+			#if not self.performSecondAction and self.targetLocation is None:
+			#	if self.path == None or len(self.path) == 0:
+					#print("Build location path is null. Making a new one.")
+			#		self.targetLocation = self.mission.info
+
+					#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
+			#		self.UpdatePathToTarget()
+
+			#if self.HasReachedDestination():
+				self.OneRandomMovement()
+				direction = random.choice(list(bc.Direction))
+				if self.tryBlueprint(bc.UnitType.Factory,direction):
+					print("Worker {} created blueprint for Factory.".format(self.unit.id))
+				self.ResetMission()
+			#else:
+			#	self.FollowPath()
+
+		elif self.mission.action == Missions.BuildFactory:
+			if not self.performSecondAction and self.targetLocation is None:
+				if self.path is None or len(self.path) == 0:
+					#print("Build location path is null. Making a new one.")
+					
+					self.targetLocation = self.mission.info.mapLocation
+
+					#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
+					self.UpdatePathToTarget()
+			
+			if not self.mission.info.unit.structure_is_built() and self.HasReachedDestination():
+				self.tryBuild(self.mission.info.unitId)
+			
+			if self.mission.info.unit.structure_is_built():
+				self.ResetMission()
+		#print("Worker with id {} method run FINISHED.".format(self.unit.id)) 
 
 	def tryBlueprint(self, unitType, direction):
 		if self.unit.worker_has_acted():
@@ -62,8 +89,19 @@ class Worker(IRobot):
 			print("Worker [{}] cannot blueprint [{}] in direction [{}]".format(self.unit.id, unitType, direction))
 			return False
 
-		self.gameController.blueprint(self.unit.id, unitType, direction)
-		self.missionController.AddMission(Missions.BuildFactory)
+		result = self.gameController.blueprint(self.unit.id, unitType, direction)
+		#print("BLUEPRINT_RESULT: {}".format(result))
+		info = MissionInfo()
+		info.mapLocation = self.unit.location.map_location()
+		nearby = self.gameController.sense_nearby_units(info.mapLocation, 2)
+		for other in nearby:
+			print(other.unit_type)
+			if bc.UnitType.Factory == other.unit_type:
+                #gc.build(unit.id, other.id)
+                #print('built a factory!')
+				info.unitId = other.id
+				info.unit = other
+		self.missionController.AddMission(Missions.BuildFactory,MissionTypes.Worker,info)
 		return True
 
 	def tryBuild(self, blueprintId):
@@ -71,7 +109,7 @@ class Worker(IRobot):
 			print("Worker [{}] has already acted this turn".format(self.unit.id))
 			return False
 
-		if not self.gameController.can_build(self.unit.id):
+		if not self.gameController.can_build(self.unit.id, blueprintId):
 			print("Worker [{}] cannot build blueprint [{}]".format(self.unit.id, blueprintId))
 			return False
 

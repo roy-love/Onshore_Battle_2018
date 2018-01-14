@@ -79,7 +79,7 @@ class UnitController:
 			self.robots.append(Worker(self.gameController, self, self.pathfindingController, self.missionController, unit))
 		
 		elif unit.unit_type == bc.UnitType.Factory:
-			self.structures.append(Factory(self.gameController, self, unit))
+			self.structures.append(Factory(self.gameController, self, unit, self.missionController))
 		elif unit.unit_type == bc.UnitType.Rocket:
 			self.structures.append(Rocket(self.gameController, self, unit))
 		else:
@@ -87,10 +87,19 @@ class UnitController:
 	
 	# Add prioritization of turn order
 	def RunUnits(self):
+
+		robotCount = len(self.robots)
+		structureCount = len(self.structures)
+		gcCount = len(self.gameController.my_units())
+		print("GC.Units {}, UC.Robots+Structures {}".format(gcCount,robotCount+structureCount))
+		print("Running all structures")
+		print("structures count: {}".format(structureCount))
+		for structure in self.structures:
+			structure.run()
+
 		print("Running all robots")
+		print("robot count: {}".format(robotCount))
 		for robot in self.robots:
 			robot.run()
 		
-		print("Running all structures")
-		for structure in self.structures:
-			structure.run()
+		

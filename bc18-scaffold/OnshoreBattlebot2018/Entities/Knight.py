@@ -2,6 +2,7 @@ import random
 import sys
 import traceback
 import battlecode as bc
+from Controllers.MissionController import *
 from .IRobot import IRobot
 
 class Knight(IRobot):
@@ -12,26 +13,34 @@ class Knight(IRobot):
 		self.mission = None
 		self.targetLocation = None
 		self.path = None
+		self.IsGarrisoned = False
 
 
 	def run(self):
-		super(Knight,self).UpdateMission()
 
-		if self.mission == "Walk Randomly":
-			print("walking randomly")
-			if self.path == None or len(self.path) == 0:
-				print("Path is null.  Making a new one")
-				self.targetLocation = self.unit.location.map_location().clone()
-				self.targetLocation.x += 3
-				self.targetLocation.y += 2
+		#if not self.IsGarrisoned:
+		self.UpdateMission()
 
-				print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
-				self.UpdatePathToTarget()
-				self.FollowPath()
-		if self.mission == "DestroyTarget":
-			print("DestroyTarget")
-			#TODO implement move and destroy	
-		return super(Knight, self).run()
+		if not self.mission is None:	
+			if self.mission.action == Missions.Idle:
+				self.Idle()
+			
+			elif self.mission.action == Missions.RandomMovement:
+				self.OneRandomMovement()
+
+			elif self.mission.action == Missions.DestoryTarget:
+				self.DestroyTarget()
+				
+
+			#Attacks nearby units
+			nearby = self.gameController.sense_nearby_units(self.unit.location.map_location(), 2)
+			for other in nearby:
+				if other.team != self.gameController.team() and self.gameController.is_attack_ready(self.unit.id) \
+				and self.gameController.can_attack(self.unit.id, other.id):
+					print('Knight {} attacked a thing!'.format(self.unit.id))
+					self.gameController.attack(self.unit.id, other.id)
+					break
+		
 
 	def IsEnemySighted(self):
 		#TODO determine if this unit is able to see an enemy.
