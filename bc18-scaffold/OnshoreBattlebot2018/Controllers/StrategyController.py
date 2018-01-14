@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 # Uses all known information from various controllers to determine the current strategy
 # Stores the values from enums, for easy access
 # Start by simply returning {"Default"} until we get the basics finished.
@@ -20,7 +19,6 @@ class StrategyController:
 
 	#TODO update strategy based upon changes to the map, enemies seen, or any other criteria
 	def UpdateStrategy(self):
-		
 		pass
 
 #Add more strategy types as needed
