@@ -88,9 +88,11 @@ class UnitController:
 	# Add prioritization of turn order
 	def RunUnits(self):
 		print("Running all robots")
+		print("robot count: {}".format(len(self.robots)))
 		for robot in self.robots:
 			robot.run()
 		
 		print("Running all structures")
+		print("structures count: {}".format(len(self.structures)))
 		for structure in self.structures:
 			structure.run()
