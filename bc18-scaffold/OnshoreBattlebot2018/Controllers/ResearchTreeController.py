@@ -5,6 +5,7 @@ import traceback
 import battlecode as bc
 from .StrategyController import *
 
+
 # Keeps track of the current tech tree progress
 # Uses the strategy selected to determine the build order
 # TODO Determine which planet is in charge of the research tree and how to pass to Mars with the 50 turn delay
@@ -14,11 +15,25 @@ class ResearchTreeController:
 	def __init__(self, gameController, strategyController):
 		self.gameController = gameController
 		self.strategyController = strategyController
+		self.allUnitTypes = list(bc.UnitType)
+		self.combatUnitTypes = [bc.UnitType.Knight, bc.UnitType.Ranger, bc.UnitType.Mage]
+		self.indexToUpgrade = -1
 
 	def UpdateQueue(self):
 		if self.strategyController.macroStrategy == MacroStrategies.Default:
 			if not self.gameController.research_info().has_next_in_queue():
 				self.AddResearchToQueue(bc.UnitType.Worker)
+
+		elif self.strategyController.macroStrategy == MacroStrategies.ZergRush:
+			if not self.gameController.research_info().has_next_in_queue():
+				UpdateIndexToUpgrade(len(self.combatUnitTypes))
+				self.AddResearchToQueue(self.indexToUpgrade)
+
+	def UpdateIndexToUpgrade(self,listMaxLen):
+		self.indexToUpgrade += 1
+		if(self.indexToUpgrade >= listMaxLen):
+			self.indexToUpgrade = 0
+		
 
 	def AddResearchToQueue(self, branch):
 		branchName = self.GetBranchName(branch)
