@@ -83,7 +83,7 @@ class MissionController:
             if chance > 101:  
                 newMission = Mission()
                 newMission.action = Missions.CreateBlueprint
-                mapLocation = bc.MapLocation()
+                mapLocation = bc.MapLocation(self.gameController.planet(),0,0)
                 mapLocation.x = random.randint(0,20)
                 mapLocation.y = random.randint(0,20)
                 newMission.info = mapLocation # TODO get open location from the map
@@ -91,7 +91,7 @@ class MissionController:
             elif chance > 0:
                 newMission = Mission()
                 newMission.action = Missions.Mining
-                mapLocation = bc.MapLocation()
+                mapLocation = bc.MapLocation(self.gameController.planet(),0,0)
                 mapLocation.x = random.randint(0,20)
                 mapLocation.y = random.randint(0,20)
                 newMission.info = mapLocation # TODO get mining location from map
