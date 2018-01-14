@@ -20,14 +20,16 @@ class Factory(IStructure):
 		if not self.mission is None:
 
 			if self.mission.action == Missions.TrainBot:
+				print ("Factory [{}] TRAIN_BOT {} {}".format(self.unit.id, self.IsWorking,self.unit.is_factory_producing()))
 				if self.IsWorking and not self.unit.is_factory_producing():
 					if self.tryUnloadUnits():
+						print("Factory [{}] successfully unloaded a unit.".format(self.unit.id))
 						self.mission = None
 						self.IsWorking = False
 				elif not self.IsWorking and self.tryProduceRobot(self.mission.info):
 					self.IsWorking = True
 				else:
-					pass
+					print("Factory [{}] Failed to produce robot.".format(self.unit.id))
 			
 
 	def tryProduceRobot(self, unitType):
@@ -53,7 +55,7 @@ class Factory(IStructure):
 			print("Factory [{}] garrisoned with [{}] units.".format(self.unit.id,garrisonCount))
 			direction = random.choice(self.directions)
 			if self.gameController.can_unload(self.unit.id,direction):
-				print("Factory unloaded {} with id {}.".format(garrison[0].unit_type,garrison[0].id))
+				print("Factory unloaded {} with id {}.".format(garrison[0],garrison[0]))
 				self.gameController.unload(self.unit.id,direction)
 				
 				return True

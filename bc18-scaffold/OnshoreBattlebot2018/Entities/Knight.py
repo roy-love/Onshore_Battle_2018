@@ -65,7 +65,7 @@ class Knight(IRobot):
 		#Attacks nearby units
 		nearby = self.gameController.sense_nearby_units(self.unit.location.map_location(), 2)
 		for other in nearby:
-			if other.team != self.gameController.my_team and self.gameController.is_attack_ready(self.unit.id) \
+			if other.team != self.gameController.team() and self.gameController.is_attack_ready(self.unit.id) \
 			and self.gameController.can_attack(self.unit.id, other.id):
 				print('Knight {} attacked a thing!'.format(self.unit.id))
 				self.gameController.attack(self.unit.id, other.id)

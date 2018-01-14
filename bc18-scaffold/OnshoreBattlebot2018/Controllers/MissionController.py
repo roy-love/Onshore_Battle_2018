@@ -135,7 +135,7 @@ class MissionController:
                 if len(self.gameController.my_units()) > 1:
                     newMission = Mission()
                     newMission.action = Missions.FollowUnit
-                    newMission.info = self.gameController.my_units().pop(0) # TODO creat logic for aquiring a target to follow
+                    newMission.info = self.gameController.my_units()[0] # TODO creat logic for aquiring a target to follow
                     return Missions.FollowUnit
                 else:
                     newMission = Mission()
@@ -171,7 +171,8 @@ class MissionController:
     def __CreateNewFactoryMission__(self):
         productionChance = None
         if self.strategyController.unitStrategy == UnitStrategies.Default:
-            productionChance = [80,60,40,20,0]
+            productionChance = [50,0,40,20,0] # Workers and Knights
+            #productionChance = [80,60,40,20,0]
             #Balanced production chance
 
         chance = random.randint(1,100)
