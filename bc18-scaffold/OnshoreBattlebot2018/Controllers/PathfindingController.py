@@ -13,13 +13,13 @@ class PathfindingController:
 		self.mapController = mapController
 
 	def FindPathTo(self, currentLocation, destination):
-		print("starting pathfinding")
+		#print("starting pathfinding")
 		path = []
 		while currentLocation != destination:
 			direction = currentLocation.direction_to(destination)
-			print("next direction is {}".format(direction))
+			#print("next direction is {}".format(direction))
 			path.append(direction)
-			print("direction count is {}".format(len(path)))
+			#print("direction count is {}".format(len(path)))
 			currentLocation = currentLocation.add(direction)
-		print("returning path")
+		#print("returning path")
 		return path
