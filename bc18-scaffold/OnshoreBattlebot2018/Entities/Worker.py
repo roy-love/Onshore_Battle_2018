@@ -25,33 +25,62 @@ class Worker(IRobot):
 
 		if self.mission == Missions.RandomMovement:
 			print("walking randomly")
-			if self.path == None or len(self.path) == 0:
-				print("Path is null.  Making a new one")
-				self.targetLocation = self.unit.location.map_location().clone()
-				self.targetLocation.x += 3
-				self.targetLocation.y += 2
+			if self.targetLocation == None:
+				if self.path == None or len(self.path) == 0:
+					print("Path is null.  Making a new one")
+					self.targetLocation = self.unit.location.map_location().clone()
+					x = random.randint(-3,3)
+					y = random.randint(-3,3)
+					self.targetLocation.x += x
+					self.targetLocation.y += y
 
-				print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
-				self.UpdatePathToTarget()
+					print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
+					self.UpdatePathToTarget()
+			
 			self.FollowPath()
+			if self.HasReachedDestination():
+				self.mission = None
 		
 
 		if self.mission == Missions.Mining:
 			#TODO Determine what to do when mining
-			pass
+			if self.targetLocation == None:
+				if self.path == None or len(self.path) == 0:
+					print("Path is null.  Making a new one")
+					self.targetLocation = self.mission.missionInfo
+
+					print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
+					self.UpdatePathToTarget()
+			
+			if self.HasReachedDestination():
+				# harvest at the current map location: 0 = Center
+				self.tryHarvest(0)
+			else:
+				self.FollowPath()
+
+		if self.mission == Missions.CreateBlueprint:
+			# TODO Upgrade logic with better pathfinding
+			if self.targetLocation == None:
+				if self.path == None or len(self.path == 0):
+					print("Build location path is null. Making a new one.")
+					self.targetLocation = self.mission.info.clone()
+
+			if self.HasReachedDestination():
+				self.tryBlueprint(UnitType.Factory,bc.Direction.Left)
+			else:
+				self.FollowPath()
 
 		if self.mission == Missions.BuildFactory:
-			# TODO Upgrade logic with better pathfinding
-			if self.path == None or len(self.path == 0):
-				print("Build location path is null. Making a new one.")
-				self.targetLocation = self.mission.location.clone()
-			self.FollowPath()
-			if self.mission == None:
-				
-				self.tryBlueprint(UnitType.Factory,bc.Direction.Left)
+			if self.targetLocation == None:
+				if self.path == None or len(self.path == 0):
+					print("Build location path is null. Making a new one.")
+					self.targetLocation = self.mission.info.location.clone()
 			
+			if self.HasReachedDestination():
+				self.tryBuild(mission.info.blueprintId)
 
 		return super(Worker, self).run()
+
 
 	def tryBlueprint(self, unitType, direction):
 		if self.unit.worker_has_acted():
@@ -63,7 +92,7 @@ class Worker(IRobot):
 			return False
 
 		self.gameController.blueprint(self.unit.id, unitType, direction)
-		self.missionController.AddMission(Missions.BuildFactory)
+		self.missionController.AddMission(Missions.BuildFactory,MissionType.Worker,self.unit.location.map_location)
 		return True
 
 	def tryBuild(self, blueprintId):

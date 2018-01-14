@@ -17,25 +17,34 @@ class Missions(Enum):
     DestroyTarget = 6 # Assign unit to destroy
     DefendTarget = 7 # Assign unit to defend
     BuildFactory = 8 # Assign location to build a factory
+    CreateBlueprint = 9 # Assign location to lay down blueprint
     
 class MissionTypes(Enum):
     Worker = 0
     Healer = 1
     Combat = 2
 
+class Mission:
+    def __init__(self):
+        self.action = None
+        self.info = None
+
 # Controller that handles the creation and managment of missions
 class MissionController:
-    def __init__(self, gameController, strategyController):
+    def __init__(self, gameController, strategyController, mapController):
         self.gameController = gameController
         self.strategyController = strategyController
+        self.mapController = mapController
 
         self.combatMissions = []
         self.healerMissions = []
         self.workerMissions = []
 
     # Adds a new mission created by outside source
-    def AddMission(self,missionType,missionInfo):
-        missionType.missionInfo = missionInfo
+    def AddMission(self,mission,missionType,missionInfo):
+        newMission = Mission()
+        newMission.action = mission
+        newMission.info = missionInfo
         if missionType == MissionTypes.Worker:
             self.workerMissions.append(missionType)
         elif missionType == MissionTypes.Healer:
@@ -70,20 +79,42 @@ class MissionController:
     def __CreateNewWorkerMission__(self):
         #Determine what mission to assign based on the current strategy
         if self.strategyController.unitStrategy == UnitStrategies.Default:
-            chance = random.randint(0,100)
-            if chance > 50:    
-                return Missions.BuildFactory
-            elif chance > 25:
-                return Missions.BuildFactory
+            chance = random.randint(1,100)
+            if chance > 101:  
+                newMission = Mission()
+                newMission.action = Missions.CreateBlueprint
+                mapLocation = bc.MapLocation()
+                mapLocation.x = random.randint(0,20)
+                mapLocation.y = random.randint(0,20)
+                newMission.info = mapLocation # TODO get open location from the map
+                return newMission
+            elif chance > 0:
+                newMission = Mission()
+                newMission.action = Missions.Mining
+                mapLocation = bc.MapLocation()
+                mapLocation.x = random.randint(0,20)
+                mapLocation.y = random.randint(0,20)
+                newMission.info = mapLocation # TODO get mining location from map
+                return newMission
             else:
-                return Missions.BuildFactory
+                newMission = Mission()
+                newMission.action = Missions.Idle
+                return newMission
     
     def __CreateNewHealerMission__(self):
 
         if self.strategyController.unitStrategy == UnitStrategies.Default:
             chance = random.randint(0,100)
             if chance > 50:
-                return Missions.FollowUnit
+                if len(self.gameController.my_units()) > 1:
+                    newMission = Mission()
+                    newMission.action = Missions.FollowUnit
+                    newMission.info = self.gameController.my_units().pop(0) # TODO creat logic for aquiring a target to follow
+                    return Missions.FollowUnit
+                else:
+                    newMission = Mission()
+                    newMission.action = Missions.Idle
+                    return 
             else:
                 return Missions.Idle
     
