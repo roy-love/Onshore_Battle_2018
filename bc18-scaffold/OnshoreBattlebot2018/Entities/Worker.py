@@ -20,27 +20,10 @@ class Worker(IRobot):
 		self.UpdateMission()
 		
 		if self.mission.action == Missions.Idle:
-			print("worker idle!")
-			if  self.gameController.round >= self.missionStartRound + 10:
-				self.ResetMission()
+			self.Idle()
 
 		elif self.mission.action == Missions.RandomMovement:
-			print("walking randomly")
-			if self.targetLocation is None:
-				if self.path is None or len(self.path) == 0:
-					#print("Path is null.  Making a new one")
-					self.targetLocation = self.unit.location.map_location().clone()
-					x = random.randint(-3,3)
-					y = random.randint(-3,3)
-					self.targetLocation.x += x
-					self.targetLocation.y += y
-
-					#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
-					self.UpdatePathToTarget()
-			
-			self.FollowPath()
-			if self.HasReachedDestination():
-				self.ResetMission()
+			self.RandomMovement()
 		
 
 		elif self.mission.action == Missions.Mining:

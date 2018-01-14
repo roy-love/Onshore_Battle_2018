@@ -20,56 +20,26 @@ class Knight(IRobot):
 
 		#if not self.IsGarrisoned:
 		self.UpdateMission()
-		
-		if self.mission.action == Missions.Idle:
-			print("worker idle!")
-			if  self.gameController.round >= self.missionStartRound + 5:
-				self.ResetMission()
-		
-		elif self.mission.action == Missions.RandomMovement:
-			print("walking randomly")
-			if self.targetLocation is None:
-				if self.path is None or len(self.path) == 0:
-					#print("Path is null.  Making a new one")
-					self.targetLocation = self.unit.location.map_location().clone()
-					x = random.randint(-3,3)
-					y = random.randint(-3,3)
-					self.targetLocation.x += x
-					self.targetLocation.y += y
 
-					#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
-					self.UpdatePathToTarget()
+		if not self.mission is None:	
+			if self.mission.action == Missions.Idle:
+				self.Idle()
 			
-			self.FollowPath()
-			if self.HasReachedDestination():
-				self.ResetMission()
+			elif self.mission.action == Missions.RandomMovement:
+				self.RandomMovement()
 
-		elif self.mission.action == Missions.DestoryTarget:
-			
-			#TODO Determine what to do when mining
-			if not self.performSecondAction and self.targetLocation is None:
-				if self.path is None or len(self.path) == 0:
-					#print("Path is null.  Making a new one")
-					self.targetLocation = self.mission.info.mapLocation
+			elif self.mission.action == Missions.DestoryTarget:
+				self.DestroyTarget()
+				
 
-					#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
-					self.UpdatePathToTarget()
-			
-			if self.HasReachedDestination():
-				# harvest at the current map location: 0 = Center
-				self.tryAttack(self.mission.info.unitId)
-				self.ResetMission()
-			else:
-				self.FollowPath()
-
-		#Attacks nearby units
-		nearby = self.gameController.sense_nearby_units(self.unit.location.map_location(), 2)
-		for other in nearby:
-			if other.team != self.gameController.team() and self.gameController.is_attack_ready(self.unit.id) \
-			and self.gameController.can_attack(self.unit.id, other.id):
-				print('Knight {} attacked a thing!'.format(self.unit.id))
-				self.gameController.attack(self.unit.id, other.id)
-				break
+			#Attacks nearby units
+			nearby = self.gameController.sense_nearby_units(self.unit.location.map_location(), 2)
+			for other in nearby:
+				if other.team != self.gameController.team() and self.gameController.is_attack_ready(self.unit.id) \
+				and self.gameController.can_attack(self.unit.id, other.id):
+					print('Knight {} attacked a thing!'.format(self.unit.id))
+					self.gameController.attack(self.unit.id, other.id)
+					break
 		
 
 	def IsEnemySighted(self):

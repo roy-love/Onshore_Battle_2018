@@ -18,9 +18,10 @@ class Missions(Enum):
     DefendTarget = 7 # Assign unit to defend
     BuildFactory = 8 # Assign location to build a factory
     CreateBlueprint = 9 # Assign location to lay down blueprint
-    TrainBot = 10
-    BuildRocket = 15
-    Garrison = 16
+    TrainBot = 10 # Instruct Factory to build a bot
+    BuildRocket = 11 # Instruct Factory to build a rocket
+    Garrison = 12 # Assign target factory to garrison
+    HealTarget = 13 # Assign target to heal
     
     
 class MissionTypes(Enum):

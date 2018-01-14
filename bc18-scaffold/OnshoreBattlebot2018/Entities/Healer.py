@@ -2,6 +2,7 @@ import random
 import sys
 import traceback
 import battlecode as bc
+from Controllers.MissionController import *
 from .IRobot import IRobot
 
 class Healer(IRobot):
@@ -11,20 +12,41 @@ class Healer(IRobot):
 		super().__init__(gameController, unitController, pathfindingController, missionController, unit,bc.UnitType.Healer)
 
 	def run(self):
-		super(Healer,self).UpdateMission()
+		self.UpdateMission()
 
-		if self.mission == "Walk Randomly":
-			print("walking randomly")
-			if self.path == None or len(self.path) == 0:
-				print("Path is null.  Making a new one")
-				self.targetLocation = self.unit.location.map_location().clone()
-				self.targetLocation.x += 3
-				self.targetLocation.y += 2
+		if not self.mission is None:	
+			if self.mission.action == Missions.Idle:
+				self.Idle()
+			
+			elif self.mission.action == Missions.RandomMovement:
+				self.RandomMovement()
 
-				print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
-				self.UpdatePathToTarget()
-				self.FollowPath()
-		return super(Healer, self).run()
+			elif self.mission.action == Missions.HealTarget:
+				if not self.performSecondAction and self.targetLocation is None:
+					if self.path is None or len(self.path) == 0:
+						#print("Path is null.  Making a new one")
+						self.targetLocation = self.mission.info.mapLocation
+
+						#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
+						self.UpdatePathToTarget()
+				
+				if self.HasReachedDestination():
+					# harvest at the current map location: 0 = Center
+					if self.tryHeal(self.mission.info.unitId):
+						self.ResetMission()
+				else:
+					self.FollowPath()
+				
+
+			#Attacks nearby units
+			nearby = self.gameController.sense_nearby_units(self.unit.location.map_location(), 2)
+			for other in nearby:
+				if other.team != self.gameController.team() and self.gameController.is_attack_ready(self.unit.id) \
+				and self.gameController.can_attack(self.unit.id, other.id):
+					print('Knight {} attacked a thing!'.format(self.unit.id))
+					self.gameController.attack(self.unit.id, other.id)
+					break
+		
   
 	def tryHeal(self, targetUnitId):
 		#TODO check heat is low enough

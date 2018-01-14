@@ -16,6 +16,13 @@ class Factory(IStructure):
 	def run(self):
 		
 		self.UpdateMission()
+		
+
+		garrison = self.unit.structure_garrison()
+		if len(garrison) > 0:
+			print("Factory [{}] Garrisoned Units".format(self.unit.id))
+			for other in garrison:
+				print("Unit with id [{}] is currently garrisoned.".format(other))
 
 		if not self.mission is None:
 
@@ -27,9 +34,9 @@ class Factory(IStructure):
 						self.mission = None
 						self.IsWorking = False
 				elif not self.IsWorking and self.tryProduceRobot(self.mission.info):
-					self.IsWorking = True
+						self.IsWorking = True
 				else:
-					print("Factory [{}] Failed to produce robot.".format(self.unit.id))
+					print("Factory [{}] producing robot. Rounds Left: {}".format(self.unit.id, self.unit.factory_rounds_left()))
 			
 
 	def tryProduceRobot(self, unitType):

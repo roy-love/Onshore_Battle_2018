@@ -90,7 +90,56 @@ class IRobot:
 		self.gameController.move_robot(self.unit.id, direction)
 		return True
 	
+	def tryAttack(self, targetRobotId):
+		#TODO check heat is low enough
+		if not self.gameController.can_attack(self.unit.id, targetRobotId):
+			print("Bot [{}] cannot attack the target [{}]".format(self.unit.id, targetRobotId))
+			return False
+		
+		self.gameController.attack(self.unit.id, targetRobotId)
+		print("Bot [{}] attacked the target [{}]".format(self.unit.id, targetRobotId))
+		return True
 	
 	def selfDestruct(self):
 		"Robot [{}] self destructing".format(self.unit.id)
 		self.gameController.disintegrate_unit(self.unit.id)
+
+# Default Missions
+	def Idle(self):
+		print("bot idle!")
+		if  self.gameController.round >= self.missionStartRound + 10:
+			self.ResetMission()
+	
+	def RandomMovement(self):
+		print("bot walking randomly")
+		if self.targetLocation is None:
+			if self.path is None or len(self.path) == 0:
+				#print("Path is null.  Making a new one")
+				self.targetLocation = self.unit.location.map_location().clone()
+				x = random.randint(-5,5)
+				y = random.randint(-5,5)
+				self.targetLocation.x += x
+				self.targetLocation.y += y
+
+				#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
+				self.UpdatePathToTarget()
+		
+		self.FollowPath()
+		if self.HasReachedDestination():
+			self.ResetMission()
+
+	def DestroyTarget(self):
+		if not self.performSecondAction and self.targetLocation is None:
+			if self.path is None or len(self.path) == 0:
+				#print("Path is null.  Making a new one")
+				self.targetLocation = self.mission.info.mapLocation
+
+				#print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.targetLocation.x, self.targetLocation.y))
+				self.UpdatePathToTarget()
+		
+		if self.HasReachedDestination():
+			# harvest at the current map location: 0 = Center
+			self.tryAttack(self.mission.info.unitId)
+			self.ResetMission()
+		else:
+			self.FollowPath()
