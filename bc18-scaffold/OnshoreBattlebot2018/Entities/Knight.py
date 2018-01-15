@@ -9,8 +9,10 @@ class Knight(IRobot):
     """This is the Knight robot"""
     # change init definition to include any controllers needed in the instructor as we need them
     # For example:  it will eventually need to access the Targeting and Pathfinding controllers
-    def __init__(self, gameController, unitController, pathfindingController, missionController, unit):
-        super().__init__(gameController, unitController, pathfindingController, missionController, unit, bc.UnitType.Knight)
+    def __init__(self, gameController, unitController, \
+    pathfindingController, missionController, unit):
+        super().__init__(gameController, unitController, \
+        pathfindingController, missionController, unit, bc.UnitType.Knight)
         self.mission = None
         self.target_location = None
         self.path = None

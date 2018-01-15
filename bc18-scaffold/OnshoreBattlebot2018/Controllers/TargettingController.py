@@ -91,4 +91,4 @@ class TargettingController:
         elif unit.unit_type == bc.UnitType.Factory:
             self.enemy_structures.append(Factory(self.game_controller, self, unit))
         elif unit.unit_type == bc.UnitType.Rocket:
-            self.enemy_structures.append(Rocket(slef.gameController, self, unit))
+            self.enemy_structures.append(Rocket(self.game_controller, self, unit))

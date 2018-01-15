@@ -74,7 +74,7 @@ class IRobot:
     def has_reached_destination(self):
         """Shows if you have reached the destination"""
         if self.target_location is None:
-            print ("Robot {} targetLocation is None.".format(self.unit.id))
+            print("Robot {} targetLocation is None.".format(self.unit.id))
             return True
         else:
             if self.unit.location.map_location().x == self.target_location.x and \
