@@ -38,7 +38,7 @@ class IRobot:
 
     def update_mission(self):
         """This updates the mission"""
-        if self.mission == None:
+        if self.mission is None:
             self.mission = self.mission_controller.GetMission(self.unit_type)
             self.mission_start_round = self.game_controller.round()
             self.target_location = None
@@ -46,7 +46,7 @@ class IRobot:
             format(self.unit.id, self.mission.action))
 
     def reset_mission(self):
-        """This resets teh mission"""
+        """This resets the mission"""
         self.perform_second_action = False
         self.mission = None
 
@@ -61,7 +61,7 @@ class IRobot:
             self.unit.location.map_location(), self.target_location)
 
     def follow_path(self):
-        """allows you to follow the path"""
+        """Allows you to follow the path"""
         if not self.path is None:
             if len(self.path) > 0:
                 direction = self.path[-1]

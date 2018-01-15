@@ -29,5 +29,5 @@ class RunMars:
 
     # Runs once per turn for this planet only
     def Run(self):
-        """Lets you run"""
+        """This  runs on Marce once per turn"""
         print("Do mars turn things here")

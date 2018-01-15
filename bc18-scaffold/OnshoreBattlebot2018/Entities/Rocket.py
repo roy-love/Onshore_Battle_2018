@@ -10,7 +10,7 @@ class Rocket(IStructure):
         super(Rocket, self).__init__(gameController, unitController, unit)
 
     def run(self):
-        """this is how you run"""
+        """This runs the rocket"""
         pass
 
     def try_load(self, target_robot_id):

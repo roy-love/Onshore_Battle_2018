@@ -8,6 +8,7 @@ from .StrategyController import *
 
 
 class Missions(Enum):
+    """These are the missions"""
     Idle = 0
     RandomMovement = 1 # Assign location to move to
     Mining = 2 # Assign location to mine

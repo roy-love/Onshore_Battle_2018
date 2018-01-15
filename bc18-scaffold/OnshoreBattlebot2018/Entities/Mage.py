@@ -4,7 +4,7 @@ from Controllers.MissionController import *
 from .IRobot import IRobot
 
 class Mage(IRobot):
-    """This is the mage robot"""
+    """This is the Mage robot"""
     # change init definition to include any controllers needed in the instructor as we need them
     # For example:  it will eventually need to access the Targeting and Pathfinding controllers
     def __init__(self, gameController, unitController, \
