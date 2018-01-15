@@ -19,8 +19,8 @@ class UnitController:
 
     def update_units(self):
         """This updates units"""
-        self.__DeleteKilledUnits()
-        self.__AddUnregisteredUnits()
+        self.__delete_killed_units()
+        self.__add_unregistered_units()
 
     # Removes robots and structures that are not found on the map any longer
     def __delete_killed_units(self):

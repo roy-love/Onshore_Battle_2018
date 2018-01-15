@@ -149,7 +149,8 @@ class IRobot:
                 #print("Path is null.  Making a new one")
                 self.target_location = self.mission.info.mapLocation
 
-                #print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x, self.unit.location.map_location().y, self.target_location.x, self.target_location.y))
+                #print("Wants to move from {},{} to {},{}".format(self.unit.location.map_location().x,
+                #self.unit.location.map_location().y, self.target_location.x, self.target_location.y))
                 self.update_path_to_target()
 
         if self.has_reached_destination():

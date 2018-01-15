@@ -32,7 +32,11 @@ class MapController:
                 earth_map_part = []
                 for map_y in range(self.map.width):
                     map_loc = bc.MapLocation(bc.Planet.Earth, map_x, map_y)
-                    self.earth_map[map_x].append({"x": map_x, "y": map_y, "isPassable": self.map.is_passable_terrain_at(map_loc), "karboniteCount": self.map.initial_karbonite_at(map_loc)})
+                    self.earth_map[map_x].append({"x": map_x, "y": map_y,
+                                                  "isPassable": self.map.is_passable_terrain_at
+                                                                (map_loc),
+                                                  "karboniteCount": self.map.initial_karbonite_at
+                                                                    (map_loc)})
             print(self.map.planet)
         except Exception as e:
             print('Error:', e)

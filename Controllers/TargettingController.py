@@ -29,9 +29,9 @@ class TargettingController:
     # Updates units for whether they have died or if a unit needs to be added to registry
     def update_units(self):
         """This updates unites"""
-        self._DeleteKilledUnits()
-        self._AddUnregisteredEnemy_units()
-        self._RemoveRegisteredEnemy_units()
+        self._delete_killed_units()
+        self._add_unregistered_enemy_units()
+        self._remove_registered_enemy_units()
 
     # Deletes units that have died
     def _delete_killed_units(self):
@@ -61,7 +61,7 @@ class TargettingController:
                             enemy_unit = unit
                             break
                         else:
-                            self._RegisterUnit(unit)
+                            self._register_unit(unit)
 
     # Removes an enemy robot from the Registry
     def _remove_registered_enemy_units(self):
