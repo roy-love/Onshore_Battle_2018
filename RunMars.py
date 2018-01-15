@@ -7,7 +7,7 @@ from Controllers import *
 from Entities import *
 
 class RunMars:
-
+    """This is how we run Mars"""
     # Initialize controllers
     # Initialize all class variables
     # Only include code that should be initialized once at the beginning of the match
@@ -26,4 +26,5 @@ class RunMars:
 
     # Runs once per turn for this planet only
     def Run(self):
+        """Lets you run"""
         print("Do mars turn things here")

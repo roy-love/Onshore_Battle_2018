@@ -14,7 +14,7 @@ PLANETS = bc.Planet
 MY_TEAM = GAMECONTROLLER.team()
 
 RUNEARTH = RunEarth(GAMECONTROLLER)
-#runMars = RunMars(gameController)
+#runMars = RunMars(GAMECONTROLLER)
 
 # Main game loop
 # Avoid placing additional code here if possible

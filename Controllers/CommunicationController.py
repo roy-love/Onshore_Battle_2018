@@ -6,5 +6,6 @@ import traceback
 # Provides public methods for reading and writing
 # Messages must be as small and efficient as possible
 class CommunicationController:
+    """This is the communication controller"""
     def __init__(self, gameController):
         self.game_controller = gameController

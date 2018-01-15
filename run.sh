@@ -1,8 +1,8 @@
 #!/bin/sh
+export "PYTHONPATH=../battlecode/python:$PYTHONPATH"
+python3 run.py
 
-docker stop $(docker ps -q)
-docker container rm $(docker container ls -aq)
-docker volume rm $(docker volume ls -q)$
-docker volume prune
-
-docker run -it --privileged -p 16147:16147 -p 6147:6147 -v $PWD:/player --rm battlecode/battlecode-2018
+# If you set the following flag, the engine won't run type asserts.
+# It may be slightly faster but you'll get more confusing error messages.
+# Maybe leave it in place until the tournament.
+#python3 -O run.py
