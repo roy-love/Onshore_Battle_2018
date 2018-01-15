@@ -7,6 +7,7 @@ from .IRobot import IRobot
 
 
 class Worker(IRobot):
+    """This is the Worker robot"""
     # change init definition to include any controllers needed in the instructor as we need them
     # For example:  it will eventually need to access the Targeting and Pathfinding controllers
     def __init__(self, gameController, unitController, \

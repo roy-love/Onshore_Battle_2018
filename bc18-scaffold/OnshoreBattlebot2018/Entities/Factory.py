@@ -15,7 +15,7 @@ class Factory(IStructure):
         self.directions = list(bc.Direction)
 
     def run(self):
-        """This is how you run"""
+        """This runs the garrison"""
         self.update_mission()
 
         garrison = self.unit.structure_garrison()

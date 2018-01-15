@@ -24,7 +24,7 @@ class ResearchTreeController:
 
     def add_research_to_queue(self, branch):
         """This adds research to queue"""
-        branch_name = self.GetBranchName(branch)
+        branch_name = self.get_branch_name(branch)
         research_info = self.game_controller.research_info()
         level = research_info.get_level(branch)
         print("Added [{}] research level [{}].".format(branch_name, level))
@@ -113,7 +113,8 @@ class ResearchTreeController:
         else:
             return 0
 
-    def GetBranchName(self, branch):
+    def get_branch_name(self, branch):
+        """This gets the branch name"""
         if branch == 0:
             return "Worker"
         elif branch == 1:

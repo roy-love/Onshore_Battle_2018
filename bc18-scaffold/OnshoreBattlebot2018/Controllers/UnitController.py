@@ -52,7 +52,7 @@ class UnitController:
         if len(self.robots) == 0:
             print("No robots currently in the list.  Registering them all")
             for unit in self.game_controller.my_units():
-                self.__RegisterUnit(unit)
+                self.__register_unit(unit)
         else:
             print("Comparing existing robots against units")
             for unit in self.game_controller.my_units():
@@ -68,9 +68,9 @@ class UnitController:
                             friendly_unit.unit = unit
                             break
                     else:
-                        self.__RegisterUnit(unit)
+                        self.__register_unit(unit)
 
-    def __RegisterUnit(self, unit):
+    def __register_unit(self, unit):
         if unit.unit_type == bc.UnitType.Healer:
             self.robots.append(Healer(self.game_controller, \
             self, self.pathfinding_controller, self.mission_controller, unit))
