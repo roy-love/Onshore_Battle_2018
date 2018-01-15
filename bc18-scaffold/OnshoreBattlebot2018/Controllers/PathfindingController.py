@@ -18,7 +18,7 @@ class PathfindingController:
 		self.gameController = gameController
 		self.mapController = mapController
 		self.plan = []
-		self.Directions = [bc.Directions.North, bc.Direction.East, bc.Direction.South, bc.Direction.West] 
+		self.Directions = [bc.Direction.North, bc.Direction.East, bc.Direction.South, bc.Direction.West] 
 
 	def FindPathTo(self, currentLocation, destination):
 		print("starting pathfinding")
