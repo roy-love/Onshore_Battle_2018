@@ -58,7 +58,7 @@ class IRobot:
             (self.unit.location.map_location().x, self.unit.location.map_location().y, \
             self.target_location.x, self.target_location.y))
             self.path = self.pathfinding_controller.FindPathTo(\
-            self.unit.location.map_location(), self.target_location)
+            self.unit.location.map_location().planet, self.unit.location.map_location(), self.target_location)
 
     def follow_path(self):
         """Allows you to follow the path"""

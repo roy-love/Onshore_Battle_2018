@@ -20,13 +20,13 @@ class PathfindingController:
 		self.plan = []
 		self.Directions = [bc.Direction.North, bc.Direction.East, bc.Direction.South, bc.Direction.West] 
 
-	def FindPathTo(self, currentLocation, destination):
+	def FindPathTo(self, planet, currentLocation, destination):
 		print("starting pathfinding")
 		path = []
 		explored = []
 		frontier = deque([])
-		startingLocation = self.mapController.GetNode(currentLocation.x, currentLocation.y)
-		endingLocation = self.mapController.GetNode(destination.x, destination.y)
+		startingLocation = self.mapController.GetNode(planet, currentLocation.x, currentLocation.y)
+		endingLocation = self.mapController.GetNode(planet, destination.x, destination.y)
 		node = GraphNode(startingLocation, None, None)
 		endNode = GraphNode(endingLocation, None, None)
 		frontier.append(node)
@@ -41,7 +41,7 @@ class PathfindingController:
 				node = frontier.popleft()
 				#print("seeing if popleft is give me a dict or what i need")
 				#print(node.room["x"])
-			newNodes = self.Explore(node)
+			newNodes = self.Explore(planet, node)
 			explored.append(node.room)
 			#newNodes = {elem for elem in newNodes if elem not in explored}
 			for nodes in newNodes:
@@ -73,15 +73,15 @@ class PathfindingController:
 		print(path)
 		return path
 
-	def Explore (self, node):
+	def Explore (self, planet, node):
 		discovered = []
 		for direction in self.Directions:
-			newNode = self.Transition(node , direction)
+			newNode = self.Transition(planet, node , direction)
 			if newNode is not None:
 				discovered.append(newNode)
 		return discovered
 
-	def Transition(self, node, direction):
+	def Transition(self, planet, node, direction):
 		currentnode = node
 		#print("Printing the new current node")
 		#print(currentnode.room)
@@ -89,19 +89,19 @@ class PathfindingController:
 		if direction == bc.Direction.North:
 			#print("PRINTING CURRENT NODE71")
 			#print(currentnode.room["x"])
-			newNode = self.mapController.GetNode(currentnode.room["x"], currentnode.room["y"] + 1)
+			newNode = self.mapController.GetNode(planet, currentnode.room["x"], currentnode.room["y"] + 1)
 		elif direction == bc.Direction.East:
 			#print("PRINTING CURRENT NODE75")
 			#print(currentnode.room)
-			newNode = self.mapController.GetNode(currentnode.room["x"] + 1, currentnode.room["y"])
+			newNode = self.mapController.GetNode(planet, currentnode.room["x"] + 1, currentnode.room["y"])
 		elif direction == bc.Direction.South:
 			#print("PRINTING CURRENT NODE79")
 			#print(currentnode.room)
-			newNode = self.mapController.GetNode(currentnode.room["x"], currentnode.room["y"] - 1)
+			newNode = self.mapController.GetNode(planet, currentnode.room["x"], currentnode.room["y"] - 1)
 		elif direction == bc.Direction.West:
 			#print("PRINTING CURRENT NODE83")
 			#print(currentnode.room)
-			newNode = self.mapController.GetNode(currentnode.room["x"] - 1, currentnode.room["y"])
+			newNode = self.mapController.GetNode(planet, currentnode.room["x"] - 1, currentnode.room["y"])
 		#print("Printing newNode in Transitions")
 		#print(newNode)
 		newRoom = None
