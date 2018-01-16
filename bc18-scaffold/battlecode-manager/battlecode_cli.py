@@ -24,14 +24,16 @@ PORT = 16147
 
 
 class Logger(object):
-    def __init__(self, prefix):
+    def __init__(self, prefix, print=True):
         self.logs = io.StringIO()
         self.prefix = prefix
+        self.print = print
 
     def __call__(self, v):
         data = v.decode()
         self.logs.write(data)
-        print(self.prefix, data, end='')
+        if self.print:
+            print(self.prefix, data, end='')
 
 
 def working_dir_message(working_dir):
@@ -55,7 +57,7 @@ def prepare_working_directory(working_dir):
     # print("Working dir ready!")
 
 
-def run_game(game, dockers, args, sock_file):
+def run_game(game, dockers, args, sock_file, scrimmage=False):
     '''
     This contains the logic that needs to be cleaned up at the end of a game
     If there is something that needs to be cleaned up add it in the try catch
@@ -67,37 +69,42 @@ def run_game(game, dockers, args, sock_file):
 
     viewer_server = server.start_viewer_server(PORT, game) if args['use_viewer'] else None
 
-    # Start the docker instances
-    for player_key in dockers:
-        docker_inst = dockers[player_key]
-        docker_inst.start()
-        for player_ in game.players:
-            if player_['id'] == player_key:
-                player = player_['player']
-                break
-        if player.planet == bc.Planet.Earth:
-            planet = 'earth'
-        else:
-            planet = 'mars'
-        if player.team == bc.Team.Blue:
-            team = 'blue'
-        else:
-            team = 'red'
-        name = f'[{planet}:{team}]'
-        logger = Logger(name)
-        docker_inst.stream_logs(line_action=logger)
-        player_['logger'] = logger
-
-    # Wait until all the code is done then clean up
-    while not game.game_over:
-        time.sleep(0.1)
-
-    print('Killing game server.')
-    main_server.shutdown()
     try:
-        main_server.server_close()
-    except e:
-        print(e)
+        # Start the docker instances
+        for player_key in dockers:
+            docker_inst = dockers[player_key]
+            docker_inst.start()
+            for player_ in game.players:
+                if player_['id'] == player_key:
+                    player = player_['player']
+                    break
+            if player.planet == bc.Planet.Earth:
+                planet = 'earth'
+            else:
+                planet = 'mars'
+            if player.team == bc.Team.Blue:
+                team = 'blue'
+            else:
+                team = 'red'
+
+            name = '[{}:{}]'.format(planet, team)
+            logger = Logger(name, print=(not args['terminal_viewer'] and not scrimmage))
+            docker_inst.stream_logs(line_action=logger)
+            player_['logger'] = logger
+
+        # Wait until all the code is done then clean up
+        while not game.game_over:
+            time.sleep(0.1)
+
+    finally:
+        main_server.shutdown()
+        try:
+            main_server.server_close()
+        except e:
+            print(e)
+
+        if viewer_server is not None:
+            viewer_server.shutdown()
 
     match_file = {}
     match_file['message'] = game.viewer_messages
@@ -110,8 +117,8 @@ def run_game(game, dockers, args, sock_file):
         winner = game.winner
 
     match_file['metadata'] = {
-        'player1': args['dir_p1'][8:],
-        'player2': args['dir_p2'][8:],
+        'player1': 'player1' if scrimmage else args['dir_p1'][8:],
+        'player2': 'player2' if scrimmage else args['dir_p2'][8:],
         'winner': winner
     }
 
@@ -122,21 +129,23 @@ def run_game(game, dockers, args, sock_file):
         if not os.path.isabs(match_output):
             match_output = abspath(os.path.join('..', str(match_output)))
 
-    print("Dumping matchfile to", match_output)
-    match_ptr = open(match_output, 'w')
-    json.dump(match_file, match_ptr)
-    match_ptr.close()
-    if viewer_server is not None:
-        viewer_server.shutdown()
 
-    return winner
+    if not scrimmage:
+        print("Saving replay to", match_output)
+
+        match_ptr = open(match_output, 'w')
+        json.dump(match_file, match_ptr)
+        match_ptr.close()
+
+        return winner
+    else:
+        return winner, match_file
 
 
 def cleanup(dockers, args, sock_file):
     '''
     Clean up that needs to be done at the end of a game
     '''
-    print("Cleaning up Docker and Socket...")
     for player_key in dockers:
         docker_inst = dockers[player_key]
         docker_inst.destroy()
@@ -144,8 +153,6 @@ def cleanup(dockers, args, sock_file):
     if isinstance(sock_file, str) or isinstance(sock_file, bytes):
         # only unlink unix sockets
         os.unlink(sock_file)
-
-    print("Ready to run next game.")
 
 
 def get_map(map_name):
@@ -157,17 +164,35 @@ def get_map(map_name):
         with open(map_name) as f:
             contents = f.read()
         print("Loading map " + map_name)
-        return bc.GameMap.from_json(contents)
+        if map_name.endswith('.bc18map'):
+            return bc.GameMap.from_json(contents)
+        elif map_name.endswith('.bc18t'):
+            return bc.GameMap.parse_text_map(contents)
     except Exception as e:
+        if 'testmap' not in map_name:
+            print('failed to load map:', e)
         try:
             with open('/player/' + map_name) as f:
                 contents = f.read()
             print("Loading map " + map_name)
-            return bc.GameMap.from_json(contents)
+            if map_name.endswith('.bc18map'):
+                return bc.GameMap.from_json(contents)
+            elif map_name.endswith('.bc18t'):
+                return bc.GameMap.parse_text_map(contents)
         except Exception as e:
-            print("Loading test map...")
-            return bc.GameMap.test_map()
-
+            if 'testmap' not in map_name:
+                print('failed to load map:', e)
+            try:
+                with open('/player/' + map_name) as f:
+                   contents = f.read()
+                print("Loading map " + map_name)
+                if map_name.endswith('.bc18map'):
+                    return bc.GameMap.from_json(contents)
+                elif map_name.endswith('.bc18t'):
+                    return bc.GameMap.parse_text_map(contents)
+            except Exception as e:
+                print("Loading test map...")
+                return bc.GameMap.test_map()
 
 def create_game(args):
     '''
@@ -177,8 +202,11 @@ def create_game(args):
 
     # Load the Game state info
     game = server.Game(logging_level=logging.ERROR,
-                       game_map=args['map'], time_pool=args['time_pool'],
-                       time_additional=args['time_additional'])
+                       game_map=args['map'],
+                       time_pool=args['time_pool'],
+                       time_additional=args['time_additional'],
+                       terminal_viewer=args['terminal_viewer'],
+                       extra_delay=args['extra_delay'])
 
     working_dir = abspath("working_dir")
     prepare_working_directory(working_dir)
@@ -211,5 +239,41 @@ def create_game(args):
             dockers[key] = SandboxedPlayer(sock_file, working_dir=working_dir, docker_client=docker_instance, player_key=key, local_dir=local_dir)
         else:
             dockers[key] = PlainPlayer(sock_file, working_dir=working_dir, player_key=key, local_dir=local_dir)
+
+    return (game, dockers, sock_file)
+
+def create_scrimmage_game(args):
+    '''
+    Create all the semi-permanent game structures (i.e. sockets and dockers and
+    stuff
+    '''
+    args['replay_filename'] = 'k'
+    # Load the Game state info
+    game = server.Game(logging_level=logging.ERROR,
+                       game_map=args['map'], time_pool=int(os.environ['TIME_POOL']),
+                       time_additional=int(os.environ['TIME_ADDITIONAL']),
+                       terminal_viewer=False,
+                       extra_delay=0)
+
+    working_dir = abspath("working_dir")
+    prepare_working_directory(working_dir)
+
+    # Find a good filename to use as socket file
+    for index in range(10000):
+        sock_file = "/tmp/battlecode-"+str(index)
+        if not os.path.exists(sock_file):
+            break
+
+    # Assign the docker instances client ids
+    import docker
+    docker_instance = docker.from_env()
+    dockers = {}
+    for index in range(len(game.players)):
+        key = [player['id'] for player in game.players][index]
+        dockers[key] = SandboxedPlayer(sock_file, player_key=key,
+                               s3_bucket=args['s3_bucket'],
+                               s3_key=args['red_key' if index % 2 == 0 else 'blue_key'],
+                               docker_client=docker_instance,
+                               working_dir=working_dir)
 
     return (game, dockers, sock_file)
