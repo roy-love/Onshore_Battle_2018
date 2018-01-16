@@ -9,11 +9,12 @@ from Entities import *
 class UnitController:
     """This is the unit controller"""
     def __init__(self, gameController, strategyController, \
-    pathfindingController, missionController):
+    pathfindingController, missionController, mapController):
         self.game_controller = gameController
         self.strategy_controller = strategyController
         self.pathfinding_controller = pathfindingController
         self.mission_controller = missionController
+        self.mapController = mapController
 
         self.robots = []
         self.structures = []
@@ -84,19 +85,19 @@ class UnitController:
     def __register_unit(self, unit):
         if unit.unit_type == bc.UnitType.Healer:
             self.robots.append(Healer(self.game_controller, \
-            self, self.pathfinding_controller, self.mission_controller, unit))
+            self, self.pathfinding_controller, self.mission_controller, unit, self.mapController))
         elif unit.unit_type == bc.UnitType.Knight:
             self.robots.append(Knight(self.game_controller, \
-            self, self.pathfinding_controller, self.mission_controller, unit))
+            self, self.pathfinding_controller, self.mission_controller, unit, self.mapController))
         elif unit.unit_type == bc.UnitType.Mage:
             self.robots.append(Mage(self.game_controller, \
-            self, self.pathfinding_controller, self.mission_controller, unit))
+            self, self.pathfinding_controller, self.mission_controller, unit, self.mapController))
         elif unit.unit_type == bc.UnitType.Ranger:
             self.robots.append(Ranger(self.game_controller, \
-            self, self.pathfinding_controller, self.mission_controller, unit))
+            self, self.pathfinding_controller, self.mission_controller, unit, self.mapController))
         elif unit.unit_type == bc.UnitType.Worker:
             self.robots.append(Worker(self.game_controller, \
-            self, self.pathfinding_controller, self.mission_controller, unit))
+            self, self.pathfinding_controller, self.mission_controller, unit, self.mapController))
 
         elif unit.unit_type == bc.UnitType.Factory:
             self.structures.append(Factory(self.game_controller, \

@@ -25,7 +25,7 @@ class RunMars:
         self.mission_controller = MissionController(gameController, self.strategy_controller, \
         self.map_controller, self.research_tree_controller)
         self.unit_controller = UnitController(gameController, self.strategy_controller, \
-        self.pathfinding_controller, self.mission_controller)
+        self.pathfinding_controller, self.mission_controller, self.map_controller)
         self.targetting_controller = TargettingController(gameController, \
         self.map_controller, self.strategy_controller, self.unit_controller, self.enemy_tracking_controller)
 

@@ -11,16 +11,17 @@ class Worker(IRobot):
     # change init definition to include any controllers needed in the instructor as we need them
     # For example:  it will eventually need to access the Targeting and Pathfinding controllers
     def __init__(self, gameController, unitController, \
-    pathfindingController, missionController, unit):
+    pathfindingController, missionController, unit,mapController):
         super().__init__(gameController, unitController, \
-        pathfindingController, missionController, unit, bc.UnitType.Worker)
+        pathfindingController, missionController, unit, bc.UnitType.Worker,mapController)
 
 
     #overrides IRobot run method
     def run(self):
         
-        if self.unit_controller.GetWorkerCount() < 10:
-            self.try_replication(bc.Direction.North)
+        if self.unit_controller.GetWorkerCount() < 1:
+            direction = random.choice(self.directions)
+            self.try_replication(direction)
         
         #print("Worker bot with id {} run() called.".format(self.unit.id))
         self.update_mission()
@@ -34,48 +35,55 @@ class Worker(IRobot):
         if self.mission.action == Missions.Mining:
 
             #TODO Determine what to do when mining
-            #if not self.perform_second_action and self.target_location is None:
-            #    if self.path is None or len(self.path) == 0:
+            if not self.perform_second_action and self.target_location is None:
+                if self.path is None or len(self.path) == 0:
                     #print("Path is null.  Making a new one")
-            #        self.target_location = self.mission.info
-
+                    #self.target_location = self.mission.info
+                    newLocation = self.unit.location.map_location()
+                    newLocation.x = random.randint(-5,5)
+                    newLocation.y = random.randint(-5,5)
+                    
+                    self.target_location = newLocation
                     #print("Wants to move from {},{} to {},{}".format(\
                     # self.unit.location.map_location().x, self.unit.location.map_location().y, \
                     # self.target_location.x, self.target_location.y))
-            #        self.update_path_to_target()
+                    self.update_path_to_target()
 
-            #if self.has_reached_destination():
+            if self.has_reached_destination():
                 # harvest at the current map location: 0 = Center
-            self.one_random_movement()
-            self.try_harvest(bc.Direction.Center)
-            self.reset_mission()
-            #else:
-            #    self.follow_path()
+                #self.one_random_movement()
+                self.try_harvest(bc.Direction.Center)
+                self.reset_mission()
+            else:
+                self.follow_path()
 
         elif self.mission.action == Missions.CreateBlueprint:
             # TODO Upgrade logic with better pathfinding
-            #if not self.perform_second_action and self.target_location is None:
-            #    if self.path == None or len(self.path) == 0:
-                    #print("Build location path is null. Making a new one.")
-            #        self.target_location = self.mission.info.mapLocation
-
+            if not self.perform_second_action and self.target_location is None:
+                if self.path == None or len(self.path) == 0:
+                    print("Build location path is null. Making a new one.")
+                    #self.target_location = self.mission.info.mapLocation 
+                    newLocation = self.unit.location.map_location()
+                    newLocation.x = random.randint(-5,5)
+                    newLocation.y = random.randint(-5,5)
+                    self.target_location = newLocation
                     #print("Wants to move from {},{} to {},{}".format(\
-                    # self.unit.location.map_location().x, self.unit.location.map_location().y, \
-                    # self.target_location.x, self.target_location.y))
-            #        self.update_path_to_target()
+                    #self.unit.location.map_location().x, self.unit.location.map_location().y, \
+                    #self.target_location.x, self.target_location.y))
+                    self.update_path_to_target()
 
-            #if self.has_reached_destination():
-            self.one_random_movement()
-            direction = random.choice(list(bc.Direction))
-            if self.mission.info.isRocket:
-                if self.try_blueprint(bc.UnitType.Rocket, direction):
-                    print("Worker {} created blueprint for Rocket.".format(self.unit.id))
+            if self.has_reached_destination():
+                #self.one_random_movement()
+                direction = random.choice(list(bc.Direction))
+                if self.mission.info.isRocket:
+                    if self.try_blueprint(bc.UnitType.Rocket, direction):
+                        print("Worker {} created blueprint for Rocket.".format(self.unit.id))
+                else:
+                    if self.try_blueprint(bc.UnitType.Factory, direction):
+                        print("Worker {} created blueprint for Factory.".format(self.unit.id))
+                self.reset_mission()
             else:
-                if self.try_blueprint(bc.UnitType.Factory, direction):
-                    print("Worker {} created blueprint for Factory.".format(self.unit.id))
-            self.reset_mission()
-            #else:
-            #    self.FollowPath()
+                self.follow_path()
 
         elif self.mission.action == Missions.Build:
             if not self.perform_second_action and self.target_location is None:
@@ -97,6 +105,7 @@ class Worker(IRobot):
                 self.follow_path()
 
             if self.mission.info.unit.structure_is_built():
+                print("Structure {} is complete.".format(self.mission.unit.id))
                 self.reset_mission()
         #print("Worker with id {} method run FINISHED.".format(self.unit.id))
 

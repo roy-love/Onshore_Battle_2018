@@ -6,11 +6,12 @@ import traceback
 class IRobot:
     """This is the IRobot"""
     def __init__(self, gameController, unitController, \
-    pathfindingController, missionController, unit, unitType):
+    pathfindingController, missionController, unit, unitType, mapController):
         self.game_controller = gameController
         self.unit_controller = unitController
         self.pathfinding_controller = pathfindingController
         self.mission_controller = missionController
+        self.map_controller = mapController
 
         #Reference to the BattleCode unit object that the server side code tracks
         self.unit = unit
@@ -34,6 +35,7 @@ class IRobot:
         #last position
         self.lastPosition = None
         
+        self.directions = list(bc.Direction)
 
     #Actions that will be run at the end of every robot's turn
     def run(self):
@@ -73,6 +75,7 @@ class IRobot:
                 if self.try_move(direction):
                     self.path.pop()
                 else:
+                    self.one_random_movement()
                     self.update_path_to_target()
             else:
                 print("destination reached")
