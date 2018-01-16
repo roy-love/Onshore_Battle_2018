@@ -25,6 +25,7 @@ class UnitController:
 
         if self.game_controller.round() > 95 and self.game_controller.round() < 101:
             self.mission_controller.MustBuildRocket = True
+            
 
     def GetWorkerCount(self):
         count = 0

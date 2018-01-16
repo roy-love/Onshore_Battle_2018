@@ -90,8 +90,11 @@ class Worker(IRobot):
                     # self.target_location.x, self.target_location.y))
                     self.update_path_to_target()
 
+            
             if not self.mission.info.unit.structure_is_built() and self.has_reached_destination():
                 self.try_build(self.mission.info.unitId)
+            elif not self.has_reached_destination():
+                self.follow_path()
 
             if self.mission.info.unit.structure_is_built():
                 self.reset_mission()

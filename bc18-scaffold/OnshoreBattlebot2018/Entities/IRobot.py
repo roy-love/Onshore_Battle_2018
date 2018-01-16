@@ -31,6 +31,10 @@ class IRobot:
         #To allow for Missions that have a secondary action
         self.perform_second_action = False
 
+        #last position
+        self.lastPosition = None
+        
+
     #Actions that will be run at the end of every robot's turn
     def run(self):
         """This runs actions at the end of the turn"""
@@ -68,8 +72,21 @@ class IRobot:
                 print("Walking in direction {}".format(direction))
                 if self.try_move(direction):
                     self.path.pop()
+                else:
+                    self.update_path_to_target()
             else:
                 print("destination reached")
+    def isStuck(self):
+        if self.lastPosition is None:
+            self.lastPosition = self.unit.location.map_location()
+            return False
+
+        currentLocation = self.unit.location.map_location()
+        if self.lastPosition.x == currentLocation.x and \
+        self.lastPosition.y == self.currentLocation.y:
+            return True
+        else:
+            return False
 
     def has_reached_destination(self):
         """Shows if you have reached the destination"""
