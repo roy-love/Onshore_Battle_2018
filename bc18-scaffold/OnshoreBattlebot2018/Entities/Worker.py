@@ -19,7 +19,7 @@ class Worker(IRobot):
     #overrides IRobot run method
     def run(self):
         
-        if self.unit_controller.GetWorkerCount() < 1:
+        if self.unit_controller.GetWorkerCount() < 10:
             direction = random.choice(self.directions)
             self.try_replication(direction)
         
