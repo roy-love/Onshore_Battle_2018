@@ -138,20 +138,21 @@ class MissionController:
                 newMission.action = Missions.BuildRocket
                 newMission.info = MissionInfo()
                 newMission.info.isRocket = True
-                newMission = map_location = bc.MapLocation(self.game_controller.planet(), 0, 0)
+                map_location = bc.MapLocation(self.game_controller.planet(), 0, 0)
                 map_location.x = random.randint(0, 12)
                 map_location.y = random.randint(0, 12)
-                new_mission.info = map_location # TODO get open location from the map
+                new_mission.info.mapLocation = map_location # TODO get open location from the map
                 rocketCount += 1
                 return new_mission
             #Build Factory
             elif factory_count < 5 and chance > 50:
                 new_mission = Mission()
                 new_mission.action = Missions.CreateBlueprint
+                new_mission.info = MissionInfo()
                 map_location = bc.MapLocation(self.game_controller.planet(), 0, 0)
                 map_location.x = random.randint(0, 12)
                 map_location.y = random.randint(0, 12)
-                new_mission.info = map_location # TODO get open location from the map
+                new_mission.info.mapLocation = map_location # TODO get open location from the map
                 return new_mission
             #Mine Karbonite
             elif self.game_controller.karbonite() < 20 and chance > 25:

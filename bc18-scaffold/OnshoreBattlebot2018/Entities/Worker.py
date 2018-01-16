@@ -51,7 +51,7 @@ class Worker(IRobot):
             #if not self.perform_second_action and self.target_location is None:
             #    if self.path == None or len(self.path) == 0:
                     #print("Build location path is null. Making a new one.")
-            #        self.target_location = self.mission.info
+            #        self.target_location = self.mission.info.mapLocation
 
                     #print("Wants to move from {},{} to {},{}".format(\
                     # self.unit.location.map_location().x, self.unit.location.map_location().y, \
@@ -115,7 +115,7 @@ class Worker(IRobot):
                 #print('built a factory!')
                 info.unitId = other.id
                 info.unit = other
-                self.mission_controller.AddMission(Missions.BuildFactory, MissionTypes.Worker, info)
+                self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
         return True
 
     def try_build(self, blueprint_id):
