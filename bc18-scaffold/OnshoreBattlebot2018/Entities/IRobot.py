@@ -39,7 +39,7 @@ class IRobot:
     def update_mission(self):
         """This updates the mission"""
         if self.mission is None:
-            self.mission = self.mission_controller.GetMission(self.unit_type)
+            self.mission = self.mission_controller.get_mission(self.unit_type)
             self.mission_start_round = self.game_controller.round()
             self.target_location = None
             print("Robot with id {} obtaining new mission {}".\

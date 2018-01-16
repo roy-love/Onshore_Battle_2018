@@ -18,7 +18,7 @@ class ResearchTreeController:
 
     def update_queue(self):
         """"This is the update queue"""
-        if self.strategy_controller.macroStrategy == MacroStrategies.Default:
+        if self.strategy_controller.macro_strategy == MacroStrategies.Default:
             if not self.game_controller.research_info().has_next_in_queue():
                 self.add_research_to_queue(bc.UnitType.Worker)
 

@@ -20,7 +20,7 @@ class TargettingController:
 		self.enemyTrackingController = enemyTrackingController
 		self.enemyRobots = []
 		self.enemyStructures = []
-		self.ally = bc.team()
+		self.ally = gameController.team()
 		self.roundLimit = 10
 
 	# Updates units for whether they have died or if a unit needs to be added to registry

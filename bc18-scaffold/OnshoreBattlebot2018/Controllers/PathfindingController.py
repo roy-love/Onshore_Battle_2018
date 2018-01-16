@@ -37,6 +37,9 @@ class PathfindingController:
 			newNodes = {elem for elem in newNodes if elem not in explored}
 			for nodes in newNodes:
 				frontier.append(nodes)
+			print("setting path now XXXXCXXXCXXCXXCXCXCXCXCXCXCXCX")
+			print(node)
+			print(destination)
 			if node == destination:
 				break
 		while node.Parent is not None:
@@ -55,13 +58,13 @@ class PathfindingController:
 
 	def Transition(self, node, direction):
 		currentnode = node
-		if direction == bc.Directions.North:
+		if direction == bc.Direction.North:
 			newNode = self.mapController.GetNode(currentnode.room.x, currentnode.room.y + 1)
-		elif direction == bc.Directions.East:
+		elif direction == bc.Direction.East:
 			newNode = self.mapController.GetNode(currentnode.room.x + 1, currentnode.room.y)
-		elif direction == bc.Directions.South:
+		elif direction == bc.Direction.South:
 			newNode = self.mapController.GetNode(currentnode.room.x, currentnode.room.y - 1)
-		elif direction == bc.Directions.West:
+		elif direction == bc.Direction.West:
 			newNode = self.mapController.GetNode(currentnode.room.x - 1, currentnode.room.y)
 		newRoom = None
 		if (newNode is not None):
