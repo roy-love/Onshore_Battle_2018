@@ -102,7 +102,8 @@ class Worker(IRobot):
         #print("BLUEPRINT_RESULT: {}".format(result))
         info = MissionInfo()
         info.mapLocation = self.unit.location.map_location()
-        nearby = self.game_controller.sense_nearby_units(info.mapLocation, 2)
+        team = self.game_controller.team()
+        nearby = self.game_controller.sense_nearby_units_by_team(info.mapLocation, 5,team)
         for other in nearby:
             print(other.unit_type)
             if bc.UnitType.Factory == other.unit_type:
@@ -110,7 +111,7 @@ class Worker(IRobot):
                 #print('built a factory!')
                 info.unitId = other.id
                 info.unit = other
-        self.mission_controller.AddMission(Missions.BuildFactory, MissionTypes.Worker, info)
+                self.mission_controller.AddMission(Missions.BuildFactory, MissionTypes.Worker, info)
         return True
 
     def try_build(self, blueprint_id):
