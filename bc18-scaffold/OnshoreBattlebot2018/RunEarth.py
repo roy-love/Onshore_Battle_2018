@@ -40,6 +40,7 @@ class RunEarth:
     # Runs once per turn for this planet only
     def Run(self):
         """This runs on Earth once per turn"""
+        print("Karbonite: {}".format(self.game_controller.karbonite()))
         self.round = self.game_controller.round()
         if self.round == 1:
             print("First round on Earth.  Initializing map")

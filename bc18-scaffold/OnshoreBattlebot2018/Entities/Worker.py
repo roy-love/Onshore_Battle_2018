@@ -25,13 +25,13 @@ class Worker(IRobot):
         #print("Worker bot with id {} run() called.".format(self.unit.id))
         self.update_mission()
 
-        if self.mission.action == Missions.Idle:
-            self.idle()
+        #if self.mission.action == Missions.Idle:
+        #    self.idle()
 
-        elif self.mission.action == Missions.RandomMovement:
-            self.one_random_movement()
+        #if self.mission.action == Missions.RandomMovement:
+         #   self.one_random_movement()
 
-        elif self.mission.action == Missions.Mining:
+        if self.mission.action == Missions.Mining:
 
             #TODO Determine what to do when mining
             #if not self.perform_second_action and self.target_location is None:
@@ -152,6 +152,7 @@ class Worker(IRobot):
             return False
 
         self.game_controller.harvest(self.unit.id, direction)
+        print("Worker [{}] HARVESTED.".format(self.unit.id))
         return True
 
     def try_repair(self, structure_id):
