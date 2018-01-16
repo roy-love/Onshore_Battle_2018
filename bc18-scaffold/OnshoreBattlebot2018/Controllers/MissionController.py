@@ -124,7 +124,7 @@ class MissionController:
             elif self.game_controller.karbonite() < 20 and chance > 25:
                 new_mission = Mission()
                 new_mission.action = Missions.Mining
-                map_location = bc.Map_location(self.game_controller.planet(), 0, 0)
+                map_location = bc.MapLocation(self.game_controller.planet(), 0, 0)
                 map_location.x = random.randint(0, 10)
                 map_location.y = random.randint(0, 10)
                 new_mission.info = map_location # TODO get mining location from map
