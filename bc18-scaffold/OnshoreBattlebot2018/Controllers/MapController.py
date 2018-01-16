@@ -18,6 +18,8 @@ class MapController:
         #which will access the isPassable bool for map location x = 3 y = 5
         self.earth_map = []
         self.mars_map = []
+        self.my_team_start = []
+        self.enemy_team_start = []
 
       def InitializeEarthMap(self):
             try:
@@ -25,6 +27,14 @@ class MapController:
                   self.map = self.gameController.starting_map(bc.Planet.Earth)
                   print(self.map.width)
                   print(self.map.height)
+                  for unit in self.map.initial_units:
+                        if unit.team == self.gameController.team():
+                              if len(self.my_team_start) == 0:
+                                    self.my_team_start.append(unit.location.map_location())
+                        else:
+                              if len(self.enemy_team_start) == 0:
+                                    self.enemy_team_start.append(unit.location.map_location())
+                  print(self.my_team_start)
                   self.earth_Map = []
                   for mapX in range(self.map.height):
                         self.earth_map.append([])
