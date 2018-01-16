@@ -68,12 +68,12 @@ class MapController:
             
       def GetNodeEarth(self, mapX, mapY):
             if (mapX <= self.map.width - 1 and mapY <= self.map.height - 1 and mapX > -1 and mapY > -1):
-                  node = self.earthMap[mapX][mapY]
+                  node = self.earth_map[mapX][mapY]
                   return node
             return None
 
       def GetNodeMars(self, mapX, mapY):
             if (mapX <= self.marsMap.width - 1 and mapY <= self.marsMap.height - 1 and mapX > -1 and mapY > -1):
-                  node = self.marsMap[mapX][mapY]
+                  node = self.mars_map[mapX][mapY]
                   return node
             return None
