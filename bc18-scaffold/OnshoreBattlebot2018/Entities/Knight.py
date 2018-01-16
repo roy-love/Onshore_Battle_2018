@@ -1,3 +1,4 @@
+"""This is our Knight"""
 import random
 import sys
 import traceback

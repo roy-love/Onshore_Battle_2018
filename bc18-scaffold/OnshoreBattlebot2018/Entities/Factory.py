@@ -1,3 +1,4 @@
+"""This is our Factory"""
 import random
 import sys
 import traceback

@@ -1,7 +1,8 @@
-import battlecode as bc
+"""This runs Python code"""
 import random
 import sys
 import traceback
+import battlecode as bc
 
 from RunEarth import RunEarth
 
