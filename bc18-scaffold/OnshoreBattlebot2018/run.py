@@ -4,6 +4,7 @@ import sys
 import traceback
 
 from RunEarth import RunEarth
+from RunMars import RunMars
 
 print("Starting Onshore Battlecode 2018 Player")
 
@@ -25,7 +26,7 @@ while True:
             RUNEARTH.Run()
         else:
             print('Running Mars Turn')
-			RUNMARS.Run()
+            RUNMARS.Run()
 
     except Exception as e:
         print('Error:', e)

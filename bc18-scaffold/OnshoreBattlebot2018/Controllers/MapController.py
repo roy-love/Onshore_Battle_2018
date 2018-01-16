@@ -25,12 +25,12 @@ class MapController:
                   self.map = self.gameController.starting_map(bc.Planet.Earth)
                   print(self.map.width)
                   print(self.map.height)
-                  self.earthMap = []
+                  self.earth_Map = []
                   for mapX in range(self.map.height):
-                        self.earthMap.append([])
+                        self.earth_map.append([])
                         for mapY in range(self.map.width):
                               mapLoc = bc.MapLocation(bc.Planet.Earth,mapX, mapY)
-                              self.earthMap[mapX].append({"x": mapX, "y": mapY, "hash": self.hashCoordanates(mapX, mapY), "isPassable": self.map.is_passable_terrain_at(mapLoc), "karboniteCount": self.map.initial_karbonite_at(mapLoc)})
+                              self.earth_map[mapX].append({"x": mapX, "y": mapY, "hash": self.hashCoordanates(mapX, mapY), "isPassable": self.map.is_passable_terrain_at(mapLoc), "karboniteCount": self.map.initial_karbonite_at(mapLoc)})
                   print(self.map.planet)
             except Exception as e:
                   print('Error:', e)
@@ -41,11 +41,12 @@ class MapController:
             try:
                   print("Initializing Mars Map")
                   self.marsMap = self.gameController.starting_map(bc.Planet.Mars)
+                  self.mars_map = []
                   for mapX in range(self.marsMap.width):
-                        self.marsMap.append([])
+                        self.mars_map.append([])
                         for mapY in range(self.marsMap.height):
                               mapLoc = bc.MapLocation(bc.Planet.Mars, mapX, mapY)
-                              self.marsMap[mapX].append({"x": mapX, "y": mapY, "hash": self.hashCoordanates(mapX, mapY), "isPassable": self.marsMap.is_passable_terrain_at(mapLoc), "karboniteCount": self.marsMap.initial_karbonite_at(mapLoc)})
+                              self.mars_map[mapX].append({"x": mapX, "y": mapY, "hash": self.hashCoordanates(mapX, mapY), "isPassable": self.marsMap.is_passable_terrain_at(mapLoc), "karboniteCount": self.marsMap.initial_karbonite_at(mapLoc)})
                   print(self.marsMap.planet)
             except Exception as e:
                   print('Error:', e)
