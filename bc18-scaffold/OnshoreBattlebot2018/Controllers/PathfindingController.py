@@ -25,27 +25,50 @@ class PathfindingController:
 		path = []
 		explored = []
 		frontier = deque([])
-		node = GraphNode(currentLocation, None, None)
+		startingLocation = self.mapController.GetNode(currentLocation.x, currentLocation.y)
+		endingLocation = self.mapController.GetNode(destination.x, destination.y)
+		node = GraphNode(startingLocation, None, None)
+		endNode = GraphNode(endingLocation, None, None)
 		frontier.append(node)
 		while True:
+			#print("FRONTIER LENGHT IS")
+			#print(len(frontier))
 			if len(frontier) == 0:
+				#print("frontier is empty")
 				return
 			else:
+				#print(frontier)
 				node = frontier.popleft()
+				#print("seeing if popleft is give me a dict or what i need")
+				#print(node.room["x"])
 			newNodes = self.Explore(node)
-			explored.append(node)
-			newNodes = {elem for elem in newNodes if elem not in explored}
+			explored.append(node.room)
+			#newNodes = {elem for elem in newNodes if elem not in explored}
 			for nodes in newNodes:
-				frontier.append(nodes)
-			print("setting path now XXXXCXXXCXXCXXCXCXCXCXCXCXCXCX")
-			print(node)
-			print(destination)
-			if node == destination:
+				#print("PRINTING WHAT IM ADDING TO FROntier")
+				#print(nodes.room)
+				#print(explored[0])
+				print("Nodes in Frontier")
+				print(len(frontier))
+				if nodes.room in explored:
+					print("NODE ALREADY IN EXPLORED")
+					print(len(explored))
+					print(len(frontier))
+				else:
+					print("adding to frontier")
+					frontier.append(nodes)
+			print("nodes now in frontier")
+			print(len(frontier))
+			#print(node.room)
+			#print(endNode.room)
+			if node.room == endNode.room:
 				break
 		while node.Parent is not None:
+			print("setting path now XXXXCXXXCXXCXXCXCXCXCXCXCXCXCX")
 			path.append(node.Action)
 			node = node.Parent
-		
+		print("Printing path now")
+		print(path)
 		return path
 
 	def Explore (self, node):
@@ -58,16 +81,33 @@ class PathfindingController:
 
 	def Transition(self, node, direction):
 		currentnode = node
+		#print("Printing the new current node")
+		#print(currentnode.room)
+		#print(currentnode.room["x"])
 		if direction == bc.Direction.North:
-			newNode = self.mapController.GetNode(currentnode.room.x, currentnode.room.y + 1)
+			#print("PRINTING CURRENT NODE71")
+			#print(currentnode.room["x"])
+			newNode = self.mapController.GetNode(currentnode.room["x"], currentnode.room["y"] + 1)
 		elif direction == bc.Direction.East:
-			newNode = self.mapController.GetNode(currentnode.room.x + 1, currentnode.room.y)
+			#print("PRINTING CURRENT NODE75")
+			#print(currentnode.room)
+			newNode = self.mapController.GetNode(currentnode.room["x"] + 1, currentnode.room["y"])
 		elif direction == bc.Direction.South:
-			newNode = self.mapController.GetNode(currentnode.room.x, currentnode.room.y - 1)
+			#print("PRINTING CURRENT NODE79")
+			#print(currentnode.room)
+			newNode = self.mapController.GetNode(currentnode.room["x"], currentnode.room["y"] - 1)
 		elif direction == bc.Direction.West:
-			newNode = self.mapController.GetNode(currentnode.room.x - 1, currentnode.room.y)
+			#print("PRINTING CURRENT NODE83")
+			#print(currentnode.room)
+			newNode = self.mapController.GetNode(currentnode.room["x"] - 1, currentnode.room["y"])
+		#print("Printing newNode in Transitions")
+		#print(newNode)
 		newRoom = None
 		if (newNode is not None):
-			newRoom = GraphNode(newRoom, node, direction)
+			#print("ADDING to newRoom in Transition")
+			newRoom = GraphNode(newNode, node, direction)
+			#print(newRoom.room)
+			#print("checking if newRoom is a dict not what i need")
+			#print(newRoom.room["x"])
 		return newRoom
 		

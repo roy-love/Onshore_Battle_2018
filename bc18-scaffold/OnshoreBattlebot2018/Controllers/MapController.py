@@ -44,4 +44,7 @@ class MapController:
             return hash
 
       def GetNode(self, mapX, mapY):
-            return self.earthMap[mapX][mapY]
+            if (mapX <= self.map.width - 1 and mapY <= self.map.height - 1 and mapX > -1 and mapY > -1):
+                  node = self.earthMap[mapX][mapY]
+                  return node
+            return None
