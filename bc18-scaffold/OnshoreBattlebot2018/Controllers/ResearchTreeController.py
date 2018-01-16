@@ -16,6 +16,9 @@ class ResearchTreeController:
         self.game_controller = gameController
         self.strategy_controller = strategyController
 
+        #hard coded research queue
+        
+
     def is_rocket_researched(self):
         research_info = self.game_controller.research_info()
         level = research_info.get_level(bc.UnitType.Rocket)
@@ -25,13 +28,12 @@ class ResearchTreeController:
             return False
 
     def update_queue(self):
-        """"This is the update queue"""
-        if self.strategy_controller.macro_strategy == MacroStrategies.Default:
-            if not self.game_controller.research_info().has_next_in_queue():
-                self.add_research_to_queue(bc.UnitType.Worker)
+        pass
+        #if self.strategy_controller.macro_strategy == MacroStrategies.Default:
+        #    if not self.game_controller.research_info().has_next_in_queue():
+        #        self.add_research_to_queue(bc.UnitType.Worker)
 
     def add_research_to_queue(self, branch):
-        """This adds research to queue"""
         branch_name = self.get_branch_name(branch)
         research_info = self.game_controller.research_info()
         level = research_info.get_level(branch)
@@ -39,12 +41,10 @@ class ResearchTreeController:
         self.game_controller.queue_research(branch)
 
     def clear_research_queue(self):
-        """This clears the research queue"""
         print("Research queue cleared.")
         self.game_controller.reset_research()
 
     def is_current_research_near_completion(self):
-        """Shows if current research is near completion"""
     # Returns a bool if the current number of rounds left for the current
     # research is less than or equal to a percentage.
     # rType: bool
@@ -59,7 +59,6 @@ class ResearchTreeController:
             return False
 
     def get_research_branch_turns(self, branch, level):
-        """This gets research branch turns"""
         if branch == 0: # Worker
             if level == 1:
                 return 25

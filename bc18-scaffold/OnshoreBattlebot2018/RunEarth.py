@@ -1,7 +1,7 @@
 import random
 import sys
 import traceback
-
+import battlecode as bc
 from Controllers import *
 from Entities import *
 
@@ -27,6 +27,15 @@ class RunEarth:
         self.pathfinding_controller, self.mission_controller)
         self.targetting_controller = TargettingController(gameController, \
         self.map_controller, self.strategy_controller, self.unit_controller, self.enemy_tracking_controller)
+
+        self.research_tree_controller.add_research_to_queue(bc.UnitType.Rocket)
+        self.research_tree_controller.add_research_to_queue(bc.UnitType.Ranger)
+        self.research_tree_controller.add_research_to_queue(bc.UnitType.Ranger)
+        self.research_tree_controller.add_research_to_queue(bc.UnitType.Ranger)
+        self.research_tree_controller.add_research_to_queue(bc.UnitType.Worker)
+        self.research_tree_controller.add_research_to_queue(bc.UnitType.Worker)
+        self.research_tree_controller.add_research_to_queue(bc.UnitType.Worker)
+        self.research_tree_controller.add_research_to_queue(bc.UnitType.Worker)
 
     # Runs once per turn for this planet only
     def Run(self):

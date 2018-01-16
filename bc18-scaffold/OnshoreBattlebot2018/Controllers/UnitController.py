@@ -23,6 +23,16 @@ class UnitController:
         self.__delete_killed_units()
         self.__add_unregistered_units()
 
+        if self.game_controller.round() > 95 and self.game_controller.round() < 101:
+            self.mission_controller.MustBuildRocket = True
+
+    def GetWorkerCount(self):
+        count = 0
+        for robot in self.robots:
+            if robot.unit.unit_type == bc.UnitType.Worker:
+                count += 1
+        return count
+
     # Removes robots and structures that are not found on the map any longer
     def __delete_killed_units(self):
         print("Checking for dead robots that should be removed from list")
@@ -101,7 +111,7 @@ class UnitController:
         robot_count = len(self.robots)
         structure_count = len(self.structures)
         gc_count = len(self.game_controller.my_units())
-        print("GC.Units {}, UC.Robots+Structures {}".format(gc_count, robot_count+structure_count))
+        #print("GC.Units {}, UC.Robots+Structures {}".format(gc_count, robot_count+structure_count))
         print("Running all structures")
         print("structures count: {}".format(structure_count))
         for structure in self.structures:
