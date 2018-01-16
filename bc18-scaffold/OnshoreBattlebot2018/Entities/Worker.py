@@ -15,8 +15,13 @@ class Worker(IRobot):
         super().__init__(gameController, unitController, \
         pathfindingController, missionController, unit, bc.UnitType.Worker)
 
+
     #overrides IRobot run method
     def run(self):
+        
+        if self.unit_controller.GetWorkerCount() < 10:
+            self.try_replication(bc.Direction.North)
+        
         #print("Worker bot with id {} run() called.".format(self.unit.id))
         self.update_mission()
 
@@ -29,22 +34,23 @@ class Worker(IRobot):
         elif self.mission.action == Missions.Mining:
 
             #TODO Determine what to do when mining
-            if not self.perform_second_action and self.target_location is None:
-                if self.path is None or len(self.path) == 0:
+            #if not self.perform_second_action and self.target_location is None:
+            #    if self.path is None or len(self.path) == 0:
                     #print("Path is null.  Making a new one")
-                    self.target_location = self.mission.info
+            #        self.target_location = self.mission.info
 
                     #print("Wants to move from {},{} to {},{}".format(\
                     # self.unit.location.map_location().x, self.unit.location.map_location().y, \
                     # self.target_location.x, self.target_location.y))
-                    self.update_path_to_target()
+            #        self.update_path_to_target()
 
-            if self.has_reached_destination():
+            #if self.has_reached_destination():
                 # harvest at the current map location: 0 = Center
-                self.try_harvest(bc.Direction.Center)
-                self.reset_mission()
-            else:
-                self.follow_path()
+            self.one_random_movement()
+            self.try_harvest(bc.Direction.Center)
+            self.reset_mission()
+            #else:
+            #    self.follow_path()
 
         elif self.mission.action == Missions.CreateBlueprint:
             # TODO Upgrade logic with better pathfinding
@@ -115,6 +121,10 @@ class Worker(IRobot):
                 #print('built a factory!')
                 info.unitId = other.id
                 info.unit = other
+                self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
         return True
 
