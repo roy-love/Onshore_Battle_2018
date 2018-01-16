@@ -1,3 +1,4 @@
+"""This is our Strategy Controller"""
 from enum import Enum
 
 # Uses all known information from various controllers to determine the current strategy
@@ -17,7 +18,7 @@ class StrategyController:
     def set_default_strategy(self):
         """This sets default strategy"""
         self.macro_strategy = MacroStrategies.Default
-        self.unitStrategy = UnitStrategies.Default
+        self.unit_strategy = UnitStrategies.Default
 
     #TODO update strategy based upon changes to the map, enemies seen, or any other criteria
     def update_strategy(self):
