@@ -42,12 +42,12 @@ class Worker(IRobot):
                     newLocation = self.unit.location.map_location()
                     newLocation.x = random.randint(-5,5)
                     newLocation.y = random.randint(-5,5)
-                    
-                    self.target_location = newLocation
+                    if not self.map_controller.GetNodeEarth(newLocation.x,newLocation.y) is None:
+                        self.target_location = newLocation
                     #print("Wants to move from {},{} to {},{}".format(\
                     # self.unit.location.map_location().x, self.unit.location.map_location().y, \
                     # self.target_location.x, self.target_location.y))
-                    self.update_path_to_target()
+                        self.update_path_to_target()
 
             if self.has_reached_destination():
                 # harvest at the current map location: 0 = Center
@@ -66,11 +66,13 @@ class Worker(IRobot):
                     newLocation = self.unit.location.map_location()
                     newLocation.x = random.randint(-5,5)
                     newLocation.y = random.randint(-5,5)
-                    self.target_location = newLocation
+                    if not self.map_controller.GetNodeEarth(newLocation.x,newLocation.y) is None:
+                        self.target_location = newLocation
                     #print("Wants to move from {},{} to {},{}".format(\
                     #self.unit.location.map_location().x, self.unit.location.map_location().y, \
                     #self.target_location.x, self.target_location.y))
-                    self.update_path_to_target()
+                        self.update_path_to_target()
+                    
 
             if self.has_reached_destination():
                 #self.one_random_movement()

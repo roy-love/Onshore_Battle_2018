@@ -8,9 +8,9 @@ class Mage(IRobot):
     # change init definition to include any controllers needed in the instructor as we need them
     # For example:  it will eventually need to access the Targeting and Pathfinding controllers
     def __init__(self, gameController, unitController, \
-    pathfindingController, missionController, unit):
+    pathfindingController, missionController, unit,mapController):
         super().__init__(gameController, unitController, \
-        pathfindingController, missionController, unit, bc.UnitType.Mage)
+        pathfindingController, missionController, unit, bc.UnitType.Mage,mapController,mapController)
 
     def run(self):
         self.update_mission()
