@@ -6,6 +6,33 @@ from Controllers.MissionController import *
 from .IRobot import IRobot
 
 class Knight(IRobot):
+
+    # change init definition to include any controllers needed in the instructor as we need them
+    # For example:  it will eventually need to access the Targeting and Pathfinding controllers
+    def __init__(self, gameController, unitController, pathfindingController, unit):
+        super().__init__(gameController, unitController, pathfindingController, unit)
+        self.mission = None
+        self.target_location = None
+        self.path = None
+
+
+    def run(self):
+        self.__GetMission()
+
+        if self.mission == "Walk Randomly":
+            print("walking randomly")
+            #TODO rework this section to include pathfinding as well as path traversal.
+
+    def __GetMission(self):
+        if self.mission == None:
+            print("Knight has no mission.")
+            self.mission = self.unit_controller.GetMission(self.unit.unit_type)
+            print("New mission is ({})".format(self.mission))
+        else:
+            print("Current mission is ({})".format(self.mission))
+
+    def IsEnemySighted(self):
+
     """This is the Knight robot"""
     # change init definition to include any controllers needed in the instructor as we need them
     # For example:  it will eventually need to access the Targeting and Pathfinding controllers
@@ -45,9 +72,22 @@ class Knight(IRobot):
 
     def is_enemy_sighted(self):
         """Lets you know if enemy is sighted"""
+
         #TODO determine if this unit is able to see an enemy.
         #TODO refactor code to IRobot so that all robots can sight enemies.
         pass
+
+
+    def tryAttack(self, targetRobotId):
+        #TODO check heat is low enough
+        if not self.game_controller.can_attack(self.unit.id, targetRobotId):
+            print("Knight [{}] cannot attack the target [{}]".format(self.unit.id, targetRobotId))
+            return False
+
+        self.game_controller.attack(self.unit.id, targetRobotId)
+        return True
+
+    def tryJavelin(self, targetRobotId):
 
     def try_attack(self, target_robot_id):
         """Trys to attack"""
@@ -61,15 +101,24 @@ class Knight(IRobot):
 
     def try_javelin(self, target_robot_id):
         """Trys the javelin"""
+
         #TODO check has research
 
         if not self.game_controller.is_javelin_ready(self.unit.id):
             print("Javelin is not ready for knight [{}]".format(self.unit.id))
             return False
 
+
+        if not self.game_controller.can_javelin(self.unit.id, targetRobotId):
+            print("Knight [{}] cannot javelin target [{}]".format(self.unit.id, targetRobotId))
+            return False
+
+        self.game_controller.javelin(self.unit.id, targetRobotId)
+
         if not self.game_controller.can_javelin(self.unit.id, target_robot_id):
             print("Knight [{}] cannot javelin target [{}]".format(self.unit.id, target_robot_id))
             return False
 
         self.game_controller.javelin(self.unit.id, target_robot_id)
+
         return True

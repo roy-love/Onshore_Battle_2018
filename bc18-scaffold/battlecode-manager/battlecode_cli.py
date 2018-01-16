@@ -173,7 +173,7 @@ def get_map(map_name):
             print('failed to load map:', e)
         try:
             with open('/player/' + map_name) as f:
-               contents = f.read()
+                contents = f.read()
             print("Loading map " + map_name)
             if map_name.endswith('.bc18map'):
                 return bc.GameMap.from_json(contents)

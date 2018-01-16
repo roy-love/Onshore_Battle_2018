@@ -107,6 +107,7 @@ def reap(process, timeout=3):
     except:
         print("Killing failed; assuming process exited early.")
 
+
 def suspend(process):
 
     procs = process.children(recursive=False)

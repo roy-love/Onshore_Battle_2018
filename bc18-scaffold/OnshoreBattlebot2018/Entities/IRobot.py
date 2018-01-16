@@ -4,6 +4,29 @@ import sys
 import traceback
 
 class IRobot:
+
+    def __init__(self, gameController, unitController, pathfindingController, unit):
+        self.game_controller = gameController
+        self.unit_controller = unitController
+        self.pathfinding_controller = pathfindingController
+        self.unit = unit
+
+    def run(self):
+        # Actions that the default robot should perform each turn
+        # Change method to accept whatever options are needed from other controllers to make its decisions
+        print("Do robot things")
+
+        direction = bc.Direction(random.randint(0, 8))
+        print("Moving randomly in direction {}".format(direction))
+        self.tryMove(direction)
+
+        chance = random.randint(0, 100)
+        if chance == 0:
+            print("Randomly self destructing    1% chance")
+            self.selfDestruct()
+
+    def tryMove(self, direction):
+
     """This is the IRobot"""
     def __init__(self, gameController, unitController, \
     pathfindingController, missionController, unit, unitType):
@@ -89,6 +112,7 @@ class IRobot:
 
     def try_move(self, direction):
         """Lets you try to move"""
+
         if not self.game_controller.is_move_ready(self.unit.id):
             print("Move for Robot [{}] is not ready".format(self.unit.id))
             return False
@@ -98,6 +122,11 @@ class IRobot:
 
         self.game_controller.move_robot(self.unit.id, direction)
         return True
+
+
+    def selfDestruct(self):
+        "Robot [{}] self destructing".format(self.unit.id)
+        self.game_controller.disintegrate_unit(self.unit.id)
 
     def try_attack(self, target_robot_id):
         """Lets you try to attack"""
@@ -170,3 +199,4 @@ class IRobot:
             self.reset_mission()
         else:
             self.follow_path()
+

@@ -22,7 +22,11 @@ while True:
     try:
         if GAMECONTROLLER.planet() == PLANETS.Earth:
             print('Running Earth Turn')
+
+            runEarth.Run()
+
             RUNEARTH.Run()
+
         else:
             print('Running Mars Turn')
 			#runMars.Run()

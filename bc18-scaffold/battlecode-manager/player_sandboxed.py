@@ -56,7 +56,7 @@ class SandboxedPlayer(AbstractPlayer):
             environment=env,
             mem_limit=self.player_mem_limit,
             memswap_limit=self.player_mem_limit,
-            auto_remove = True,
+            auto_remove=True,
             network_disabled=True
         )
 

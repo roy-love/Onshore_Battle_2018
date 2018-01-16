@@ -12,6 +12,12 @@ from Controllers.EnemyTrackingController import *
 # This can apply to workers looking for a build location, healers looking for allies, or rangers looking for targets
 # To start, focus on simply returning the closest or most valuable target
 class TargettingController:
+
+    def __init__(self, gameController, mapController, strategyController):
+        self.game_controller = gameController
+        self.map_controller = mapController
+        self.strategy_controller = strategyController
+
 	def __init__(self, gameController, mapController, strategyController, unitController, enemyTrackingController):
 		self.gameController = gameController
 		self.mapController = mapController
@@ -127,3 +133,4 @@ class TargettingController:
 			self.enemyStructures.append(Factory(self.gameController, self, unit))
 		elif unit.unit_type == bc.UnitType.Rocket:
 			self.enemyStructures.append(Rocket(slef.gameController, self, unit))
+
