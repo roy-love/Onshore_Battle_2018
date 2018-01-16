@@ -14,7 +14,7 @@ PLANETS = bc.Planet
 MY_TEAM = GAMECONTROLLER.team()
 
 RUNEARTH = RunEarth(GAMECONTROLLER)
-#runMars = RunMars(GAMECONTROLLER)
+RUNMARS = RunMars(GAMECONTROLLER)
 
 # Main game loop
 # Avoid placing additional code here if possible
@@ -25,7 +25,7 @@ while True:
             RUNEARTH.Run()
         else:
             print('Running Mars Turn')
-			#runMars.Run()
+			RUNMARS.Run()
 
     except Exception as e:
         print('Error:', e)

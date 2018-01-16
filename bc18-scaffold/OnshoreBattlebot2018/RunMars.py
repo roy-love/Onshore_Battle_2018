@@ -34,4 +34,8 @@ class RunMars:
     # Runs once per turn for this planet only
     def Run(self):
         """This  runs on Marce once per turn"""
+        self.round = self.game_controller.round()
+        if self.round == 1:
+            print("First round on Earth.  Initializing map")
+            self.map_controller.InitializeMarsMap()
         print("Do mars turn things here")
