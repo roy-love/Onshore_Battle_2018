@@ -1,7 +1,8 @@
 import random
 import sys
 import traceback
-
+import battlecode as bc
+from Controllers.MissionController import *
 from .IStructure import IStructure
 
 class Rocket(IStructure):
@@ -9,9 +10,64 @@ class Rocket(IStructure):
     def __init__(self, gameController, unitController, unit):
         super(Rocket, self).__init__(gameController, unitController, unit)
 
+        self.passengerId = None
+        self.expectedLoad = 1
+        self.rocketIsFull = False
+        self.rocketLauchRound = 0
+
     def run(self):
-        """This runs the rocket"""
-        pass
+        
+        if not self.mission.action is None:
+            
+            if self.mission.action == Missions.Idle:
+                pass # do nothing
+            elif self.mission.action == Missions.LoadRocket:
+                if try_load(self.mission.info.unitId):
+                    print("Rocket {} loaded with unit id {}".format(self.unit.id,self.mission.info.unitId))
+                    if len(self.unit.structure_garrison()) == self.unit.structure_max_capacity():
+                        print("Rocket max capacity reached. Forcing rocket lauch.")
+                        self.ForceLauch()
+                    # elif len(self.unit.structure_garrision()) == self.expectedLoad):
+                    #    print("Rocket expected capacity reached.")
+                    else:
+                        currentLoad = len(self.unit.structure_garrison())
+                        maxCapacity = self.unit.structure_max_capacity()
+                        print("Rocket load success. Capacity: {}/{}".format(currentLoad,maxCapacity))
+                else:
+                    print("Unable to load rocket {}".format(self.unit.id))
+            elif self.mission.action == Missions.UnloadRocket:
+                garrison = self.unit.structure_garrison()
+                if self.try_unload(garrison[0]):
+                    # print("Rocket {} unloaded unit with id {}".format(self.unit.id,self.mission.info.unitId))
+                    currentLoad = len(garrison)
+                    if currentLoad > 0:
+                        currentLoad = len(garrison)
+                        maxCapacity = self.unit.structure_max_capacity()
+                        print("Rocket {} unload success. Capacity: {}/{}".format(self.unit.id,currentLoad,maxCapacity))
+                    else:
+                        print("Rocket {} completely unloaded.".format(self.unit.id))
+                        newMission = Mission()
+                        newMission.action = Missions.Idle
+                        self.mission.Idle
+            elif self.mission.action == Missions.LaunchRocket:
+                if try_launch(mission.info):
+                    print("Rocket {} LAUNCHED!".format(self.unit.id))
+            else:
+                pass
+                # Do nothing.
+       
+
+    def ForceLauch(self):
+        newMission = Mission()
+        newMission.action = Missions.LaunchRocket
+        newMission.info = bc.MapLocation(bc.Planet.Mars,0,0)
+        # TODO enhance landing destination
+        self.mission = newMission()
+
+    def ForceUnload(self):
+        newMission = Mission()
+        newMission.action = Missions.UnloadRocket
+        self.mission = newMission()
 
     def try_load(self, target_robot_id):
         """Trys to load the rocket"""
@@ -21,6 +77,8 @@ class Rocket(IStructure):
             return False
 
         self.game_controller.load(self.unit.id, target_robot_id)
+        self.passengerId = target_robot_id
+        
         return True
 
     def try_unload(self, target_robot_id):
