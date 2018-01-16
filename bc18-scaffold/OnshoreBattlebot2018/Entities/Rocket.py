@@ -50,6 +50,8 @@ class Rocket(IStructure):
                         newMission.action = Missions.Idle
                         self.mission.Idle
             elif self.mission.action == Missions.LaunchRocket:
+                if try_launch(mission.info):
+                    print("Rocket {} LAUNCHED!".format(self.unit.id))
             else:
                 pass
                 # Do nothing.

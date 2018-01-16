@@ -64,7 +64,7 @@ class Worker(IRobot):
             if self.mission.info.isRocket:
                 if self.try_blueprint(bc.UnitType.Rocket, direction):
                     print("Worker {} created blueprint for Rocket.".format(self.unit.id))
-            else
+            else:
                 if self.try_blueprint(bc.UnitType.Factory, direction):
                     print("Worker {} created blueprint for Factory.".format(self.unit.id))
             self.reset_mission()

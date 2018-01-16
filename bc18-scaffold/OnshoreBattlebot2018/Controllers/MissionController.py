@@ -133,7 +133,7 @@ class MissionController:
             chance = random.randint(1, 100)
 
             #Build Rocket
-            if self.researchTreeController.is_rocket_researched() and rocketCount == 0
+            if self.researchTreeController.is_rocket_researched() and rocketCount == 0:
                 newMission = Mission()
                 newMission.action = Missions.BuildRocket
                 newMission.info = MissionInfo()
