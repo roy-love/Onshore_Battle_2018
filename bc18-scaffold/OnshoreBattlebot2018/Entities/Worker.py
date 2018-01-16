@@ -61,13 +61,17 @@ class Worker(IRobot):
             #if self.has_reached_destination():
             self.one_random_movement()
             direction = random.choice(list(bc.Direction))
-            if self.try_blueprint(bc.UnitType.Factory, direction):
-                print("Worker {} created blueprint for Factory.".format(self.unit.id))
+            if self.mission.info.isRocket:
+                if self.try_blueprint(bc.UnitType.Rocket, direction):
+                    print("Worker {} created blueprint for Rocket.".format(self.unit.id))
+            else
+                if self.try_blueprint(bc.UnitType.Factory, direction):
+                    print("Worker {} created blueprint for Factory.".format(self.unit.id))
             self.reset_mission()
             #else:
             #    self.FollowPath()
 
-        elif self.mission.action == Missions.BuildFactory:
+        elif self.mission.action == Missions.Build:
             if not self.perform_second_action and self.target_location is None:
                 if self.path is None or len(self.path) == 0:
                     #print("Build location path is null. Making a new one.")

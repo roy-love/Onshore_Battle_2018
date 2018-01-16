@@ -16,6 +16,15 @@ class ResearchTreeController:
         self.game_controller = gameController
         self.strategy_controller = strategyController
 
+    def is_rocket_researched(self):
+        branch_name = self.get_branch_name(6) #Rocekt
+        research_info = self.game_controller.research_info()
+        level = research_info.get_level(branch)
+        if level > 0:
+            return True
+        else:
+            return False
+
     def update_queue(self):
         """"This is the update queue"""
         if self.strategy_controller.macro_strategy == MacroStrategies.Default:

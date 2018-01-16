@@ -17,7 +17,7 @@ class Missions(Enum):
     Patrol = 5 # Assign two locations to partrol
     DestroyTarget = 6 # Assign unit to destroy
     DefendTarget = 7 # Assign unit to defend
-    BuildFactory = 8 # Assign location to build a factory
+    Build = 8 # Assign location to build a factory
     CreateBlueprint = 9 # Assign location to lay down blueprint
     TrainBot = 10 # Instruct Factory to build a bot
     BuildRocket = 11 # Instruct Factory to build a rocket
@@ -48,20 +48,24 @@ class MissionInfo:
         self.map_location = None
         self.unit_id = None
         self.unit = None
+        self.isRocket = False
 
 # Controller that handles the creation and managment of missions
 class MissionController:
     """This is the mission controller"""
-    def __init__(self, gameController, strategyController, mapController):
+    def __init__(self, gameController, strategyController, mapController, researchTreeController):
         self.game_controller = gameController
         self.strategy_controller = strategyController
         self.map_controller = mapController
+        self.researchTreeController = researchTreeController
 
         self.combat_missions = []
         self.healer_missions = []
         self.worker_missions = []
         self.factory_missions = []
         self.rocket_missions = []
+
+        self.rocketCount = 0
 
     # Adds a new mission created by outside source
     def AddMission(self, mission, mission_type, mission_info):
@@ -127,7 +131,21 @@ class MissionController:
                 if other.unit_type == bc.UnitType.Factory:
                     factory_count += 1
             chance = random.randint(1, 100)
-            if factory_count < 5 and chance > 50:
+
+            #Build Rocket
+            if self.researchTreeController.is_rocket_researched() and rocketCount == 0
+                newMission = Mission()
+                newMission.action = Missions.BuildRocket
+                newMission.info = MissionInfo()
+                newMission.info.isRocket = True
+                newMission = map_location = bc.MapLocation(self.game_controller.planet(), 0, 0)
+                map_location.x = random.randint(0, 12)
+                map_location.y = random.randint(0, 12)
+                new_mission.info = map_location # TODO get open location from the map
+                rocketCount += 1
+                return new_mission
+            #Build Factory
+            elif factory_count < 5 and chance > 50:
                 new_mission = Mission()
                 new_mission.action = Missions.CreateBlueprint
                 map_location = bc.MapLocation(self.game_controller.planet(), 0, 0)
@@ -135,6 +153,7 @@ class MissionController:
                 map_location.y = random.randint(0, 12)
                 new_mission.info = map_location # TODO get open location from the map
                 return new_mission
+            #Mine Karbonite
             elif self.game_controller.karbonite() < 20 and chance > 25:
                 new_mission = Mission()
                 new_mission.action = Missions.Mining
@@ -143,6 +162,7 @@ class MissionController:
                 map_location.y = random.randint(0, 10)
                 new_mission.info = map_location # TODO get mining location from map
                 return new_mission
+            #Random Movement
             elif True:
                 new_mission = Mission()
                 new_mission.action = Missions.RandomMovement
