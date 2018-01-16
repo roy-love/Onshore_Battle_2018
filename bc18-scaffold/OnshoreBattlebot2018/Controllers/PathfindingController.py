@@ -48,23 +48,25 @@ class PathfindingController:
 				#print("PRINTING WHAT IM ADDING TO FROntier")
 				#print(nodes.room)
 				#print(explored[0])
-				print("Nodes in Frontier")
-				print(len(frontier))
-				if nodes.room in explored:
-					print("NODE ALREADY IN EXPLORED")
-					print(len(explored))
-					print(len(frontier))
+				#print("Nodes in Frontier")
+				#print(len(frontier))
+				if self.AlreadyExplored(nodes, explored):
+					pass
+					##print("NODE ALREADY IN EXPLORED")
+					#print(len(explored))
+					#print(len(frontier))
 				else:
-					print("adding to frontier")
-					frontier.append(nodes)
-			print("nodes now in frontier")
-			print(len(frontier))
+					if self.AlreadyFrontier(node, frontier):
+						#print("adding to frontier")
+						frontier.append(nodes)
+			#print("nodes now in frontier")
+			#print(len(frontier))
 			#print(node.room)
 			#print(endNode.room)
 			if node.room == endNode.room:
 				break
 		while node.Parent is not None:
-			print("setting path now XXXXCXXXCXXCXXCXCXCXCXCXCXCXCX")
+			#print("setting path now XXXXCXXXCXXCXXCXCXCXCXCXCXCXCX")
 			path.append(node.Action)
 			node = node.Parent
 		print("Printing path now")
@@ -111,3 +113,22 @@ class PathfindingController:
 			#print(newRoom.room["x"])
 		return newRoom
 		
+	def AlreadyExplored(self, node, explored):
+		isExplored = False
+		for item in explored:
+			if node.room["hash"] == item["hash"]:
+				#print("Setting Is Explored to TRUE")
+				#print(node.room["hash"])
+				#print(item["hash"])
+				isExplored = True
+				break
+		return isExplored
+
+	def AlreadyFrontier(self, node, frontier):
+		notInFrontier = True 
+		for item in frontier:
+			if node.room["hash"] == item.room["hash"]:
+				notInFrontier = False
+				break
+		return notInFrontier
+
