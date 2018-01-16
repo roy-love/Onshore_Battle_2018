@@ -1,4 +1,3 @@
-"""This is our Communication Controller"""
 import random
 import sys
 import traceback

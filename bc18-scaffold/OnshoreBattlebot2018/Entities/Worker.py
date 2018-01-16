@@ -1,10 +1,10 @@
-"""This is our Worker"""
 import random
 import sys
 import traceback
 import battlecode as bc
 from Controllers.MissionController import *
 from .IRobot import IRobot
+
 
 class Worker(IRobot):
     """This is the Worker robot"""
@@ -103,7 +103,7 @@ class Worker(IRobot):
         info = MissionInfo()
         info.mapLocation = self.unit.location.map_location()
         team = self.game_controller.team()
-        nearby = self.game_controller.sense_nearby_units_by_team(info.mapLocation, 5, team)
+        nearby = self.game_controller.sense_nearby_units_by_team(info.mapLocation, 5,team)
         for other in nearby:
             print(other.unit_type)
             if bc.UnitType.Factory == other.unit_type:

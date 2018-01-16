@@ -1,4 +1,3 @@
-"""This is our Mission Controller"""
 import random
 import sys
 import traceback
@@ -65,7 +64,7 @@ class MissionController:
         self.rocket_missions = []
 
     # Adds a new mission created by outside source
-    def add_mission(self, mission, mission_type, mission_info):
+    def AddMission(self, mission, mission_type, mission_info):
         """This adds missions"""
         new_mission = Mission()
         new_mission.action = mission

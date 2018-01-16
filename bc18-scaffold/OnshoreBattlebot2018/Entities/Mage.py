@@ -1,4 +1,3 @@
-"""This is our Mage"""
 import random
 import battlecode as bc
 from Controllers.MissionController import *

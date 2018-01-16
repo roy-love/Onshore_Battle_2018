@@ -1,8 +1,7 @@
-"""This is our IStructure"""
+import battlecode as bc
 import random
 import sys
 import traceback
-import battlecode as bc
 
 class IStructure:
     """This is the IStructure"""

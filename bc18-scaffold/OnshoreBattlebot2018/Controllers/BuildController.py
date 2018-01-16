@@ -1,4 +1,3 @@
-"""This is our Build Controller"""
 import random
 import sys
 import traceback

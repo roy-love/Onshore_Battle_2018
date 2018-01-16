@@ -1,4 +1,3 @@
-"""This runs Earth"""
 import random
 import sys
 import traceback
@@ -27,8 +26,7 @@ class RunEarth:
         self.unit_controller = UnitController(gameController, self.strategy_controller, \
         self.pathfinding_controller, self.mission_controller)
         self.targetting_controller = TargettingController(gameController, \
-        self.map_controller, self.strategy_controller, self.unit_controller, \
-        self.enemy_tracking_controller)
+        self.map_controller, self.strategy_controller, self.unit_controller, self.enemy_tracking_controller)
 
     # Runs once per turn for this planet only
     def Run(self):

@@ -1,4 +1,3 @@
-"""This is our Enemy Tracking Controller"""
 import random
 import sys
 import traceback

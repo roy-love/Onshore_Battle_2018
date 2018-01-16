@@ -1,8 +1,7 @@
-"""This runs Mars"""
+import battlecode as bc
 import random
 import sys
 import traceback
-import battlecode as bc
 
 from Controllers import *
 from Entities import *

@@ -1,8 +1,7 @@
-"""This is our IRobot"""
+import battlecode as bc
 import random
 import sys
 import traceback
-import battlecode as bc
 
 class IRobot:
     """This is the IRobot"""
