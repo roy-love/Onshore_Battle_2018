@@ -84,8 +84,8 @@ class MapController:
             return location
 
       def GetRandomMarsNode(self):
-            Xcoord = random.randint(0,20 -1)
-            Ycoord = random.randint(0,20 -1)
+            Xcoord = random.randint(0,19)
+            Ycoord = random.randint(0,19)
             location = bc.MapLocation(bc.Planet.Mars,Xcoord,Ycoord)
             return location
             
