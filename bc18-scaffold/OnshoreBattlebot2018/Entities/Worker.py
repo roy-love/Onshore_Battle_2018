@@ -19,7 +19,7 @@ class Worker(IRobot):
     #overrides IRobot run method
     def run(self):
         
-        if self.unit_controller.GetWorkerCount() < 10:
+        if self.unit_controller.workerCount < 10:
             direction = random.choice(self.directions)
             self.try_replication(direction)
         
@@ -35,24 +35,24 @@ class Worker(IRobot):
         if self.mission.action == Missions.Mining:
             #print("Worker {} Mining.".format(self.unit.id))
             #TODO Determine what to do when mining
-            if not self.perform_second_action and self.target_location is None:
-                if self.path is None or len(self.path) == 0:
+            #if not self.perform_second_action and self.target_location is None:
+            #    if self.path is None or len(self.path) == 0:
                     #print("Path is null.  Making a new one")
                     #self.target_location = self.mission.info
-                    newLocation = self.map_controller.GetRandomEarthNode()
-                    self.target_location = newLocation
+                    #newLocation = self.map_controller.GetRandomEarthNode()
+                    #self.target_location = newLocation
                     #print("Wants to move from {},{} to {},{}".format(\
                     # self.unit.location.map_location().x, self.unit.location.map_location().y, \
                     # self.target_location.x, self.target_location.y))
-                    self.update_path_to_target()
+                    #self.update_path_to_target()
 
-            if self.has_reached_destination():
+            #if self.has_reached_destination():
                 # harvest at the current map location: 0 = Center
-                #self.one_random_movement()
-                self.try_harvest(bc.Direction.Center)
-                self.reset_mission()
-            else:
-                self.follow_path()
+            self.one_random_movement()
+            self.try_harvest(bc.Direction.Center)
+            self.reset_mission()
+            #else:
+            #    self.follow_path()
 
         elif self.mission.action == Missions.CreateBlueprint:
             #print("Worker {} creating blueprint.".format(self.unit.id))
@@ -112,7 +112,7 @@ class Worker(IRobot):
 
             if self.perform_second_action:
                 if self.mission.info.unit.structure_is_built():
-                    self.mission_controller.structureNeedsBuild = False
+                    
                     print("Structure {} is COMPLETE.".format(self.mission.unit.id))
                     self.reset_mission()
                 else:
@@ -160,12 +160,12 @@ class Worker(IRobot):
             #print(other.unit_type)
             if bc.UnitType.Factory == other.unit_type:
                 structure = other
-                self.mission = self.mission_controller.CreateBuildMission(structure,structure.location.map_location())
+                self.mission = self.mission_controller.CreateBuildMission(structure)
         
         
         #for other in nearby:
         #    if bc.UnitType.Worker == other.unit_type:
-        #        other.mission = self.mission_controller.CreateBuildMission(structure,structure.location.map_location())
+        #        other.mission = self.mission_controller.CreateBuildMission(structure)
             
                 #info.unit_id = other.id
                 #info.unit = other

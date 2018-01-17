@@ -1,5 +1,5 @@
 import battlecode as bc
-
+import random
 from Entities import *
 from Controllers.MissionController import Missions
 # Keeps a list of all friendly units (share with buildController - figure out which should store it)
@@ -9,43 +9,64 @@ from Controllers.MissionController import Missions
 class UnitController:
     """This is the unit controller"""
     def __init__(self, gameController, strategyController, \
-    pathfindingController, missionController, mapController):
+    pathfindingController, missionController, mapController, researchTreeController):
         self.game_controller = gameController
         self.strategy_controller = strategyController
         self.pathfinding_controller = pathfindingController
         self.mission_controller = missionController
         self.mapController = mapController
+        self.researchTreeController = researchTreeController
 
         self.robots = []
         self.structures = []
+
+        self.workerCount = 0
+        self.factoryCount = 0
+        self.rocketCount = 0
+
 
     def update_units(self):
         """This updates units"""
         self.__delete_killed_units()
         self.__add_unregistered_units()
+        
+        self.UpdateRobotCounts()
 
-        if self.game_controller.round() > 95 and self.game_controller.round() < 101:
-            self.mission_controller.MustBuildRocket = True
+        #robot specific mission assignment.
+        #structures create their own build missions
+        if self.researchTreeController.is_rocket_researched() and self.rocketCount == 0 and \
+             self.game_controller.karbonite() > bc.UnitType.Rocket.blueprint_cost():
+                #if self.game_controller.round() > 95 and self.game_controller.round() < 101:
+            robot = random.choice(self.robots)
+            location = self.mapController.GetRandomEarthNode()
+            robot.mission = self.mission_controller.CreateFactoryBlueprintMission(location)
 
-        buildMissionCount = 5
-        for structure in self.structures:
-            if not structure.unit.structure_is_built():
-                for robot in self.robots:
-                    if robot.unit.unit_type == bc.UnitType.Worker:
-                        if robot.mission is None or robot.mission.action != Missions.Build:
-                            map_location = structure.unit.location.map_location()
-                            robot.mission = self.mission_controller.CreateBuildMission(structure.unit,map_location)
+        elif self.factoryCount < 3 \
+         and self.game_controller.karbonite() >= bc.UnitType.Factory.blueprint_cost():
+            robot = random.choice(self.robots)
+            location = self.mapController.GetRandomEarthNode()
+            robot.mission = self.mission_controller.CreateFactoryBlueprintMission(location)
 
-                break
-            
-            
+        
+        
 
-    def GetWorkerCount(self):
-        count = 0
+        
+
+    def UpdateRobotCounts(self):
+        self.workerCount = 0
         for robot in self.robots:
             if robot.unit.unit_type == bc.UnitType.Worker:
-                count += 1
-        return count
+                self.workerCount += 1
+
+    def UpdateStructureCounts(self):
+        self.factoryCount = 0
+        self.rocketCount = 0
+        for structure in self.structures:
+            if structure.unit.unit_type == bc.UnitType.Factory:
+                self.factoryCount += 1 
+            elif structure.unit.unit_type == bc.UnitType.Rocket:
+                self.rocketCount += 1          
+        
 
     # Removes robots and structures that are not found on the map any longer
     def __delete_killed_units(self):

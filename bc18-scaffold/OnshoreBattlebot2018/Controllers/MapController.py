@@ -20,6 +20,7 @@ class MapController:
         self.mars_map = []
         self.my_team_start = []
         self.enemy_team_start = []
+        self.startLocation = [0,0]
 
       def InitializeEarthMap(self):
             try:

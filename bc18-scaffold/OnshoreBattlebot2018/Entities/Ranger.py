@@ -15,27 +15,28 @@ class Ranger(IRobot):
 		pathfindingController, missionController, unit, bc.UnitType.Ranger,mapController)
 
 	def run(self):
-		self.update_mission()
+		if not self.unit.location.is_in_garrision():
+			self.update_mission()
 
-		if not self.mission is None:
-			if self.mission.action == Missions.Idle:
-				self.idle()
+			if not self.mission is None:
+				if self.mission.action == Missions.Idle:
+					self.idle()
 
-			elif self.mission.action == Missions.RandomMovement:
-				self.one_random_movement()
+				elif self.mission.action == Missions.RandomMovement:
+					self.one_random_movement()
 
-			elif self.mission.action == Missions.DestoryTarget:
-				self.destroy_target()
+				elif self.mission.action == Missions.DestoryTarget:
+					self.destroy_target()
 
-			#Attacks nearby units
-			nearby = self.game_controller.sense_nearby_units(self.unit.location.map_location(), 2)
-			for other in nearby:
-				if other.team != self.game_controller.team() \
-				and self.game_controller.is_attack_ready(self.unit.id) \
-				and self.game_controller.can_attack(self.unit.id, other.id):
-					print('Knight {} attacked a thing!'.format(self.unit.id))
-					self.game_controller.attack(self.unit.id, other.id)
-					break
+				#Attacks nearby units
+				nearby = self.game_controller.sense_nearby_units(self.unit.location.map_location(), 2)
+				for other in nearby:
+					if other.team != self.game_controller.team() \
+					and self.game_controller.is_attack_ready(self.unit.id) \
+					and self.game_controller.can_attack(self.unit.id, other.id):
+						print('Knight {} attacked a thing!'.format(self.unit.id))
+						self.game_controller.attack(self.unit.id, other.id)
+						break
 
 	def try_attack(self, target_robot_id):
 		"""Trys to attack"""
