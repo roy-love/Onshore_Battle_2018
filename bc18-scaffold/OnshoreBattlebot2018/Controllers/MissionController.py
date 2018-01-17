@@ -243,7 +243,8 @@ class MissionController:
         #    new_mission.action = Missions.TrainBot
         #    new_mission.info = bc.UnitType.Healer
         #    return new_mission
-        if not self.MustBuildRocket:
+        if not self.MustBuildRocket and \
+        self.game_controller.karbonite() >= bc.UnitType.Ranger.factory_cost():
             new_mission = Mission()
             new_mission.action = Missions.TrainBot
             new_mission.info = bc.UnitType.Ranger

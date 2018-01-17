@@ -25,7 +25,7 @@ class Ranger(IRobot):
 				elif self.mission.action == Missions.RandomMovement:
 					self.one_random_movement()
 
-				elif self.mission.action == Missions.DestoryTarget:
+				elif self.mission.action == Missions.DestroyTarget:
 					self.destroy_target()
 
 				#Attacks nearby units

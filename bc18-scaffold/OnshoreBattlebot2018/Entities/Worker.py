@@ -14,7 +14,7 @@ class Worker(IRobot):
     pathfindingController, missionController, unit,mapController):
         super().__init__(gameController, unitController, \
         pathfindingController, missionController, unit, bc.UnitType.Worker,mapController)
-
+    
 
     #overrides IRobot run method
     def run(self):
@@ -93,61 +93,20 @@ class Worker(IRobot):
                                 print("Worker {} created blueprint for Factory.".format(self.unit.id))
                             else:
                                 self.one_random_movement()
-                        self.reset_mission()
+                        #self.reset_mission()
                     else:
                         self.follow_path()
             elif self.mission.action == Missions.Build:
-                if self.mission.info.unit.structure_is_built():
-                        
-                    print("Structure {} is COMPLETE.".format(self.mission.unit.id))
-                    #self.reset_mission()
-                else:
+                #if self.mission.info.unit.structure_is_built():
+                    
+                if self.try_build(self.mission.info.unit_id):
                     map_location = self.unit.location.map_location()
                     print("Worker {} building structure location: {},{} - unit location: {},{}".format(self.unit.id, \
                     self.mission.info.map_location.x,self.mission.info.map_location.y,\
                     map_location.x,map_location.y))
-                    self.try_build(self.mission.info.unit_id)
-            elif self.mission.action == Missions.Build:
-                #print("Worker {} attmpting to build structure {}.".format(self.unit.id,self.mission.info.unit_id))
-                if not self.perform_second_action and self.target_location is None:
-                    if self.path is None or len(self.path) == 0:
-                        #print("Build location path is null. Making a new one.")
-                        
-                        self.target_location = self.mission.info.map_location
-
-                        #print("Wants to move from {},{} to {},{}".\
-                        # format(self.unit.location.map_location().x, \
-                        # self.unit.location.map_location().y, \
-                        # self.target_location.x, self.target_location.y))
-                        self.update_path_to_target()
-
-                if self.perform_second_action:
-                    if self.mission.info.unit.structure_is_built():
-                        
-                        print("Structure {} is COMPLETE.".format(self.mission.unit.id))
-                        self.reset_mission()
-                    else:
-                        map_location = self.unit.location.map_location()
-                        print("Worker {} building structure location: {},{} - unit location: {},{}".format(self.unit.id, \
-                        self.mission.info.map_location.x,self.mission.info.map_location.y,\
-                        map_location.x,map_location.y))
-                        self.try_build(self.mission.info.unit_id)
                 else:
-                    if self.has_reached_destination():
-                        map_location = self.unit.location.map_location()
-                        print("Worker {} moving to structure location: {},{} - unit location: {},{}".format(self.unit.id, \
-                        self.mission.info.map_location.x,self.mission.info.map_location.y,\
-                        map_location.x,map_location.y))
-                    else:
-                        map_location = self.unit.location.map_location()
-                        print("Worker {} moving to structure location: {},{} - unit location: {},{}".format(self.unit.id, \
-                        self.mission.info.map_location.x,self.mission.info.map_location.y,\
-                        map_location.x,map_location.y))
-                        if not self.path is None and len(self.path) > 0:
-                            self.follow_path()
-                        else:
-                            self.update_path_to_target()
-            #print("Worker with id {} method run FINISHED.".format(self.unit.id))
+                    self.reset_mission()
+            
 
     def try_blueprint(self, unit_type, direction):
         """Trys a blueprint"""
@@ -171,33 +130,9 @@ class Worker(IRobot):
             #print(other.unit_type)
             if bc.UnitType.Factory == other.unit_type:
                 structure = other
+                print("Factory {} Build Mission Created for unit {}".format(structure.id,self.unit.id))
                 self.mission = self.mission_controller.CreateBuildMission(structure)
         
-        
-        #for other in nearby:
-        #    if bc.UnitType.Worker == other.unit_type:
-        #        other.mission = self.mission_controller.CreateBuildMission(structure)
-            
-                #info.unit_id = other.id
-                #info.unit = other
-
-                #info.map_location = self.unit.location.map_location().clone()
-                #info.map_location = bc.MapLocation(bc.Planet.Earth, info.map_location.x + 1, \
-                #info.map_location.y)
-                
-                #self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
-                #info.map_location = bc.MapLocation(bc.Planet.Earth, info.map_location.x - 1, \
-                #info.map_location.y)
-                #self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
-                #info.map_location = bc.MapLocation(bc.Planet.Earth, info.map_location.x, \
-                #info.map_location.y + 1)
-                #self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
-                #info.map_location = bc.MapLocation(bc.Planet.Earth, info.map_location.x, \
-                #info.map_location.y - 1)
-                #self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
-                #info.map_location = bc.MapLocation(bc.Planet.Earth, info.map_location.x + 1, \
-                #info.map_location.y + 1)
-                #self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
         return True
 
     def try_build(self, blueprint_id):
