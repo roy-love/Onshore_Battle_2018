@@ -161,7 +161,7 @@ class MissionController:
         #map_location.y = random.randint(0, 12)
         new_mission.info.map_location = location # TODO get open location from the map
         #self.rocketCount += 1
-        #self.MustBuildRocket = False
+        self.MustBuildRocket = False
         return new_mission
 
     def __create_new_worker_mission__(self):

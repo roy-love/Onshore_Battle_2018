@@ -15,7 +15,7 @@ class Ranger(IRobot):
 		pathfindingController, missionController, unit, bc.UnitType.Ranger,mapController)
 
 	def run(self):
-		if not self.unit.location.is_in_garrison():
+		if not self.unit.location.is_in_garrison() and not self.unit.location.is_in_space():
 			self.update_mission()
 
 			if not self.mission is None:
@@ -29,7 +29,7 @@ class Ranger(IRobot):
 					self.destroy_target()
 
 				#Attacks nearby units
-				nearby = self.game_controller.sense_nearby_units(self.unit.location.map_location(), 2)
+				nearby = self.game_controller.sense_nearby_units(self.unit.location.map_location(), 50)
 				for other in nearby:
 					if other.team != self.game_controller.team() \
 					and self.game_controller.is_attack_ready(self.unit.id) \

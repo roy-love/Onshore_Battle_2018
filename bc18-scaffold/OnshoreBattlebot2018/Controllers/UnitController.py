@@ -23,7 +23,7 @@ class UnitController:
         self.workerCount = 0
         self.factoryCount = 0
         self.rocketCount = 0
-
+        self.mustBuildRocket = False
 
     def update_units(self):
         """This updates units"""
@@ -137,6 +137,7 @@ class UnitController:
         print("Unit counts updated. Factory: {}, Worker: {}".format(self.factoryCount,self.workerCount))
         #robot specific mission assignment.
         #structures create their own build missions
+
         if self.researchTreeController.is_rocket_researched() and self.rocketCount == 0 and \
              self.game_controller.karbonite() > bc.UnitType.Rocket.blueprint_cost():
                 #if self.game_controller.round() > 95 and self.game_controller.round() < 101:
@@ -144,8 +145,9 @@ class UnitController:
             location = self.mapController.GetRandomEarthNode()
             if robot.mission is None or robot.mission.action != Missions.Build:
                 robot.mission = self.mission_controller.CreateRocketBlueprintMission(location)
+                self.mission_controller.MustBuildRocket = True
 
-        elif self.factoryCount < 1 \
+        elif self.factoryCount < 3 \
          and self.game_controller.karbonite() >= bc.UnitType.Factory.blueprint_cost():
             robot = random.choice(self.robots)
             location = self.mapController.GetRandomEarthNode()
