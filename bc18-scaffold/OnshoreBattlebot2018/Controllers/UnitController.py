@@ -55,18 +55,17 @@ class UnitController:
 
     # Removes robots and structures that are not found on the map any longer
     def __delete_killed_units(self):
-        print("Checking for dead robots that should be removed from list")
+        #print("Checking for dead robots that should be removed from list")
         if len(self.robots) == 0:
             print("Robot list empty.  Nothing to remove")
             return
 
         # Robots that still exist are re-added to the robot list
-        # Any not in the list are removed then picked up by garbage collection later
-        print("Current robots registered = {}".format(len(self.robots)))
-        print("Robots alive = {}".format(len(self.game_controller.my_units())))
+        #print("Current robots registered = {}".format(len(self.robots)))
+        #print("Robots alive = {}".format(len(self.game_controller.my_units())))
         self.robots = [robot for robot in self.robots if any(\
         unit.id == robot.unit.id for unit in self.game_controller.my_units())]
-        print("Current robots registered after removal = {}".format(len(self.robots)))
+        #print("Current robots registered after removal = {}".format(len(self.robots)))
 
     # Creates robots and structures for all units that do not yet have them
     # Can occur when moving robots between planets or for the default starting worker
@@ -77,24 +76,24 @@ class UnitController:
             print("There are no units on the field. Nothing to add.")
             return
 
-        print("{} units found to register".format(len(friendly_units)))
+        #print("{} units found to register".format(len(friendly_units)))
         #If there are no robots registered, just register them all
         if len(self.robots) == 0:
-            print("No robots currently in the list.  Registering them all")
+            #print("No robots currently in the list.  Registering them all")
             for unit in self.game_controller.my_units():
                 self.__register_unit(unit)
         else:
-            print("Comparing existing robots against units")
+            #print("Comparing existing robots against units")
             for unit in self.game_controller.my_units():
                 for friendly_unit in self.robots:
                     if friendly_unit.unit.id == unit.id:
-                        print("Robot already registered. Updating")
+                        #print("Robot already registered. Updating")
                         friendly_unit.unit = unit
                         break
                 else:
                     for friendly_unit in self.structures:
                         if friendly_unit.unit.id == unit.id:
-                            print("Structure already registered. Updating")
+                            #print("Structure already registered. Updating")
                             friendly_unit.unit = unit
                             break
                     else:
@@ -134,7 +133,7 @@ class UnitController:
 
         self.UpdateRobotCounts()
         self.UpdateStructureCounts()
-        print("Unit counts updated. Factory: {}, Worker: {}".format(self.factoryCount,self.workerCount))
+        #print("Unit counts updated. Factory: {}, Worker: {}".format(self.factoryCount,self.workerCount))
         #robot specific mission assignment.
         #structures create their own build missions
         if self.researchTreeController.is_rocket_researched() and self.rocketCount == 0 and \
@@ -154,12 +153,12 @@ class UnitController:
 
 
         #print("GC.Units {}, UC.Robots+Structures {}".format(gc_count, robot_count+structure_count))
-        print("Running all structures")
-        print("structures count: {}".format(structure_count))
+        #print("Running all structures")
+        #print("structures count: {}".format(structure_count))
         for structure in self.structures:
             structure.run()
 
-        print("Running all robots")
-        print("robot count: {}".format(robot_count))
+        #print("Running all robots")
+        #print("robot count: {}".format(robot_count))
         for robot in self.robots:
             robot.run()

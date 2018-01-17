@@ -26,8 +26,8 @@ class MapController:
             try:
                   print("Initializing Earth map")
                   self.map = self.gameController.starting_map(bc.Planet.Earth)
-                  print(self.map.width)
-                  print(self.map.height)
+                  #print(self.map.width)
+                  #print(self.map.height)
                   for unit in self.map.initial_units:
                         if unit.team == self.gameController.team():
                               if len(self.my_team_start) == 0:
@@ -42,7 +42,7 @@ class MapController:
                         for mapY in range(self.map.width):
                               mapLoc = bc.MapLocation(bc.Planet.Earth,mapX, mapY)
                               self.earth_map[mapX].append({"x": mapX, "y": mapY, "hash": self.hashCoordanates(mapX, mapY), "isPassable": self.map.is_passable_terrain_at(mapLoc), "karboniteCount": self.map.initial_karbonite_at(mapLoc)})
-                  print(self.map.planet)
+                  #print(self.map.planet)
             except Exception as e:
                   print('Error:', e)
                   # use this to show where the error was
@@ -58,7 +58,7 @@ class MapController:
                         for mapY in range(self.marsMap.height):
                               mapLoc = bc.MapLocation(bc.Planet.Mars, mapX, mapY)
                               self.mars_map[mapX].append({"x": mapX, "y": mapY, "hash": self.hashCoordanates(mapX, mapY), "isPassable": self.marsMap.is_passable_terrain_at(mapLoc), "karboniteCount": self.marsMap.initial_karbonite_at(mapLoc)})
-                  print(self.marsMap.planet)
+                  #print(self.marsMap.planet)
             except Exception as e:
                   print('Error:', e)
                   # use this to show where the error was

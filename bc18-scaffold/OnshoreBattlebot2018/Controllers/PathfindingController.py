@@ -22,7 +22,7 @@ class PathfindingController:
 		self.earthBlockedNodes = []
 
 	def FindPathTo(self, planet, currentLocation, destination):
-		print("starting pathfinding")
+		#print("starting pathfinding")
 		self.earthBlockedNodes = self.blockEarthNodes()
 		path = []
 		explored = []
@@ -85,7 +85,7 @@ class PathfindingController:
 		#print("Printing path now")
 		if path is None:
 			print("no path found")
-		print(path)
+		#print(path)
 		return path
 
 	def Explore (self, planet, node):
