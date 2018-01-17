@@ -59,7 +59,7 @@ class IRobot:
     #TODO Check that the next direction is still possible.  If not, recalculate
     def update_path_to_target(self):
         """This updates path to target"""
-        if self.target_location is not None and (self.path is None or len(self.path) == 0):
+        if not self.unit.location.is_in_garrison() and self.target_location is not None and (self.path is None or len(self.path) == 0):
             #print("Creating new path from {},{} to {},{}".format\
             #(self.unit.location.map_location().x, self.unit.location.map_location().y, \
             #self.target_location.x, self.target_location.y))
@@ -72,7 +72,7 @@ class IRobot:
             if len(self.path) > 0:
                 direction = self.path[-1]
                 print("Walking in direction {}".format(direction))
-                if self.try_move(direction):
+                if not self.unit.location.is_in_garrison() and self.try_move(direction):
                     self.path.pop()
                 else:
                     self.one_random_movement()
