@@ -129,10 +129,22 @@ class Worker(IRobot):
                 #print('built a factory!')
                 info.unitId = other.id
                 info.unit = other
+
+                info.mapLocation = self.unit.location.map_location().clone()
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x + 1, \
+                info.mapLocation.y)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x - 1, \
+                info.mapLocation.y)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x, \
+                info.mapLocation.y + 1)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x, \
+                info.mapLocation.y - 1)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x + 1, \
+                info.mapLocation.y + 1)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
         return True
 

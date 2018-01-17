@@ -28,7 +28,7 @@ class UnitController:
             self.mission_controller.MustBuildRocket = True
 
         for structure in self.structures:
-            if not structure.structure_is_built():
+            if not structure.unit.structure_is_built():
                 for robot in robots:
                     if robot.unit.unit_type == bc.UnitType.Worker:
                         robot.mission = None
