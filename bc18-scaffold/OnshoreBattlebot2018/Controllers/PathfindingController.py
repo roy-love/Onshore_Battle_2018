@@ -69,7 +69,7 @@ class PathfindingController:
 			#print("setting path now XXXXCXXXCXXCXXCXCXCXCXCXCXCXCX")
 			path.append(node.Action)
 			node = node.Parent
-		print("Printing path now")
+		#print("Printing path now")
 		print(path)
 		return path
 

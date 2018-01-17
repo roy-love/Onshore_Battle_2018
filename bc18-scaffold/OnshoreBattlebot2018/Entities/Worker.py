@@ -39,15 +39,12 @@ class Worker(IRobot):
                 if self.path is None or len(self.path) == 0:
                     #print("Path is null.  Making a new one")
                     #self.target_location = self.mission.info
-                    newLocation = self.unit.location.map_location()
-                    newLocation.x = random.randint(-5,5)
-                    newLocation.y = random.randint(-5,5)
-                    if not self.map_controller.GetNodeEarth(newLocation.x,newLocation.y) is None:
-                        self.target_location = newLocation
+                    newLocation = self.map_controller.GetRandomEarthNode()
+                    self.target_location = newLocation
                     #print("Wants to move from {},{} to {},{}".format(\
                     # self.unit.location.map_location().x, self.unit.location.map_location().y, \
                     # self.target_location.x, self.target_location.y))
-                        self.update_path_to_target()
+                    self.update_path_to_target()
 
             if self.has_reached_destination():
                 # harvest at the current map location: 0 = Center
@@ -63,15 +60,12 @@ class Worker(IRobot):
                 if self.path == None or len(self.path) == 0:
                     print("Build location path is null. Making a new one.")
                     #self.target_location = self.mission.info.mapLocation 
-                    newLocation = self.unit.location.map_location()
-                    newLocation.x = random.randint(-5,5)
-                    newLocation.y = random.randint(-5,5)
-                    if not self.map_controller.GetNodeEarth(newLocation.x,newLocation.y) is None:
-                        self.target_location = newLocation
+                    newLocation = self.map_controller.GetRandomEarthNode()
+                    self.target_location = newLocation
                     #print("Wants to move from {},{} to {},{}".format(\
                     #self.unit.location.map_location().x, self.unit.location.map_location().y, \
                     #self.target_location.x, self.target_location.y))
-                        self.update_path_to_target()
+                    self.update_path_to_target()
                     
 
             if self.has_reached_destination():
@@ -91,7 +85,7 @@ class Worker(IRobot):
             if not self.perform_second_action and self.target_location is None:
                 if self.path is None or len(self.path) == 0:
                     #print("Build location path is null. Making a new one.")
-
+                    
                     self.target_location = self.mission.info.mapLocation
 
                     #print("Wants to move from {},{} to {},{}".\
@@ -103,7 +97,7 @@ class Worker(IRobot):
             
             if not self.mission.info.unit.structure_is_built() and self.has_reached_destination():
                 self.try_build(self.mission.info.unitId)
-            elif not self.has_reached_destination():
+            else: #not self.has_reached_destination():
                 self.follow_path()
 
             if self.mission.info.unit.structure_is_built():

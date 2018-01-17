@@ -26,6 +26,14 @@ class UnitController:
 
         if self.game_controller.round() > 95 and self.game_controller.round() < 101:
             self.mission_controller.MustBuildRocket = True
+
+        for structure in self.structures:
+            if not structure.structure_is_built():
+                for robot in robots:
+                    if robot.unit.unit_type == bc.UnitType.Worker:
+                        robot.mission = None
+                break
+            
             
 
     def GetWorkerCount(self):
