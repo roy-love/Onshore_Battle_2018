@@ -16,50 +16,41 @@ class Rocket(IStructure):
         self.rocketLauchRound = 0
 
     def run(self):
-        team = self.game_controller.team()
-        robots = self.game_controller.sense_nearby_units_by_team(self.unit.location.map_location,5,team)
-        for robot in robots:
-            if try_load(robot.id):
-                print("Rocket {} loaded robot {}.".format(self.unit.id,robot.id))
 
-        if not self.mission is None:
-            
-            if self.mission.action == Missions.Idle:
-                pass # do nothing
-            elif self.mission.action == Missions.LoadRocket:
-                if try_load(self.mission.info.unitId):
-                    print("Rocket {} loaded with unit id {}".format(self.unit.id,self.mission.info.unitId))
+        if self.game_controller.planet() == bc.Planet.Earth:
+        
+            team = self.game_controller.team()
+            robots = self.game_controller.sense_nearby_units_by_team(self.unit.location.map_location(),5,team)
+            for robot in robots:
+                if self.try_load(robot.id):
+                    print("Rocket {} loaded robot {}.".format(self.unit.id,robot.id))
                     if len(self.unit.structure_garrison()) == self.unit.structure_max_capacity():
                         print("Rocket max capacity reached. Forcing rocket lauch.")
-                        self.ForceLauch()
+                        #self.ForceLauch()
+                        if self.try_launch(self.mission.info):
+                            print("Rocket {} LAUNCHED!".format(self.unit.id))
                     # elif len(self.unit.structure_garrision()) == self.expectedLoad):
                     #    print("Rocket expected capacity reached.")
                     else:
                         currentLoad = len(self.unit.structure_garrison())
                         maxCapacity = self.unit.structure_max_capacity()
                         print("Rocket load success. Capacity: {}/{}".format(currentLoad,maxCapacity))
-                else:
-                    print("Unable to load rocket {}".format(self.unit.id))
-            elif self.mission.action == Missions.UnloadRocket:
-                garrison = self.unit.structure_garrison()
-                if self.try_unload(garrison[0]):
-                    # print("Rocket {} unloaded unit with id {}".format(self.unit.id,self.mission.info.unitId))
-                    currentLoad = len(garrison)
-                    if currentLoad > 0:
-                        currentLoad = len(garrison)
-                        maxCapacity = self.unit.structure_max_capacity()
-                        print("Rocket {} unload success. Capacity: {}/{}".format(self.unit.id,currentLoad,maxCapacity))
-                    else:
-                        print("Rocket {} completely unloaded.".format(self.unit.id))
-                        newMission = Mission()
-                        newMission.action = Missions.Idle
-                        self.mission.Idle
-            elif self.mission.action == Missions.LaunchRocket:
-                if try_launch(mission.info):
-                    print("Rocket {} LAUNCHED!".format(self.unit.id))
             else:
-                pass
-                # Do nothing.
+                print("Unable to load rocket {}".format(self.unit.id))
+        else: # planet is mars
+            garrison = self.unit.structure_garrison()
+            if self.try_unload(garrison[0]):
+                # print("Rocket {} unloaded unit with id {}".format(self.unit.id,self.mission.info.unitId))
+                currentLoad = len(garrison)
+                if currentLoad > 0:
+                    currentLoad = len(garrison)
+                    maxCapacity = self.unit.structure_max_capacity()
+                    print("Rocket {} unload success. Capacity: {}/{}".format(self.unit.id,currentLoad,maxCapacity))
+                else:
+                    print("Rocket {} completely unloaded.".format(self.unit.id))
+                    newMission = Mission()
+                    newMission.action = Missions.Idle
+                    self.mission.Idle
        
 
     def ForceLauch(self):
@@ -67,12 +58,12 @@ class Rocket(IStructure):
         newMission.action = Missions.LaunchRocket
         newMission.info = bc.MapLocation(bc.Planet.Mars,0,0)
         # TODO enhance landing destination
-        self.mission = newMission()
+        self.mission = newMission
 
     def ForceUnload(self):
         newMission = Mission()
         newMission.action = Missions.UnloadRocket
-        self.mission = newMission()
+        self.mission = newMission
 
     def try_load(self, target_robot_id):
         """Trys to load the rocket"""
