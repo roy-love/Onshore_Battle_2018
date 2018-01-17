@@ -116,7 +116,7 @@ class IRobot:
             #print("Move for Robot [{}] is not ready".format(self.unit.id))
             return False
         if not self.game_controller.can_move(self.unit.id, direction):
-            print("Robot [{}] cannot move in direction {}".format(self.unit.id, direction))
+            #print("Robot [{}] cannot move in direction {}".format(self.unit.id, direction))
             return False
 
         self.game_controller.move_robot(self.unit.id, direction)
