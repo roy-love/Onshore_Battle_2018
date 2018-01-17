@@ -19,7 +19,7 @@ class Worker(IRobot):
     #overrides IRobot run method
     def run(self):
         
-        if self.unit_controller.GetWorkerCount() < 5:
+        if self.unit_controller.GetWorkerCount() < 10:
             direction = random.choice(self.directions)
             self.try_replication(direction)
         
@@ -33,7 +33,7 @@ class Worker(IRobot):
          #   self.one_random_movement()
 
         if self.mission.action == Missions.Mining:
-            print("Worker {} Mining.".format(self.unit.id))
+            #print("Worker {} Mining.".format(self.unit.id))
             #TODO Determine what to do when mining
             if not self.perform_second_action and self.target_location is None:
                 if self.path is None or len(self.path) == 0:
@@ -55,7 +55,7 @@ class Worker(IRobot):
                 self.follow_path()
 
         elif self.mission.action == Missions.CreateBlueprint:
-            print("Worker {} creating blueprint.".format(self.unit.id))
+            #print("Worker {} creating blueprint.".format(self.unit.id))
             can_afford = False
             if self.mission.info.isRocket:
                 if self.game_controller.karbonite() >= bc.UnitType.Rocket.blueprint_cost():
@@ -97,7 +97,7 @@ class Worker(IRobot):
                     self.follow_path()
 
         elif self.mission.action == Missions.Build:
-            print("Worker {} attmpting to build structure {}.".format(self.unit.id,self.mission.info.unit_id))
+            #print("Worker {} attmpting to build structure {}.".format(self.unit.id,self.mission.info.unit_id))
             if not self.perform_second_action and self.target_location is None:
                 if self.path is None or len(self.path) == 0:
                     #print("Build location path is null. Making a new one.")
@@ -116,26 +116,26 @@ class Worker(IRobot):
                     print("Structure {} is COMPLETE.".format(self.mission.unit.id))
                     self.reset_mission()
                 else:
+                    map_location = self.unit.location.map_location()
+                    print("Worker {} building structure location: {},{} - unit location: {},{}".format(self.unit.id, \
+                    self.mission.info.map_location.x,self.mission.info.map_location.y,\
+                    map_location.x,map_location.y))
                     self.try_build(self.mission.info.unit_id)
             else:
                 if self.has_reached_destination():
-                    pass
+                    map_location = self.unit.location.map_location()
+                    print("Worker {} moving to structure location: {},{} - unit location: {},{}".format(self.unit.id, \
+                    self.mission.info.map_location.x,self.mission.info.map_location.y,\
+                    map_location.x,map_location.y))
                 else:
                     map_location = self.unit.location.map_location()
-                    print("Build structure location: {},{} - unit location: {},{}".format(\
+                    print("Worker {} moving to structure location: {},{} - unit location: {},{}".format(self.unit.id, \
                     self.mission.info.map_location.x,self.mission.info.map_location.y,\
                     map_location.x,map_location.y))
                     if len(self.path) > 0:
                         self.follow_path()
                     else:
                         self.update_path_to_target()
-
-            if self.mission.info.unit.structure_is_built():
-                self.mission_controller.structureNeedsBuild = False
-                print("Structure {} is COMPLETE.".format(self.mission.unit.id))
-                self.reset_mission()
-            else:
-                self.try_build(self.mission.info.unit_id)
         #print("Worker with id {} method run FINISHED.".format(self.unit.id))
 
     def try_blueprint(self, unit_type, direction):

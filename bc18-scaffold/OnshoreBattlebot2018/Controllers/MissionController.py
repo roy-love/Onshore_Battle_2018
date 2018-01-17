@@ -132,7 +132,8 @@ class MissionController:
         y = random.randint(-1,1)
         if x == 0 and y == 0:
             x = 1
-        new_mission.info.map_location = bc.MapLocation(bc.Planet.Earth,new_map_location.x + x,new_map_location.y + y )
+        #new_mission.info.map_location = bc.MapLocation(bc.Planet.Earth,new_map_location.x + x,new_map_location.y + y )
+        new_mission.info.map_location = map_location.clone()
         new_mission.info.unit_id = structure.id
         new_mission.info.unit = structure
         if structure.unit_type == bc.UnitType.Rocket:
