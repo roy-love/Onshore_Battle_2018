@@ -117,10 +117,11 @@ class Worker(IRobot):
         structure = None
         for other in nearby:
             #print(other.unit_type)
-            if bc.UnitType.Factory == other.unit_type:
+            if bc.UnitType.Factory == other.unit_type or bc.UnitType.Rocket == other.unit_type:
                 structure = other
                 print("Factory {} Build Mission Created for unit {}".format(structure.id,self.unit.id))
                 self.mission = self.mission_controller.CreateBuildMission(structure)
+                print("new build mission [{}] ".format(self.mission))
         
         return True
 

@@ -25,10 +25,10 @@ class Rocket(IStructure):
             for robot in robots:
                 print("Rocket cycle robot: {}".format(robot))
                 #unit = self.game_controller.unit(robot)
-                if robot.unit_type != bc.UnitType.Factory or robot.unit_type != bc.UnitType.Rocket:
+                if robot.unit_type != bc.UnitType.Factory and robot.unit_type != bc.UnitType.Rocket:
                     if self.try_load(robot.id):
                         print("Rocket {} loaded robot {}.".format(self.unit.id,robot.id))
-                        if len(self.unit.structure_garrison()) == self.unit.structure_max_capacity():
+                        if len(self.unit.structure_garrison()) > 0: #== #self.unit.structure_max_capacity():
                             print("Rocket max capacity reached. Forcing rocket lauch.")
                             #self.ForceLauch()
                             location = self.mission_controller.GetMarsLocation()
@@ -58,8 +58,8 @@ class Rocket(IStructure):
                     self.mission.Idle
         else:
             location = self.mission_controller.GetMarsLocation()
-            if self.try_launch(location):
-                print("Rocket {} LAUNCHED!".format(self.unit.id))
+            #if self.try_launch(location):
+             #   print("Rocket {} LAUNCHED!".format(self.unit.id))
        
 
     def ForceLauch(self):
