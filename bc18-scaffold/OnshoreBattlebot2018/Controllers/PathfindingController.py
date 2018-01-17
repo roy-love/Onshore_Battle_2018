@@ -18,11 +18,12 @@ class PathfindingController:
 		self.gameController = gameController
 		self.mapController = mapController
 		self.plan = []
-		self.Directions = [bc.Direction.North, bc.Direction.East, bc.Direction.South, bc.Direction.West] 
-		self.units = gameController.units()
+		self.Directions = [bc.Direction.North, bc.Direction.East, bc.Direction.South, bc.Direction.West]
+		self.earthBlockedNodes = []
 
 	def FindPathTo(self, planet, currentLocation, destination):
 		print("starting pathfinding")
+		self.earthBlockedNodes = self.blockEarthNodes()
 		path = []
 		explored = []
 		frontier = deque([])
@@ -30,9 +31,12 @@ class PathfindingController:
 		endingLocation = self.mapController.GetNode(planet, destination.x, destination.y)
 		node = GraphNode(startingLocation, None, None)
 		endNode = GraphNode(endingLocation, None, None)
-		self.units = self.gameController.units()
-		for unit in self.units:
-			print(unit)
+		blockedLocations = []
+		units = self.gameController.units()
+		#print("Here are the units")
+		for unit in units:
+			unitMapLoc = unit.location.map_location()
+			blockedLocations.append(self.mapController.GetNode(unitMapLoc.planet, unitMapLoc.x, unitMapLoc.y))
 		frontier.append(node)
 		while True:
 			#print("FRONTIER LENGHT IS")
@@ -61,6 +65,7 @@ class PathfindingController:
 					#print(len(frontier))
 				else:
 					if self.AlreadyFrontier(node, frontier):
+						self.IsNodeOpen(node, blockedLocations)
 						#print("adding to frontier")
 						frontier.append(nodes)
 			#print("nodes now in frontier")
@@ -136,7 +141,27 @@ class PathfindingController:
 				break
 		return notInFrontier
 
-	def IsNodeBlocked(self, node):
-		nodeBlocked = False
+	def IsNodeOpen(self, node, blockedLocations):
+		nodeOpen = True
+		#print(self.earthBlockedNodes)
+		for nodes in self.earthBlockedNodes:
+			if node.room["hash"]  == nodes["hash"] :
+				#print("node is blocked by blocked earth nodes")
+				return False
+		for nodes in blockedLocations:
+			if node.room["hash"]  == nodes["hash"] :
+				#print("node is blocked by blocked locations")
+				return False
+		return nodeOpen
 
-		return nodeBlocked
+	def blockEarthNodes(self):
+		#print("blocking nodes XXXOXOXOXOXOXOXOXOXOXOX")
+		blockedNodes = []
+		for xNodes in self.mapController.earth_map:
+			for node in xNodes:
+				#print("PRINTING NODE OF XNODES NOW WISH ME LUCK")
+				#print(node)
+				if not node["isPassable"]:
+					#print("adding blocked node")
+					blockedNodes.append(node)
+		return blockedNodes
