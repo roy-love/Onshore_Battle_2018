@@ -84,9 +84,9 @@ class MapController:
             return location
 
       def GetRandomMarsNode(self):
-            #Xcoord = random.randint(0,self.marsMap["width"] -1)
-            #Ycoord = random.randint(0,self.marsMap["height"] - 1)
-            location = bc.MapLocation(bc.Planet.Mars,0,0)
+            Xcoord = random.randint(0,20 -1)
+            Ycoord = random.randint(0,20 -1)
+            location = bc.MapLocation(bc.Planet.Mars,Xcoord,Ycoord)
             return location
             
       def GetNodeEarth(self, mapX, mapY):
