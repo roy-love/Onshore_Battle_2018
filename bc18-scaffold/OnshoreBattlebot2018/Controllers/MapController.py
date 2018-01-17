@@ -82,6 +82,12 @@ class MapController:
             Ycoord = random.randint(0,self.map.height - 1)
             location = bc.MapLocation(bc.Planet.Earth,Xcoord,Ycoord)
             return location
+
+      def GetRandomMarsNode(self):
+            #Xcoord = random.randint(0,self.marsMap["width"] -1)
+            #Ycoord = random.randint(0,self.marsMap["height"] - 1)
+            location = bc.MapLocation(bc.Planet.Mars,0,0)
+            return location
             
       def GetNodeEarth(self, mapX, mapY):
             if (mapX <= self.map.width - 1 and mapY <= self.map.height - 1 and mapX > -1 and mapY > -1):

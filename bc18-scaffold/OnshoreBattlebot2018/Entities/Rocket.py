@@ -31,7 +31,8 @@ class Rocket(IStructure):
                         if len(self.unit.structure_garrison()) == self.unit.structure_max_capacity():
                             print("Rocket max capacity reached. Forcing rocket lauch.")
                             #self.ForceLauch()
-                            if self.try_launch(self.mission.info):
+                            location = self.mission_controller.GetMarsLocation()
+                            if self.try_launch(location):
                                 print("Rocket {} LAUNCHED!".format(self.unit.id))
                         # elif len(self.unit.structure_garrision()) == self.expectedLoad):
                         #    print("Rocket expected capacity reached.")
@@ -55,6 +56,10 @@ class Rocket(IStructure):
                     newMission = Mission()
                     newMission.action = Missions.Idle
                     self.mission.Idle
+        else:
+            location = self.mission_controller.GetMarsLocation()
+            if self.try_launch(location):
+                print("Rocket {} LAUNCHED!".format(self.unit.id))
        
 
     def ForceLauch(self):
@@ -96,7 +101,7 @@ class Rocket(IStructure):
         if not self.game_controller.can_launch_rocket(self.unit.id, destination):
             print("Rocket [{}] could not launch to destination [{}]".format(\
             self.unit.id, destination))
-            return False
+            #return False
 
         self.game_controller.launch_rocket(self.unit.id, destination)
         return True

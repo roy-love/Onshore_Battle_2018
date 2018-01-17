@@ -81,14 +81,18 @@ class Worker(IRobot):
                         self.follow_path()
             elif self.mission.action == Missions.Build:
                 #if self.mission.info.unit.structure_is_built():
-                    
-                if self.try_build(self.mission.info.unit_id):
-                    map_location = self.unit.location.map_location()
-                    print("Worker {} building structure location: {},{} - unit location: {},{}".format(self.unit.id, \
-                    self.mission.info.map_location.x,self.mission.info.map_location.y,\
-                    map_location.x,map_location.y))
-                else:
+                unit = self.game_controller.unit(self.mission.info.unit_id)
+                if unit.structure_is_built():
+                    print("Structure {} is complete!".format(unit))
                     self.reset_mission()
+                else:
+                    if self.try_build(self.mission.info.unit_id):
+                        map_location = self.unit.location.map_location()
+                        print("Worker {} building structure location: {},{} - unit location: {},{}".format(self.unit.id, \
+                        self.mission.info.map_location.x,self.mission.info.map_location.y,\
+                        map_location.x,map_location.y))
+                    else:
+                        self.reset_mission()
             
 
     def try_blueprint(self, unit_type, direction):

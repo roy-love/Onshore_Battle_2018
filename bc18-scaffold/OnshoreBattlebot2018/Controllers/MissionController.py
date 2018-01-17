@@ -164,6 +164,10 @@ class MissionController:
         self.MustBuildRocket = False
         return new_mission
 
+    def GetMarsLocation(self):
+        location = self.map_controller.GetRandomMarsNode()
+        return location
+
     def __create_new_worker_mission__(self):
         #Determine what mission to assign based on the current strategy
         if self.strategy_controller.unitStrategy == UnitStrategies.Default:
