@@ -7,14 +7,14 @@ import time
 import os
 print(os.getcwd())
 
-print("pystarting")
+#print("pystarting")
 
 # A GameController is the main type that you talk to the game with.
 # Its constructor will connect to a running game.
 gc = bc.GameController()
 directions = list(bc.Direction)
 
-print("pystarted")
+#print("pystarted")
 
 # It's a good idea to try to keep your bots deterministic, to make debugging easier.
 # determinism isn't required, but it means that the same things will happen in every thing you run,
@@ -31,7 +31,7 @@ my_team = gc.team()
 
 while True:
     # We only support Python 3, which means brackets around print()
-    print('pyround:', gc.round(), 'time left:', gc.get_time_left_ms(), 'ms')
+    #print('pyround:', gc.round(), 'time left:', gc.get_time_left_ms(), 'ms')
 
     # frequent try/catches are a good idea
     try:
@@ -44,12 +44,12 @@ while True:
                 if len(garrison) > 0:
                     d = random.choice(directions)
                     if gc.can_unload(unit.id, d):
-                        print('unloaded a knight!')
+                        #print('unloaded a knight!')
                         gc.unload(unit.id, d)
                         continue
                 elif gc.can_produce_robot(unit.id, bc.UnitType.Knight):
                     gc.produce_robot(unit.id, bc.UnitType.Knight)
-                    print('produced a knight!')
+                    #print('produced a knight!')
                     continue
 
             # first, let's look for nearby blueprints to work on
@@ -59,11 +59,11 @@ while True:
                 for other in nearby:
                     if unit.unit_type == bc.UnitType.Worker and gc.can_build(unit.id, other.id):
                         gc.build(unit.id, other.id)
-                        print('built a factory!')
+                        #print('built a factory!')
                         # move onto the next unit
                         continue
                     if other.team != my_team and gc.is_attack_ready(unit.id) and gc.can_attack(unit.id, other.id):
-                        print('attacked a thing!')
+                        #print('attacked a thing!')
                         gc.attack(unit.id, other.id)
                         continue
 
@@ -79,7 +79,7 @@ while True:
                 gc.move_robot(unit.id, d)
 
     except Exception as e:
-        print('Error:', e)
+        #print('Error:', e)
         # use this to show where the error was
         traceback.print_exc()
 

@@ -60,9 +60,9 @@ class IRobot:
     def update_path_to_target(self):
         """This updates path to target"""
         if self.target_location is not None and (self.path is None or len(self.path) == 0):
-            print("Creating new path from {},{} to {},{}".format\
-            (self.unit.location.map_location().x, self.unit.location.map_location().y, \
-            self.target_location.x, self.target_location.y))
+            #print("Creating new path from {},{} to {},{}".format\
+            #(self.unit.location.map_location().x, self.unit.location.map_location().y, \
+            #self.target_location.x, self.target_location.y))
             self.path = self.pathfinding_controller.FindPathTo(\
             self.unit.location.map_location().planet, self.unit.location.map_location(), self.target_location)
 
@@ -78,7 +78,7 @@ class IRobot:
                     self.one_random_movement()
                     self.update_path_to_target()
             else:
-                print("destination reached")
+                print("Robot {} path length 0.".format(self.unit.id))
     def isStuck(self):
         if self.lastPosition is None:
             self.lastPosition = self.unit.location.map_location()
