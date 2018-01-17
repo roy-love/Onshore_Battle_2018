@@ -19,7 +19,7 @@ class Worker(IRobot):
     #overrides IRobot run method
     def run(self):
         
-        if self.unit_controller.GetWorkerCount() < 1:
+        if self.unit_controller.GetWorkerCount() < 10:
             direction = random.choice(self.directions)
             self.try_replication(direction)
         
@@ -39,10 +39,7 @@ class Worker(IRobot):
                 if self.path is None or len(self.path) == 0:
                     #print("Path is null.  Making a new one")
                     #self.target_location = self.mission.info
-                    newLocation = self.unit.location.map_location()
-                    newLocation.x = random.randint(-5,5)
-                    newLocation.y = random.randint(-5,5)
-                    
+                    newLocation = self.map_controller.GetRandomEarthNode()
                     self.target_location = newLocation
                     #print("Wants to move from {},{} to {},{}".format(\
                     # self.unit.location.map_location().x, self.unit.location.map_location().y, \
@@ -63,14 +60,13 @@ class Worker(IRobot):
                 if self.path == None or len(self.path) == 0:
                     print("Build location path is null. Making a new one.")
                     #self.target_location = self.mission.info.mapLocation 
-                    newLocation = self.unit.location.map_location()
-                    newLocation.x = random.randint(-5,5)
-                    newLocation.y = random.randint(-5,5)
+                    newLocation = self.map_controller.GetRandomEarthNode()
                     self.target_location = newLocation
                     #print("Wants to move from {},{} to {},{}".format(\
                     #self.unit.location.map_location().x, self.unit.location.map_location().y, \
                     #self.target_location.x, self.target_location.y))
                     self.update_path_to_target()
+                    
 
             if self.has_reached_destination():
                 #self.one_random_movement()
@@ -89,7 +85,7 @@ class Worker(IRobot):
             if not self.perform_second_action and self.target_location is None:
                 if self.path is None or len(self.path) == 0:
                     #print("Build location path is null. Making a new one.")
-
+                    
                     self.target_location = self.mission.info.mapLocation
 
                     #print("Wants to move from {},{} to {},{}".\
@@ -101,7 +97,7 @@ class Worker(IRobot):
             
             if not self.mission.info.unit.structure_is_built() and self.has_reached_destination():
                 self.try_build(self.mission.info.unitId)
-            elif not self.has_reached_destination():
+            else: #not self.has_reached_destination():
                 self.follow_path()
 
             if self.mission.info.unit.structure_is_built():
@@ -133,10 +129,22 @@ class Worker(IRobot):
                 #print('built a factory!')
                 info.unitId = other.id
                 info.unit = other
+
+                info.mapLocation = self.unit.location.map_location().clone()
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x + 1, \
+                info.mapLocation.y)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x - 1, \
+                info.mapLocation.y)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x, \
+                info.mapLocation.y + 1)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x, \
+                info.mapLocation.y - 1)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
+                info.mapLocation = bc.MapLocation(bc.Planet.Earth, info.maplocation.x + 1, \
+                info.mapLocation.y + 1)
                 self.mission_controller.AddMission(Missions.Build, MissionTypes.Worker, info)
         return True
 

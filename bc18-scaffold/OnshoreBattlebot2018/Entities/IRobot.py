@@ -95,7 +95,7 @@ class IRobot:
         """Shows if you have reached the destination"""
         if self.target_location is None:
             print("Robot {} targetLocation is None.".format(self.unit.id))
-            return True
+            return False
         else:
             if self.unit.location.map_location().x == self.target_location.x and \
                 self.unit.location.map_location().y == self.target_location.y:

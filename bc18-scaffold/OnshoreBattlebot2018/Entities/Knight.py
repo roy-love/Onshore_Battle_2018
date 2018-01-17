@@ -12,7 +12,7 @@ class Knight(IRobot):
 	def __init__(self, gameController, unitController, \
 	pathfindingController, missionController, unit):
 		super().__init__(gameController, unitController, \
-		pathfindingController, missionController, unit, bc.UnitType.Knight)
+		pathfindingController, missionController, unit, bc.UnitType.Knight,mapController)
 		self.mission = None
 		self.target_location = None
 		self.path = None
