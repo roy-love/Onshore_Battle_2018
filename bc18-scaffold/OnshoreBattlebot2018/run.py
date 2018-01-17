@@ -22,10 +22,10 @@ RUNMARS = RunMars(GAMECONTROLLER)
 while True:
     try:
         if GAMECONTROLLER.planet() == PLANETS.Earth:
-            print('Running Earth Turn')
+            #print('Running Earth Turn')
             RUNEARTH.Run()
         else:
-            print('Running Mars Turn')
+            #print('Running Mars Turn')
             RUNMARS.Run()
 
     except Exception as e:

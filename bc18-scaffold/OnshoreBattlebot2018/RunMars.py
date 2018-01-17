@@ -38,4 +38,4 @@ class RunMars:
         if self.round == 1:
             print("First round on Earth.  Initializing map")
             self.map_controller.InitializeMarsMap()
-        print("Do mars turn things here")
+        #print("Do mars turn things here")

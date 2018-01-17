@@ -17,7 +17,7 @@ class Ranger(IRobot):
 	def run(self):
 		if not self.unit.location.is_in_garrison() and not self.unit.location.is_in_space():
 			self.update_mission()
-
+			#First priority is to kill enemy troops
 			if not self.mission is None:
 				if self.mission.action == Missions.Idle:
 					self.idle()
@@ -34,7 +34,7 @@ class Ranger(IRobot):
 					if other.team != self.game_controller.team() \
 					and self.game_controller.is_attack_ready(self.unit.id) \
 					and self.game_controller.can_attack(self.unit.id, other.id):
-						print('Knight {} attacked a thing!'.format(self.unit.id))
+						print('Ranger {} attacked a thing!'.format(self.unit.id))
 						self.game_controller.attack(self.unit.id, other.id)
 						break
 

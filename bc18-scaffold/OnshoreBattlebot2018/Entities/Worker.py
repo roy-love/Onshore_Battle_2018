@@ -22,7 +22,8 @@ class Worker(IRobot):
             
             if self.unit_controller.workerCount < 10:
                 direction = random.choice(self.directions)
-                self.try_replication(direction)
+                if self.game_controller.can_replicate(self.unit.id, direction):
+                    self.try_replication(direction)
             
             #print("Worker bot with id {} run() called.".format(self.unit.id))
             self.update_mission()
@@ -35,7 +36,8 @@ class Worker(IRobot):
 
             if self.mission.action == Missions.Mining:
                 self.one_random_movement()
-                self.try_harvest(bc.Direction.Center)
+                if self.game_controller.can_harvest(self.unit.id, bc.Direction.Center):
+                    self.try_harvest(bc.Direction.Center)
                 self.reset_mission()
 
             elif self.mission.action == Missions.CreateBlueprint:
@@ -143,11 +145,11 @@ class Worker(IRobot):
             return False
 
         if not self.game_controller.can_harvest(self.unit.id, direction):
-            print("Worker [{}] cannot harvest in direction [{}]".format(self.unit.id, direction))
+            #print("Worker [{}] cannot harvest in direction [{}]".format(self.unit.id, direction))
             return False
 
         self.game_controller.harvest(self.unit.id, direction)
-        print("Worker [{}] HARVESTED.".format(self.unit.id))
+        #print("Worker [{}] HARVESTED.".format(self.unit.id))
         return True
 
     def try_repair(self, structure_id):

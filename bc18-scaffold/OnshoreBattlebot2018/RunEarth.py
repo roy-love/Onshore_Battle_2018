@@ -50,14 +50,14 @@ class RunEarth:
             self.strategy_controller.set_default_strategy()
         else:
             print("Round {}".format(self.round))
-            print("Setting strategy for the turn")
+            #print("Setting strategy for the turn")
             self.strategy_controller.update_strategy()
 
-        print("Update research queue")
+        #print("Update research queue")
         self.research_tree_controller.update_queue()
 
-        print("Updating units.  Synching between game units and player entities.")
+        #print("Updating units.  Synching between game units and player entities.")
         self.unit_controller.update_units()
 
-        print("Running all units")
+        #print("Running all units")
         self.unit_controller.run_units()
