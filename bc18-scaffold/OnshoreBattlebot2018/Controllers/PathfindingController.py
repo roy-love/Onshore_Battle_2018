@@ -37,6 +37,8 @@ class PathfindingController:
 		for unit in units:
 			unitMapLoc = unit.location.map_location()
 			blockedLocations.append(self.mapController.GetNode(unitMapLoc.planet, unitMapLoc.x, unitMapLoc.y))
+		#print("PRINTING LEN OF BLOCKEDLOCATIONS")
+		#print(len(blockedLocations))
 		frontier.append(node)
 		while True:
 			#print("FRONTIER LENGHT IS")
@@ -64,10 +66,12 @@ class PathfindingController:
 					#print(len(explored))
 					#print(len(frontier))
 				else:
-					if self.AlreadyFrontier(node, frontier):
-						self.IsNodeOpen(node, blockedLocations)
-						#print("adding to frontier")
-						frontier.append(nodes)
+					#print(self.AlreadyFrontier(node, frontier))
+					#print(self.IsNodeOpen(node, blockedLocations))
+					if self.AlreadyFrontier(nodes, frontier):
+						if self.IsNodeOpen(nodes, blockedLocations):
+							#print("adding to frontier")
+							frontier.append(nodes)
 			#print("nodes now in frontier")
 			#print(len(frontier))
 			#print(node.room)
@@ -79,6 +83,8 @@ class PathfindingController:
 			path.append(node.Action)
 			node = node.Parent
 		#print("Printing path now")
+		if path is None:
+			print("no path found")
 		print(path)
 		return path
 
@@ -149,7 +155,11 @@ class PathfindingController:
 				#print("node is blocked by blocked earth nodes")
 				return False
 		for nodes in blockedLocations:
-			if node.room["hash"]  == nodes["hash"] :
+			#print("node.room. hash")
+			#print(node.room["hash"])
+			#print("nodes hash")
+			#print(nodes["hash"])
+			if node.room["hash"] == nodes["hash"] :
 				#print("node is blocked by blocked locations")
 				return False
 		return nodeOpen
@@ -164,4 +174,6 @@ class PathfindingController:
 				if not node["isPassable"]:
 					#print("adding blocked node")
 					blockedNodes.append(node)
+		#print("PRINTING LEN OF BLOCKEDNODES")
+		#print(len(blockedNodes))
 		return blockedNodes
