@@ -15,7 +15,7 @@ class Ranger(IRobot):
 		pathfindingController, missionController, unit, bc.UnitType.Ranger,mapController)
 
 	def run(self):
-		if not self.unit.location.is_in_garrison():
+		if not self.unit.location.is_in_garrison() and not self.unit.location.is_in_space():
 			self.update_mission()
 			#First priority is to kill enemy troops
 			if not self.mission is None:
