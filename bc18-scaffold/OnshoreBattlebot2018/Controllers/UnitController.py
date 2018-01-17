@@ -1,7 +1,7 @@
 import battlecode as bc
 
 from Entities import *
-
+from Controllers.MissionController import Missions
 # Keeps a list of all friendly units (share with buildController - figure out which should store it)
 # Loops over all units, running their "Run" methods one at a time
 # Can prioritize robots by importance or any other activation order
@@ -27,11 +27,15 @@ class UnitController:
         if self.game_controller.round() > 95 and self.game_controller.round() < 101:
             self.mission_controller.MustBuildRocket = True
 
+        buildMissionCount = 5
         for structure in self.structures:
             if not structure.unit.structure_is_built():
-                for robot in robots:
+                for robot in self.robots:
                     if robot.unit.unit_type == bc.UnitType.Worker:
-                        robot.mission = None
+                        if robot.mission is None or robot.mission.action != Missions.Build:
+                            map_location = structure.unit.location.map_location()
+                            robot.mission = self.mission_controller.CreateBuildMission(structure.unit,map_location)
+
                 break
             
             
@@ -111,7 +115,7 @@ class UnitController:
             self.structures.append(Factory(self.game_controller, \
             self, unit, self.mission_controller))
         elif unit.unit_type == bc.UnitType.Rocket:
-            self.structures.append(Rocket(self.game_controller, self, unit))
+            self.structures.append(Rocket(self.game_controller, self, unit,self.mission_controller))
         else:
             print("ERROR - Attempting to register an unknown unit type [{}]".format(unit.unit_type))
 

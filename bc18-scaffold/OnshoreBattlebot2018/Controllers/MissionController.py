@@ -67,6 +67,7 @@ class MissionController:
 
         self.rocketCount = 0
         self.MustBuildRocket = False
+        self.structureNeedsBuild = False
 
     # Adds a new mission created by outside source
     def AddMission(self, mission, mission_type, mission_info):
@@ -93,7 +94,7 @@ class MissionController:
 
         if unit_type == bc.UnitType.Worker:
             if len(self.worker_missions) > 0:
-                print("Worker mission assigned")
+                print("Worker mission assigned {}".format(self.worker_missions[0].action))
                 return self.worker_missions.pop(0)
             else:
                 return self.__create_new_worker_mission__()
@@ -122,6 +123,22 @@ class MissionController:
             else:
                 return self.__create_new_combat_mission__()
 
+    def CreateBuildMission(self,structure,map_location):
+        new_mission = Mission()
+        new_mission.action = Missions.Build
+        new_mission.info = MissionInfo()
+        new_map_location = map_location.clone()
+        x = random.randint(-1,1)
+        y = random.randint(-1,1)
+        if x == 0 and y == 0:
+            x = 1
+        new_mission.info.map_location = bc.MapLocation(bc.Planet.Earth,new_map_location.x + x,new_map_location.y + y )
+        new_mission.info.unit_id = structure.id
+        new_mission.info.unit = structure
+        if structure.unit_type == bc.UnitType.Rocket:
+            new_mission.info.isRocket = True
+        return new_mission
+
     def __create_new_worker_mission__(self):
         #Determine what mission to assign based on the current strategy
         if self.strategy_controller.unitStrategy == UnitStrategies.Default:
@@ -135,20 +152,26 @@ class MissionController:
             chance = random.randint(1, 100)
 
             #Build Rocket
-            if self.MustBuildRocket and self.researchTreeController.is_rocket_researched() and rocketCount == 0 and \
+            if self.MustBuildRocket and self.researchTreeController.is_rocket_researched() and self.rocketCount == 0 and \
              self.game_controller.karbonite() > bc.UnitType.Rocket.blueprint_cost():
-                newMission = Mission()
-                newMission.action = Missions.BuildRocket
-                newMission.info = MissionInfo()
-                newMission.info.isRocket = True
+                new_mission = Mission()
+                new_mission.action = Missions.CreateBlueprint
+                new_mission.info = MissionInfo()
+                new_mission.info.isRocket = True
                 map_location = bc.MapLocation(self.game_controller.planet(), 0, 0)
                 map_location.x = random.randint(0, 12)
                 map_location.y = random.randint(0, 12)
-                new_mission.info.mapLocation = map_location # TODO get open location from the map
-                rocketCount += 1
+                new_mission.info.map_location = map_location # TODO get open location from the map
+                self.rocketCount += 1
                 self.MustBuildRocket = False
                 return new_mission
             #Build Factory
+            #elif self.structureNeedsBuild:
+            #    if len(self.worker_missions) > 0:
+            #        return self.worker_missions.pop(0)
+            #    else:
+            #        print("Structure needs built, but there are not Build missions.")
+            #        return None
             elif not self.MustBuildRocket and factory_count < 5 and self.game_controller.karbonite() > bc.UnitType.Factory.blueprint_cost():
                 new_mission = Mission()
                 new_mission.action = Missions.CreateBlueprint
@@ -156,7 +179,8 @@ class MissionController:
                 map_location = bc.MapLocation(self.game_controller.planet(), 0, 0)
                 map_location.x = random.randint(0, 12)
                 map_location.y = random.randint(0, 12)
-                new_mission.info.mapLocation = map_location # TODO get open location from the map
+                new_mission.info.map_location = map_location # TODO get open location from the map
+                self.structureNeedsBuild = True
                 return new_mission
             #Mine Karbonite
             else: #Mine

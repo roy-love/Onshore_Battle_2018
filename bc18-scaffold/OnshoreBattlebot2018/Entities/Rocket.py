@@ -7,8 +7,8 @@ from .IStructure import IStructure
 
 class Rocket(IStructure):
     """This is the rocket"""
-    def __init__(self, gameController, unitController, unit):
-        super(Rocket, self).__init__(gameController, unitController, unit)
+    def __init__(self, gameController, unitController, unit,missionController):
+        super(Rocket, self).__init__(gameController, unitController, unit,missionController)
 
         self.passengerId = None
         self.expectedLoad = 1
