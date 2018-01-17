@@ -17,36 +17,36 @@ class Factory(IStructure):
 
     def run(self):
         
-        if self.unit.structure_is_built():
+        #if self.unit.structure_is_built():
         
-            self.update_mission()
+        self.update_mission()
 
-            garrison = self.unit.structure_garrison()
-            if len(garrison) > 0:
-                print("Factory [{}] Garrisoned Units".format(self.unit.id))
-                for other in garrison:
-                    print("Unit with id [{}] is currently garrisoned.".format(other))
+        garrison = self.unit.structure_garrison()
+        if len(garrison) > 0:
+            print("Factory [{}] Garrisoned Units".format(self.unit.id))
+            for other in garrison:
+                print("Unit with id [{}] is currently garrisoned.".format(other))
 
-            if not self.mission is None:
+        if not self.mission is None:
 
-                if self.mission.action == Missions.TrainBot:
-                    print("Factory [{}] TRAIN_BOT {} {}".format(\
-                    self.unit.id, self.is_working, self.unit.is_factory_producing()))
-                    if self.is_working and not self.unit.is_factory_producing():
-                        if self.try_unload_units():
-                            print("Factory [{}] successfully unloaded a unit.".format(self.unit.id))
-                            self.mission = None
-                            self.is_working = False
-                    elif not self.is_working and self.try_produce_robot(self.mission.info):
-                        self.is_working = True
-                    else:
-                        print("Factory [{}] producing robot. Rounds Left: {}".\
-                        format(self.unit.id, self.unit.factory_rounds_left()))
-        else:
-            print("Factory {} incomplete.".format(self.unit.id))
-            if not self.workerUnits is None and len(self.workerUnits) < 5:
+            if self.mission.action == Missions.TrainBot:
+                print("Factory [{}] TRAIN_BOT {} {}".format(\
+                self.unit.id, self.is_working, self.unit.is_factory_producing()))
+                if self.is_working and not self.unit.is_factory_producing():
+                    if self.try_unload_units():
+                        print("Factory [{}] successfully unloaded a unit.".format(self.unit.id))
+                        self.mission = None
+                        self.is_working = False
+                elif not self.is_working and self.try_produce_robot(self.mission.info):
+                    self.is_working = True
+                else:
+                    print("Factory [{}] producing robot. Rounds Left: {}".\
+                    format(self.unit.id, self.unit.factory_rounds_left()))
+        #else:
+            #print("Factory {} incomplete.".format(self.unit.id))
+            #if not self.workerUnits is None and len(self.workerUnits) < 5:
                 #Create build mission
-                self.mission_controller.CreateBuildMission(self.unit)
+            #self.mission_controller.CreateBuildMission(self.unit)
 
     def try_produce_robot(self, unit_type):
         """This trys to produce robots"""

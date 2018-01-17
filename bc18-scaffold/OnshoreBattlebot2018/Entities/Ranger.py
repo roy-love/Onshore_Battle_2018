@@ -15,7 +15,7 @@ class Ranger(IRobot):
 		pathfindingController, missionController, unit, bc.UnitType.Ranger,mapController)
 
 	def run(self):
-		if not self.unit.location.is_in_garrision():
+		if not self.unit.location.is_in_garrison():
 			self.update_mission()
 
 			if not self.mission is None:

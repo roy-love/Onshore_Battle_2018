@@ -17,7 +17,7 @@ class Rocket(IStructure):
 
     def run(self):
         
-        if not self.mission.action is None:
+        if not self.mission is None:
             
             if self.mission.action == Missions.Idle:
                 pass # do nothing
