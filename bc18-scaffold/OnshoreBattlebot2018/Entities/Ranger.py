@@ -69,3 +69,38 @@ class Ranger(IRobot):
 
 		self.game_controller.begin_snipe(self.unit.id, target_location)
 		return True
+
+	# Sends Rangers to a defensive waypoint between our starting location and the enemy starting location
+	def SetDefenderWaypoint(self):
+		currentLocation = mapController.my_team_start
+		enemyDirection = currentLocation.direction_to(mapController.enemy_team_start[0])
+		target_location = currentLocation.clone()
+
+		for i in range (0, 9):
+			if enemyDirection == bc.Direction.North:
+				target_location.y + 1
+			elif enemyDirection == bc.Direction.Northeast:
+				target_location.x + 1, target_location.y + 1
+			elif enemyDirection == bc.Direction.East:
+				target_location.x + 1
+			elif  enemyDirection == bc.Direction.Southeast:
+				target_location.y - 1, target_location.x +1
+			elif enemyDirection == bc.Direction.South:
+				target_location.y + 1
+			elif enemyDirection == bc.Direction.Southwest:
+				target_location.y - 1, target_location.x - 1
+			elif enemyDirection == bc.Direction.West:
+				target_location.x - 1
+			elif enemyDirection == bc.Direction.Northwest:
+				target_location.y + 1, target_location.x - 1
+			print("Ranger adjusting target location to [{}]".format(self.target_location))
+
+		# Randomizes an offest for x and y coordinations
+		offset = random.randint(-5, 5)
+		target_location.x = target_location.x + offset
+		offset = random.randint(-5, 5)
+		target_location.y = target_location.y + offset
+		# Assisgns target location for our rangers to defend
+		self.target_location = bc.MapLocation(bc.Planet.Earth, target_location.x, target_location.y)
+		enemyDirection = direction_to(self.target_location)
+		self.try_move(enemyDirection)
