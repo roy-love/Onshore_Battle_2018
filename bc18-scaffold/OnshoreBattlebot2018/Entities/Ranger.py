@@ -17,7 +17,7 @@ class Ranger(IRobot):
 	def run(self):
 		if not self.unit.location.is_in_garrison():
 			self.update_mission()
-
+			#First priority is to kill enemy troops
 			if not self.mission is None:
 				if self.mission.action == Missions.Idle:
 					self.idle()
@@ -29,7 +29,7 @@ class Ranger(IRobot):
 					self.destroy_target()
 
 				#Attacks nearby units
-				nearby = self.game_controller.sense_nearby_units(self.unit.location.map_location(), 2)
+				nearby = self.game_controller.sense_nearby_units(self.unit.location.map_location(), 50)
 				for other in nearby:
 					if other.team != self.game_controller.team() \
 					and self.game_controller.is_attack_ready(self.unit.id) \
