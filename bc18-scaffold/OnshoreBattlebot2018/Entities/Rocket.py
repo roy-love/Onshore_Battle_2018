@@ -16,7 +16,12 @@ class Rocket(IStructure):
         self.rocketLauchRound = 0
 
     def run(self):
-        
+        team = self.game_controller.team()
+        robots = self.game_controller.sense_nearby_units_by_team(self.unit.location.map_location,5,team)
+        for robot in robots:
+            if try_load(robot.id):
+                print("Rocket {} loaded robot {}.".format(self.unit.id,robot.id))
+
         if not self.mission is None:
             
             if self.mission.action == Missions.Idle:
