@@ -19,6 +19,7 @@ class PathfindingController:
 		self.mapController = mapController
 		self.plan = []
 		self.Directions = [bc.Direction.North, bc.Direction.East, bc.Direction.South, bc.Direction.West] 
+		self.units = gameController.units()
 
 	def FindPathTo(self, planet, currentLocation, destination):
 		print("starting pathfinding")
@@ -29,6 +30,9 @@ class PathfindingController:
 		endingLocation = self.mapController.GetNode(planet, destination.x, destination.y)
 		node = GraphNode(startingLocation, None, None)
 		endNode = GraphNode(endingLocation, None, None)
+		self.units = self.gameController.units()
+		for unit in self.units:
+			print(unit)
 		frontier.append(node)
 		while True:
 			#print("FRONTIER LENGHT IS")
@@ -132,3 +136,7 @@ class PathfindingController:
 				break
 		return notInFrontier
 
+	def IsNodeBlocked(self, node):
+		nodeBlocked = False
+
+		return nodeBlocked
