@@ -132,7 +132,7 @@ class Worker(IRobot):
                     print("Worker {} moving to structure location: {},{} - unit location: {},{}".format(self.unit.id, \
                     self.mission.info.map_location.x,self.mission.info.map_location.y,\
                     map_location.x,map_location.y))
-                    if len(self.path) > 0:
+                    if not self.path is None and len(self.path) > 0:
                         self.follow_path()
                     else:
                         self.update_path_to_target()

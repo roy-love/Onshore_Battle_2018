@@ -86,7 +86,7 @@ class IRobot:
 
         currentLocation = self.unit.location.map_location()
         if self.lastPosition.x == currentLocation.x and \
-        self.lastPosition.y == self.currentLocation.y:
+        self.lastPosition.y == currentLocation.y:
             return True
         else:
             return False
