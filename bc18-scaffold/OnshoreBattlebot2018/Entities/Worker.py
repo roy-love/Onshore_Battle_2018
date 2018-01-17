@@ -19,7 +19,7 @@ class Worker(IRobot):
     #overrides IRobot run method
     def run(self):
         
-        if self.unit_controller.GetWorkerCount() < 5:
+        if self.unit_controller.GetWorkerCount() < 10:
             direction = random.choice(self.directions)
             self.try_replication(direction)
         
@@ -123,7 +123,10 @@ class Worker(IRobot):
                     self.try_build(self.mission.info.unit_id)
             else:
                 if self.has_reached_destination():
-                    pass
+                    map_location = self.unit.location.map_location()
+                    print("Worker {} moving to structure location: {},{} - unit location: {},{}".format(self.unit.id, \
+                    self.mission.info.map_location.x,self.mission.info.map_location.y,\
+                    map_location.x,map_location.y))
                 else:
                     map_location = self.unit.location.map_location()
                     print("Worker {} moving to structure location: {},{} - unit location: {},{}".format(self.unit.id, \
