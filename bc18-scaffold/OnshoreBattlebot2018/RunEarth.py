@@ -45,6 +45,8 @@ class RunEarth:
         if self.round == 1:
             print("First round on Earth.  Initializing map")
             self.map_controller.InitializeEarthMap()
+            print("First round on Mars.  Initializing map")
+            self.map_controller.InitializeMarsMap()
 
             print("Selecting default strategy")
             self.strategy_controller.set_default_strategy()

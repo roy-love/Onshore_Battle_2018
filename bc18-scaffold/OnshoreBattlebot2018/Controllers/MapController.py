@@ -37,9 +37,9 @@ class MapController:
                                     self.enemy_team_start.append(unit.location.map_location())
                   print(self.my_team_start)
                   self.earth_Map = []
-                  for mapX in range(self.map.height):
+                  for mapX in range(self.map.width):
                         self.earth_map.append([])
-                        for mapY in range(self.map.width):
+                        for mapY in range(self.map.height):
                               mapLoc = bc.MapLocation(bc.Planet.Earth,mapX, mapY)
                               self.earth_map[mapX].append({"x": mapX, "y": mapY, "hash": self.hashCoordanates(mapX, mapY), "isPassable": self.map.is_passable_terrain_at(mapLoc), "karboniteCount": self.map.initial_karbonite_at(mapLoc)})
                   #print(self.map.planet)
@@ -53,6 +53,7 @@ class MapController:
                   print("Initializing Mars Map")
                   self.marsMap = self.gameController.starting_map(bc.Planet.Mars)
                   self.mars_map = []
+                  print(self.marsMap.width)
                   for mapX in range(self.marsMap.width):
                         self.mars_map.append([])
                         for mapY in range(self.marsMap.height):
@@ -84,10 +85,18 @@ class MapController:
             return location
 
       def GetRandomMarsNode(self):
-            Xcoord = random.randint(0,19)
-            Ycoord = random.randint(0,19)
-            location = bc.MapLocation(bc.Planet.Mars,Xcoord,Ycoord)
-            return location
+            allNodes = []
+            for Xnodes in self.mars_map:
+                  for node in Xnodes:
+                        if node["isPassable"]:
+                              allNodes.append(node)
+            returnNode = random.choice(allNodes)
+            bcNode = bc.MapLocation(bc.Planet.Mars, returnNode["x"], returnNode["y"])
+            return bcNode
+            #Xcoord = random.randint(0, self.marsMap.width - 1)
+            #Ycoord = random.randint(0, self.marsMap.height - 1)
+            #location = self.mars_map[mapX][mapY]# bc.MapLocation(bc.Planet.Mars,Xcoord,Ycoord)
+            #return location
             
       def GetNodeEarth(self, mapX, mapY):
             if (mapX <= self.map.width - 1 and mapY <= self.map.height - 1 and mapX > -1 and mapY > -1):
