@@ -62,9 +62,9 @@ class IRobot:
     def update_path_to_target(self):
         """This updates path to target"""
         if not self.unit.location.is_in_garrison() and self.target_location is not None and (self.path is None or len(self.path) == 0):
-            #print("Creating new path from {},{} to {},{}".format\
-            #(self.unit.location.map_location().x, self.unit.location.map_location().y, \
-            #self.target_location.x, self.target_location.y))
+            print("Creating new path from {},{} to {},{}".format\
+            (self.unit.location.map_location().x, self.unit.location.map_location().y, \
+            self.target_location.x, self.target_location.y))
             self.path = self.pathfinding_controller.FindPathTo(\
             self.unit.location.map_location().planet, self.unit.location.map_location(), self.target_location)
 

@@ -41,7 +41,7 @@ class MapController:
                         self.earth_map.append([])
                         for mapY in range(self.map.height):
                               mapLoc = bc.MapLocation(bc.Planet.Earth,mapX, mapY)
-                              self.earth_map[mapX].append({"x": mapX, "y": mapY, "hash": self.hashCoordanates(mapX, mapY), "isPassable": self.map.is_passable_terrain_at(mapLoc), "karboniteCount": self.map.initial_karbonite_at(mapLoc)})
+                              self.earth_map[mapX].append({"x": mapX, "y": mapY, "hash": self.hashCoordinates(mapX, mapY), "isPassable": self.map.is_passable_terrain_at(mapLoc), "karboniteCount": self.map.initial_karbonite_at(mapLoc)})
                   #print(self.map.planet)
             except Exception as e:
                   print('Error:', e)
@@ -65,17 +65,17 @@ class MapController:
                   # use this to show where the error was
                   traceback.print_exc()
                   
-      def hashCoordanates(self, inX, inY):
-            hash = 23;
-            hash = 29 * hash + inX;
-            hash = 29 * hash + inY;
+      def hashCoordinates(self, inX, inY):
+            hash = 23
+            hash = 29 * hash + inX
+            hash = 29 * hash + inY
             return hash
 
       def GetNode(self, planet, mapX, mapY):
             if planet == bc.Planet.Earth:
                   node = self.GetNodeEarth(mapX, mapY)
             else:
-                  node = self.GetNodeMars(mapX, MapY)
+                  node = self.GetNodeMars(mapX, mapY)
             return node
 
       def GetRandomEarthNode(self):
